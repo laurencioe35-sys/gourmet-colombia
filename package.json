@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --root frontend",
+    "prebuild": "npm install --include=dev",
     "build": "cd frontend && vite build --outDir dist",
     "preview": "vite preview --root frontend --port 5173"
   },
