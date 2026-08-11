@@ -242,3 +242,25 @@ El sistema no tiene login por defecto (para agregar auth, configura python-jose)
 ---
 
 *GourmetPOS ERP v2.0 — Sistema profesional para restaurantes peruanos*
+
+---
+
+## 📦 Publicar en GitHub
+
+Si quieres crear el repositorio en GitHub y subir el código, aquí tienes dos opciones.
+
+1) Usando GitHub CLI (`gh`) — más sencillo si ya estás autenticado:
+
+```bash
+gh repo create USERNAME/gourmet-pos --public --source . --remote origin --push
+```
+
+2) Manual (sin `gh`):
+
+```bash
+git remote add origin https://github.com/USERNAME/gourmet-pos.git
+git branch -M main
+git push -u origin main
+```
+
+Reemplaza `USERNAME` por tu usuario u organización en GitHub.
