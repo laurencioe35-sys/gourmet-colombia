@@ -3,3 +3,6 @@
 @tailwind utilities;
 
 /* You can add project-level variables or overrides here */
+
+/* Import legacy compatibility layer to preserve existing styles during migration */
+@import './legacy.css';
