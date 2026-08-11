@@ -100,3 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (a.getAttribute('href') === page) a.classList.add('active');
   });
 });
+
+// Expose common helpers to global scope for legacy pages
+window.API = API;
+window.fmt = fmt;
+window.fmtFecha = fmtFecha;
+window.toast = toast;
+window.BADGE = BADGE;
+window.showModal = showModal;
+window.hideModal = hideModal;
+window.connectWS = connectWS;
