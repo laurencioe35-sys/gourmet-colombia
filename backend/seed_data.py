@@ -39,6 +39,9 @@ CATEGORIAS = [
     ("Menú del Día",             "🍱",   "#9C27B0",  6),
     ("Postres",                  "🍰",   "#E91E63",  7),
     ("Bebidas",                  "🥤",   "#03A9F4",  8),
+    ("Desayunos Colombianos",    "🍳",   "#F4B400",  9),
+    ("Almuerzos Corrientes",     "🍛",   "#8E44AD", 10),
+    ("Cenas Colombianas",        "🌙",   "#34495E", 11),
 ]
 
 
