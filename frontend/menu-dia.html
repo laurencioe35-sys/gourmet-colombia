@@ -55,7 +55,7 @@
     /* ── FILA PLATO ─────────────────────────────────────── */
     .plato-row {
       display: grid;
-      grid-template-columns: 28px 32px 1fr auto;
+      grid-template-columns: 28px 32px 1fr auto auto;
       align-items: center; gap: 8px;
       padding: 7px 12px; border-radius: 8px;
       background: rgba(255,255,255,0.03);
@@ -87,6 +87,8 @@
     }
     .price-inp:focus { outline: none; border-color: #25D366; }
     .price-inp:disabled { opacity: .3; }
+    .item-action { border:0; background:transparent; color:var(--text-muted); cursor:pointer; font-size:14px; padding:3px; }
+    .item-action:hover { color:#25D366; }
 
     /* ── STICKY BOTTOM BAR ──────────────────────────────── */
     .sticky-bar {
@@ -186,6 +188,18 @@
   <button class="btn" onclick="enviarWA()" style="font-size:13px;padding:9px 20px;background:#25D366;border-color:#25D366;color:#fff;">
     📲 Enviar Menú a WhatsApp
   </button>
+</div>
+
+<!-- MODAL AGREGAR / EDITAR ÍTEM -->
+<div id="modal-item" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1001;align-items:center;justify-content:center;">
+  <form onsubmit="guardarItem(event)" style="background:#1A1D2E;border-radius:14px;padding:22px;width:430px;max-width:94vw;border:1px solid rgba(255,255,255,.12);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 id="item-modal-title" style="margin:0;font-size:16px">Agregar ítem</h3><button type="button" class="btn btn-ghost btn-sm" onclick="cerrarItem()">✕</button></div>
+    <input type="hidden" id="item-cat"><input type="hidden" id="item-index">
+    <div class="form-group"><label>Nombre</label><input id="item-nombre" required maxlength="150" placeholder="Ej. Sancocho especial"></div>
+    <div class="form-group"><label>Descripción</label><input id="item-desc" required maxlength="300" placeholder="Ingredientes o acompañamientos"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div class="form-group"><label>Precio COP</label><input id="item-precio" type="number" min="0" step="500" required></div><div class="form-group"><label>Tiempo (min)</label><input id="item-tiempo" type="number" min="1" value="15" required></div><div class="form-group"><label>Emoji</label><input id="item-emoji" maxlength="10" value="🍽️"></div></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px"><button type="button" class="btn btn-ghost" onclick="cerrarItem()">Cancelar</button><button class="btn btn-primary" type="submit">Guardar ítem</button></div>
+  </form>
 </div>
 
 <!-- MODAL VISTA PREVIA WA -->
@@ -377,6 +391,7 @@ function renderBiblioteca() {
                   id="price-${sec.cat.replace(/\W/g,'')}-${i}"
                   onchange="actualizarPrecio('${sec.cat}','${p.n.replace(/'/g,"\\'")}',this.value)">
               </div>
+              <button class="item-action" title="Editar ítem" onclick="event.stopPropagation();abrirItem('${sec.cat}',${i})">✏️</button>
             </div>`;
         }).join('');
 
@@ -393,6 +408,7 @@ function renderBiblioteca() {
             <span class="cat-cnt">${totalSec} seleccionados de ${sec.platos.length}</span>
             <span class="sel-all-cat" onclick="event.stopPropagation();seleccionarCategoria('${sec.cat}',true)">☑ todos</span>
             <span class="sel-all-cat" onclick="event.stopPropagation();seleccionarCategoria('${sec.cat}',false)" style="margin-left:0">☐ ninguno</span>
+            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();abrirItem('${sec.cat}', -1)" style="font-size:10px;padding:3px 7px">+ Agregar ítem</button>
             <span class="cat-chev">▾</span>
           </div>
           <div class="cat-body" id="body-${sec.cat.replace(/\W/g,'')}">
@@ -429,6 +445,47 @@ function setFiltro(cat) {
 
 function filtrar() {
   renderBiblioteca();
+}
+
+function abrirItem(cat, indice) {
+  const sec = BIBLIOTECA.find(s => s.cat === cat);
+  const item = indice >= 0 ? sec?.platos[indice] : null;
+  if (!sec) return;
+  document.getElementById('item-modal-title').textContent = item ? 'Editar ítem del menú' : `Agregar ítem a ${cat}`;
+  document.getElementById('item-cat').value = cat;
+  document.getElementById('item-index').value = indice;
+  document.getElementById('item-nombre').value = item?.n || '';
+  document.getElementById('item-desc').value = item?.d || '';
+  document.getElementById('item-precio').value = item?.p || '';
+  document.getElementById('item-tiempo').value = item?.t || 15;
+  document.getElementById('item-emoji').value = item?.e || '🍽️';
+  document.getElementById('modal-item').style.display = 'flex';
+  document.getElementById('item-nombre').focus();
+}
+
+function cerrarItem() { document.getElementById('modal-item').style.display = 'none'; }
+
+function guardarItem(event) {
+  event.preventDefault();
+  const cat = document.getElementById('item-cat').value;
+  const indice = Number(document.getElementById('item-index').value);
+  const sec = BIBLIOTECA.find(s => s.cat === cat);
+  const nuevo = { n: document.getElementById('item-nombre').value.trim(), d: document.getElementById('item-desc').value.trim(), p: Number(document.getElementById('item-precio').value), t: Number(document.getElementById('item-tiempo').value), e: document.getElementById('item-emoji').value.trim() || '🍽️' };
+  if (!sec || !nuevo.n || nuevo.p < 0 || nuevo.t < 1) return;
+  if (indice >= 0) {
+    const anterior = sec.platos[indice];
+    if (anterior.n !== nuevo.n && sec.platos.some((p, i) => i !== indice && p.n.toLowerCase() === nuevo.n.toLowerCase())) { toast('Ya existe un ítem con ese nombre en esta sección', 'warning'); return; }
+    const seleccionado = seleccionados[`${cat}|${anterior.n}`];
+    delete seleccionados[`${cat}|${anterior.n}`];
+    sec.platos[indice] = nuevo;
+    if (seleccionado) seleccionados[`${cat}|${nuevo.n}`] = { cat, nombre:nuevo.n, emoji:nuevo.e, precio:nuevo.p, descripcion:nuevo.d, tiempo_prep:nuevo.t };
+  } else {
+    if (sec.platos.some(p => p.n.toLowerCase() === nuevo.n.toLowerCase())) { toast('Ya existe un ítem con ese nombre en esta sección', 'warning'); return; }
+    sec.platos.push(nuevo);
+    seleccionados[`${cat}|${nuevo.n}`] = { cat, nombre:nuevo.n, emoji:nuevo.e, precio:nuevo.p, descripcion:nuevo.d, tiempo_prep:nuevo.t };
+  }
+  cerrarItem(); renderBiblioteca(); renderFiltros();
+  toast('Ítem actualizado. Guarda y activa el menú para publicarlo.', 'success');
 }
 
 // ════════════════════════════════════════════════════════════════
