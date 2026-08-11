@@ -56,3 +56,6 @@ secrets.json
 # Misc
 *.bak
 *.tmp
+
+.venv311/
+.venv/
