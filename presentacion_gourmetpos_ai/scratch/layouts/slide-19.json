@@ -1,0 +1,945 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/bat47y1k",
+    "id": "bat47y1k",
+    "slide": 20,
+    "layoutId": "/ppt/slideLayouts/slideLayout2.xml",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt",
+      "Aptos",
+      "Aptos Display"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout2.xml",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1gvy90je",
+      "id": "1",
+      "name": "slide-background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "geometry": "rect",
+      "fillColor": "#101820"
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qtcj6tov",
+      "id": "2",
+      "name": "slide-19-title",
+      "bbox": [
+        96,
+        58,
+        1300,
+        74
+      ],
+      "geometry": "rect",
+      "text": "Paso a paso de construccion IA | 5 a 8",
+      "textPreview": "Paso a paso de construccion IA | 5 a 8",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Paso a paso de construccion IA | 5 a 8"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Paso a paso de construccion IA | 5 a 8",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Paso a paso de construccion IA | 5 a 8",
+              "fontSize": 50,
+              "typeface": "Aptos Display",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/je9cvixc",
+      "id": "3",
+      "name": "slide-19-subtitle",
+      "bbox": [
+        96,
+        130,
+        1370,
+        46
+      ],
+      "geometry": "rect",
+      "text": "Despues del nucleo, la IA crea experiencia, automatizacion y despliegue.",
+      "textPreview": "Despues del nucleo, la IA crea experiencia, automatizacion y despliegue.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Despues del nucleo, la IA crea experiencia, automatizacion y despliegue."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Despues del nucleo, la IA crea experiencia, automatizacion y despliegue.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Despues del nucleo, la IA crea experiencia, automatizacion y despliegue.",
+              "fontSize": 24,
+              "typeface": "Aptos",
+              "color": "#B9C6D6",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87ed8bat",
+      "id": "4",
+      "name": "num-19",
+      "bbox": [
+        1750,
+        70,
+        74,
+        42
+      ],
+      "geometry": "rect",
+      "text": "19",
+      "textPreview": "19",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "19"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "19",
+          "runs": [
+            {
+              "index": 1,
+              "text": "19",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xs72x4na",
+      "id": "5",
+      "name": "title-rule-19",
+      "bbox": [
+        96,
+        190,
+        1728,
+        4
+      ],
+      "geometry": "rect",
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q1orytsv",
+      "id": "6",
+      "name": "footer-19",
+      "bbox": [
+        96,
+        1024,
+        1728,
+        28
+      ],
+      "geometry": "rect",
+      "text": "GourmetPOS ERP | construccion explicada por capas | 19",
+      "textPreview": "GourmetPOS ERP | construccion explicada por capas | 19",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GourmetPOS ERP | construccion explicada por capas | 19"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GourmetPOS ERP | construccion explicada por capas | 19",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GourmetPOS ERP | construccion explicada por capas | 19",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#9FB0C5",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fmlkjm1c",
+      "id": "7",
+      "name": "build-b-0",
+      "bbox": [
+        150,
+        290,
+        720,
+        210
+      ],
+      "geometry": "rect",
+      "fillColor": "#2A1B15",
+      "lineColor": "#FF6B35"
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "8",
+      "name": "build-b-0-num",
+      "bbox": [
+        180,
+        320,
+        70,
+        70
+      ],
+      "geometry": "rect",
+      "text": "5",
+      "textPreview": "5",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "5"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "5",
+          "runs": [
+            {
+              "index": 1,
+              "text": "5",
+              "fontSize": 48,
+              "typeface": "Aptos",
+              "color": "#FF6B35",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "9",
+      "name": "build-b-0-title",
+      "bbox": [
+        275,
+        325,
+        530,
+        44
+      ],
+      "geometry": "rect",
+      "text": "Diseñar interfaz",
+      "textPreview": "Diseñar interfaz",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Diseñar interfaz"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Diseñar interfaz",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Diseñar interfaz",
+              "fontSize": 34,
+              "typeface": "Aptos Display",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1w7mp0bi",
+      "id": "10",
+      "name": "build-b-0-body",
+      "bbox": [
+        275,
+        385,
+        530,
+        74
+      ],
+      "geometry": "rect",
+      "text": "HTML por pantalla, CSS global y api.js compartido.",
+      "textPreview": "HTML por pantalla, CSS global y api.js compartido.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "HTML por pantalla, CSS global y api.js compartido."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "HTML por pantalla, CSS global y api.js compartido.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "HTML por pantalla, CSS global y api.js compartido.",
+              "fontSize": 24,
+              "typeface": "Aptos",
+              "color": "#C9D5E4",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8bat47y1",
+      "id": "11",
+      "name": "build-b-1",
+      "bbox": [
+        1000,
+        290,
+        720,
+        210
+      ],
+      "geometry": "rect",
+      "fillColor": "#132A2A",
+      "lineColor": "#00D4A1"
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jqh0fepk",
+      "id": "12",
+      "name": "build-b-1-num",
+      "bbox": [
+        1030,
+        320,
+        70,
+        70
+      ],
+      "geometry": "rect",
+      "text": "6",
+      "textPreview": "6",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "6"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "6",
+          "runs": [
+            {
+              "index": 1,
+              "text": "6",
+              "fontSize": 48,
+              "typeface": "Aptos",
+              "color": "#00D4A1",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q5o7qpg3",
+      "id": "13",
+      "name": "build-b-1-title",
+      "bbox": [
+        1125,
+        325,
+        530,
+        44
+      ],
+      "geometry": "rect",
+      "text": "Construir POS/cocina",
+      "textPreview": "Construir POS/cocina",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Construir POS/cocina"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Construir POS/cocina",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Construir POS/cocina",
+              "fontSize": 34,
+              "typeface": "Aptos Display",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/18jqh0fe",
+      "id": "14",
+      "name": "build-b-1-body",
+      "bbox": [
+        1125,
+        385,
+        530,
+        74
+      ],
+      "geometry": "rect",
+      "text": "Carrito, totales, tickets, estados y prioridades.",
+      "textPreview": "Carrito, totales, tickets, estados y prioridades.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Carrito, totales, tickets, estados y prioridades."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Carrito, totales, tickets, estados y prioridades.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Carrito, totales, tickets, estados y prioridades.",
+              "fontSize": 24,
+              "typeface": "Aptos",
+              "color": "#C9D5E4",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8nqxs72x",
+      "id": "15",
+      "name": "build-b-2",
+      "bbox": [
+        150,
+        580,
+        720,
+        210
+      ],
+      "geometry": "rect",
+      "fillColor": "#2A1B15",
+      "lineColor": "#FF6B35"
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2t83itg",
+      "id": "16",
+      "name": "build-b-2-num",
+      "bbox": [
+        180,
+        610,
+        70,
+        70
+      ],
+      "geometry": "rect",
+      "text": "7",
+      "textPreview": "7",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "7"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "7",
+          "runs": [
+            {
+              "index": 1,
+              "text": "7",
+              "fontSize": 48,
+              "typeface": "Aptos",
+              "color": "#FF6B35",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qh0fepkz",
+      "id": "17",
+      "name": "build-b-2-title",
+      "bbox": [
+        275,
+        615,
+        530,
+        44
+      ],
+      "geometry": "rect",
+      "text": "Integrar WhatsApp IA",
+      "textPreview": "Integrar WhatsApp IA",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Integrar WhatsApp IA"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Integrar WhatsApp IA",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Integrar WhatsApp IA",
+              "fontSize": 34,
+              "typeface": "Aptos Display",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1cfa9w3m",
+      "id": "18",
+      "name": "build-b-2-body",
+      "bbox": [
+        275,
+        675,
+        530,
+        74
+      ],
+      "geometry": "rect",
+      "text": "Webhook, servicio Meta, pipeline Gemini y 10 prompts.",
+      "textPreview": "Webhook, servicio Meta, pipeline Gemini y 10 prompts.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Webhook, servicio Meta, pipeline Gemini y 10"
+          },
+          {
+            "index": 2,
+            "text": "prompts."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Webhook, servicio Meta, pipeline Gemini y 10 prompts.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Webhook, servicio Meta, pipeline Gemini y 10 prompts.",
+              "fontSize": 24,
+              "typeface": "Aptos",
+              "color": "#C9D5E4",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/crmhk3q5",
+      "id": "19",
+      "name": "build-b-3",
+      "bbox": [
+        1000,
+        580,
+        720,
+        210
+      ],
+      "geometry": "rect",
+      "fillColor": "#132A2A",
+      "lineColor": "#00D4A1"
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sfil0rqd",
+      "id": "20",
+      "name": "build-b-3-num",
+      "bbox": [
+        1030,
+        610,
+        70,
+        70
+      ],
+      "geometry": "rect",
+      "text": "8",
+      "textPreview": "8",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "8"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "8",
+          "runs": [
+            {
+              "index": 1,
+              "text": "8",
+              "fontSize": 48,
+              "typeface": "Aptos",
+              "color": "#00D4A1",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h0fepkzu",
+      "id": "21",
+      "name": "build-b-3-title",
+      "bbox": [
+        1125,
+        615,
+        530,
+        44
+      ],
+      "geometry": "rect",
+      "text": "Preparar entrega",
+      "textPreview": "Preparar entrega",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Preparar entrega"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Preparar entrega",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Preparar entrega",
+              "fontSize": 34,
+              "typeface": "Aptos Display",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9w3m94f",
+      "id": "22",
+      "name": "build-b-3-body",
+      "bbox": [
+        1125,
+        675,
+        530,
+        74
+      ],
+      "geometry": "rect",
+      "text": "README, .env.example, .bat, Procfile y railway.toml.",
+      "textPreview": "README, .env.example, .bat, Procfile y railway.toml.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "README, .env.example, .bat, Procfile y railway.toml."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "README, .env.example, .bat, Procfile y railway.toml.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "README, .env.example, .bat, Procfile y railway.toml.",
+              "fontSize": 24,
+              "typeface": "Aptos",
+              "color": "#C9D5E4",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

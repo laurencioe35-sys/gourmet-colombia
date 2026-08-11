@@ -1,0 +1,1313 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/29gr2p8n",
+    "id": "29gr2p8n",
+    "slide": 11,
+    "layoutId": "/ppt/slideLayouts/slideLayout2.xml",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt",
+      "Aptos",
+      "Aptos Display",
+      "Cascadia Mono"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout2.xml",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2p8nqxs7",
+      "id": "1",
+      "name": "slide-background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "geometry": "rect",
+      "fillColor": "#FAF7F0"
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9gr2p8nq",
+      "id": "2",
+      "name": "slide-10-title",
+      "bbox": [
+        96,
+        58,
+        1300,
+        74
+      ],
+      "geometry": "rect",
+      "text": "Flujo de pedido: del click al ticket",
+      "textPreview": "Flujo de pedido: del click al ticket",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Flujo de pedido: del click al ticket"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Flujo de pedido: del click al ticket",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Flujo de pedido: del click al ticket",
+              "fontSize": 50,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gvy90je9",
+      "id": "3",
+      "name": "slide-10-subtitle",
+      "bbox": [
+        96,
+        130,
+        1370,
+        46
+      ],
+      "geometry": "rect",
+      "text": "`pedidos.py` es el motor transaccional: calcula totales, cambia estados y registra pago.",
+      "textPreview": "`pedidos.py` es el motor transaccional: calcula totales, cambia estados y registra pago.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "`pedidos.py` es el motor transaccional: calcula totales, cambia estados y registra pago."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "`pedidos.py` es el motor transaccional: calcula totales, cambia estados y registra pago.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "`pedidos.py` es el motor transaccional: calcula totales, cambia estados y registra pago.",
+              "fontSize": 24,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r2p8nqxs",
+      "id": "4",
+      "name": "num-10",
+      "bbox": [
+        1750,
+        70,
+        74,
+        42
+      ],
+      "geometry": "rect",
+      "text": "10",
+      "textPreview": "10",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "10"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "10",
+          "runs": [
+            {
+              "index": 1,
+              "text": "10",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2hwfyxob",
+      "id": "5",
+      "name": "title-rule-10",
+      "bbox": [
+        96,
+        190,
+        1728,
+        4
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/94fu18jq",
+      "id": "6",
+      "name": "footer-10",
+      "bbox": [
+        96,
+        1024,
+        1728,
+        28
+      ],
+      "geometry": "rect",
+      "text": "GourmetPOS ERP | construccion explicada por capas | 10",
+      "textPreview": "GourmetPOS ERP | construccion explicada por capas | 10",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GourmetPOS ERP | construccion explicada por capas | 10"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GourmetPOS ERP | construccion explicada por capas | 10",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GourmetPOS ERP | construccion explicada por capas | 10",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kjm1cfa9",
+      "id": "7",
+      "name": "pedido-flow-0",
+      "bbox": [
+        130,
+        330,
+        292,
+        175
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rqd4vmtw",
+      "id": "8",
+      "name": "pedido-flow-0-accent",
+      "bbox": [
+        130,
+        330,
+        10,
+        175
+      ],
+      "geometry": "rect",
+      "fillColor": "#4FC3F7"
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/25kb6xkf",
+      "id": "9",
+      "name": "pedido-flow-0-title",
+      "bbox": [
+        164,
+        354,
+        234,
+        34
+      ],
+      "geometry": "rect",
+      "text": "Crear",
+      "textPreview": "Crear",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Crear"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Crear",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Crear",
+              "fontSize": 28,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4fu18jqh",
+      "id": "10",
+      "name": "pedido-flow-0-body",
+      "bbox": [
+        164,
+        396,
+        234,
+        85
+      ],
+      "geometry": "rect",
+      "text": "POST /pedidos",
+      "textPreview": "POST /pedidos",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "POST /pedidos"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "POST /pedidos",
+          "runs": [
+            {
+              "index": 1,
+              "text": "POST /pedidos",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x0nuxc3y",
+      "id": "11",
+      "name": "pedido-arrow-0-line",
+      "bbox": [
+        430,
+        416,
+        14,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#4FC3F7"
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m94fu18j",
+      "id": "12",
+      "name": "pedido-arrow-0-head",
+      "bbox": [
+        434,
+        395,
+        42,
+        45
+      ],
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 34,
+              "typeface": "Aptos",
+              "color": "#4FC3F7",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fu18jqh0",
+      "id": "13",
+      "name": "pedido-flow-1",
+      "bbox": [
+        482,
+        330,
+        292,
+        175
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/83itgfml",
+      "id": "14",
+      "name": "pedido-flow-1-accent",
+      "bbox": [
+        482,
+        330,
+        10,
+        175
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xobm58z2",
+      "id": "15",
+      "name": "pedido-flow-1-title",
+      "bbox": [
+        516,
+        354,
+        234,
+        34
+      ],
+      "geometry": "rect",
+      "text": "Agregar item",
+      "textPreview": "Agregar item",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Agregar item"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Agregar item",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Agregar item",
+              "fontSize": 28,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qxs72x4n",
+      "id": "16",
+      "name": "pedido-flow-1-body",
+      "bbox": [
+        516,
+        396,
+        234,
+        85
+      ],
+      "geometry": "rect",
+      "text": "POST /{id}/items",
+      "textPreview": "POST /{id}/items",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "POST /{id}/items"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "POST /{id}/items",
+          "runs": [
+            {
+              "index": 1,
+              "text": "POST /{id}/items",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fil0rqd4",
+      "id": "17",
+      "name": "pedido-arrow-1-line",
+      "bbox": [
+        782,
+        416,
+        14,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4zidonyd",
+      "id": "18",
+      "name": "pedido-arrow-1-head",
+      "bbox": [
+        786,
+        395,
+        42,
+        45
+      ],
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 34,
+              "typeface": "Aptos",
+              "color": "#FF6B35",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xkf6dcbu",
+      "id": "19",
+      "name": "pedido-flow-2",
+      "bbox": [
+        834,
+        330,
+        292,
+        175
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xczed8v6",
+      "id": "20",
+      "name": "pedido-flow-2-accent",
+      "bbox": [
+        834,
+        330,
+        10,
+        175
+      ],
+      "geometry": "rect",
+      "fillColor": "#F43F5E"
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8v6psfil",
+      "id": "21",
+      "name": "pedido-flow-2-title",
+      "bbox": [
+        868,
+        354,
+        234,
+        34
+      ],
+      "geometry": "rect",
+      "text": "Cocina",
+      "textPreview": "Cocina",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Cocina"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Cocina",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Cocina",
+              "fontSize": 28,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fa9w3m94",
+      "id": "22",
+      "name": "pedido-flow-2-body",
+      "bbox": [
+        868,
+        396,
+        234,
+        85
+      ],
+      "geometry": "rect",
+      "text": "GET /cocina",
+      "textPreview": "GET /cocina",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GET /cocina"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GET /cocina",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GET /cocina",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpg3ex0n",
+      "id": "23",
+      "name": "pedido-arrow-2-line",
+      "bbox": [
+        1134,
+        416,
+        14,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#F43F5E"
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "24",
+      "name": "pedido-arrow-2-head",
+      "bbox": [
+        1138,
+        395,
+        42,
+        45
+      ],
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 34,
+              "typeface": "Aptos",
+              "color": "#F43F5E",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "25",
+      "name": "pedido-flow-3",
+      "bbox": [
+        1186,
+        330,
+        292,
+        175
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fyxobm58",
+      "id": "26",
+      "name": "pedido-flow-3-accent",
+      "bbox": [
+        1186,
+        330,
+        10,
+        175
+      ],
+      "geometry": "rect",
+      "fillColor": "#7C3AED"
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qd4vmtwr",
+      "id": "27",
+      "name": "pedido-flow-3-title",
+      "bbox": [
+        1220,
+        354,
+        234,
+        34
+      ],
+      "geometry": "rect",
+      "text": "Listo/estado",
+      "textPreview": "Listo/estado",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Listo/estado"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Listo/estado",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Listo/estado",
+              "fontSize": 28,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xs72x4na",
+      "id": "28",
+      "name": "pedido-flow-3-body",
+      "bbox": [
+        1220,
+        396,
+        234,
+        85
+      ],
+      "geometry": "rect",
+      "text": "PUT /estado",
+      "textPreview": "PUT /estado",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PUT /estado"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PUT /estado",
+          "runs": [
+            {
+              "index": 1,
+              "text": "PUT /estado",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87ed8bat",
+      "id": "29",
+      "name": "pedido-arrow-3-line",
+      "bbox": [
+        1486,
+        416,
+        14,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#7C3AED"
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2p8nqxs7",
+      "id": "30",
+      "name": "pedido-arrow-3-head",
+      "bbox": [
+        1490,
+        395,
+        42,
+        45
+      ],
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 34,
+              "typeface": "Aptos",
+              "color": "#7C3AED",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ra5gbq1o",
+      "id": "31",
+      "name": "pedido-flow-4",
+      "bbox": [
+        1538,
+        330,
+        292,
+        175
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gvy90je9",
+      "id": "32",
+      "name": "pedido-flow-4-accent",
+      "bbox": [
+        1538,
+        330,
+        10,
+        175
+      ],
+      "geometry": "rect",
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9gr2p8nq",
+      "id": "33",
+      "name": "pedido-flow-4-title",
+      "bbox": [
+        1572,
+        354,
+        234,
+        34
+      ],
+      "geometry": "rect",
+      "text": "Pagar",
+      "textPreview": "Pagar",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Pagar"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Pagar",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Pagar",
+              "fontSize": 28,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2hwfyxob",
+      "id": "34",
+      "name": "pedido-flow-4-body",
+      "bbox": [
+        1572,
+        396,
+        234,
+        85
+      ],
+      "geometry": "rect",
+      "text": "POST /pagar",
+      "textPreview": "POST /pagar",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "POST /pagar"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "POST /pagar",
+          "runs": [
+            {
+              "index": 1,
+              "text": "POST /pagar",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r2p8nqxs",
+      "id": "35",
+      "name": "formula-band",
+      "bbox": [
+        270,
+        660,
+        1380,
+        130
+      ],
+      "geometry": "rect",
+      "fillColor": "#172231"
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kjm1cfa9",
+      "id": "36",
+      "name": "formula",
+      "bbox": [
+        305,
+        695,
+        1310,
+        48
+      ],
+      "geometry": "rect",
+      "text": "subtotal -> IGV -> descuento -> total -> metodo_pago -> ticket",
+      "textPreview": "subtotal -> IGV -> descuento -> total -> metodo_pago -> ticket",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "subtotal -> IGV -> descuento -> total -> metodo_pago -> ticket"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "subtotal -> IGV -> descuento -> total -> metodo_pago -> ticket",
+          "runs": [
+            {
+              "index": 1,
+              "text": "subtotal -> IGV -> descuento -> total -> metodo_pago -> ticket",
+              "fontSize": 34,
+              "typeface": "Cascadia Mono",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/94fu18jq",
+      "id": "37",
+      "name": "pedido-note",
+      "bbox": [
+        330,
+        830,
+        1260,
+        44
+      ],
+      "geometry": "rect",
+      "text": "La mesa se libera al cobrar y el cliente suma historial/puntos cuando aplica.",
+      "textPreview": "La mesa se libera al cobrar y el cliente suma historial/puntos cuando aplica.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "La mesa se libera al cobrar y el cliente suma historial/puntos cuando aplica."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "La mesa se libera al cobrar y el cliente suma historial/puntos cuando aplica.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "La mesa se libera al cobrar y el cliente suma historial/puntos cuando aplica.",
+              "fontSize": 26,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

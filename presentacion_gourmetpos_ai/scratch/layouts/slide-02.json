@@ -1,0 +1,1666 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/pg3ex0nu",
+    "id": "pg3ex0nu",
+    "slide": 3,
+    "layoutId": "/ppt/slideLayouts/slideLayout2.xml",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt",
+      "Aptos",
+      "Aptos Display"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout2.xml",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yxobm58z",
+      "id": "1",
+      "name": "slide-background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "geometry": "rect",
+      "fillColor": "#FAF7F0"
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o7qpg3e",
+      "id": "2",
+      "name": "slide-2-title",
+      "bbox": [
+        96,
+        58,
+        1300,
+        74
+      ],
+      "geometry": "rect",
+      "text": "La construccion se entiende por capas",
+      "textPreview": "La construccion se entiende por capas",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "La construccion se entiende por capas"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "La construccion se entiende por capas",
+          "runs": [
+            {
+              "index": 1,
+              "text": "La construccion se entiende por capas",
+              "fontSize": 50,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "3",
+      "name": "slide-2-subtitle",
+      "bbox": [
+        96,
+        130,
+        1370,
+        46
+      ],
+      "geometry": "rect",
+      "text": "La IA separo el problema en decisiones pequenas: datos, API, pantallas, automatizacion y despliegue.",
+      "textPreview": "La IA separo el problema en decisiones pequenas: datos, API, pantallas, automatizacion y despliegue.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "La IA separo el problema en decisiones pequenas: datos, API, pantallas, automatizacion y despliegue."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "La IA separo el problema en decisiones pequenas: datos, API, pantallas, automatizacion y despliegue.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "La IA separo el problema en decisiones pequenas: datos, API, pantallas, automatizacion y despliegue.",
+              "fontSize": 24,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r65wjudg",
+      "id": "4",
+      "name": "num-2",
+      "bbox": [
+        1750,
+        70,
+        74,
+        42
+      ],
+      "geometry": "rect",
+      "text": "02",
+      "textPreview": "02",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "02"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "02",
+          "runs": [
+            {
+              "index": 1,
+              "text": "02",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ylc7u54z",
+      "id": "5",
+      "name": "title-rule-2",
+      "bbox": [
+        96,
+        190,
+        1728,
+        4
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9cvixcze",
+      "id": "6",
+      "name": "footer-2",
+      "bbox": [
+        96,
+        1024,
+        1728,
+        28
+      ],
+      "geometry": "rect",
+      "text": "GourmetPOS ERP | construccion explicada por capas | 02",
+      "textPreview": "GourmetPOS ERP | construccion explicada por capas | 02",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GourmetPOS ERP | construccion explicada por capas | 02"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GourmetPOS ERP | construccion explicada por capas | 02",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GourmetPOS ERP | construccion explicada por capas | 02",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gr2p8nqx",
+      "id": "7",
+      "name": "step-0-num",
+      "bbox": [
+        150,
+        330,
+        72,
+        44
+      ],
+      "geometry": "rect",
+      "text": "01",
+      "textPreview": "01",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "01"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "01",
+          "runs": [
+            {
+              "index": 1,
+              "text": "01",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rytsvu9k",
+      "id": "8",
+      "name": "step-0-title",
+      "bbox": [
+        150,
+        400,
+        250,
+        42
+      ],
+      "geometry": "rect",
+      "text": "Objetivo",
+      "textPreview": "Objetivo",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Objetivo"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Objetivo",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Objetivo",
+              "fontSize": 29,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yd0z6103",
+      "id": "9",
+      "name": "step-0-body",
+      "bbox": [
+        150,
+        448,
+        250,
+        130
+      ],
+      "geometry": "rect",
+      "text": "Un ERP para restaurante: ventas, mesas, cocina, clientes y WhatsApp.",
+      "textPreview": "Un ERP para restaurante: ventas, mesas, cocina, clientes y WhatsApp.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Un ERP para restaurante:"
+          },
+          {
+            "index": 2,
+            "text": "ventas, mesas, cocina,"
+          },
+          {
+            "index": 3,
+            "text": "clientes y WhatsApp."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Un ERP para restaurante: ventas, mesas, cocina, clientes y WhatsApp.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Un ERP para restaurante: ventas, mesas, cocina, clientes y WhatsApp.",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "10",
+      "name": "step-0-arrow-line",
+      "bbox": [
+        238,
+        352,
+        148,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "11",
+      "name": "step-0-arrow-head",
+      "bbox": [
+        376,
+        331,
+        42,
+        45
+      ],
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 34,
+              "typeface": "Aptos",
+              "color": "#FF6B35",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e9cvixcz",
+      "id": "12",
+      "name": "step-1-num",
+      "bbox": [
+        436,
+        330,
+        72,
+        44
+      ],
+      "geometry": "rect",
+      "text": "02",
+      "textPreview": "02",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "02"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "02",
+          "runs": [
+            {
+              "index": 1,
+              "text": "02",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3q5o7qpg",
+      "id": "13",
+      "name": "step-1-title",
+      "bbox": [
+        436,
+        400,
+        250,
+        42
+      ],
+      "geometry": "rect",
+      "text": "Datos",
+      "textPreview": "Datos",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Datos"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Datos",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Datos",
+              "fontSize": 29,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w3m94fu1",
+      "id": "14",
+      "name": "step-1-body",
+      "bbox": [
+        436,
+        448,
+        250,
+        130
+      ],
+      "geometry": "rect",
+      "text": "Modelos SQLAlchemy y schemas Pydantic para validar contratos.",
+      "textPreview": "Modelos SQLAlchemy y schemas Pydantic para validar contratos.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Modelos SQLAlchemy y"
+          },
+          {
+            "index": 2,
+            "text": "schemas Pydantic para"
+          },
+          {
+            "index": 3,
+            "text": "validar contratos."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Modelos SQLAlchemy y schemas Pydantic para validar contratos.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Modelos SQLAlchemy y schemas Pydantic para validar contratos.",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/loj2t83i",
+      "id": "15",
+      "name": "step-1-arrow-line",
+      "bbox": [
+        524,
+        352,
+        148,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ex0nuxc3",
+      "id": "16",
+      "name": "step-1-arrow-head",
+      "bbox": [
+        662,
+        331,
+        42,
+        45
+      ],
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 34,
+              "typeface": "Aptos",
+              "color": "#00D4A1",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "17",
+      "name": "step-2-num",
+      "bbox": [
+        722,
+        330,
+        72,
+        44
+      ],
+      "geometry": "rect",
+      "text": "03",
+      "textPreview": "03",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "03"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "03",
+          "runs": [
+            {
+              "index": 1,
+              "text": "03",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/szqtcj6t",
+      "id": "18",
+      "name": "step-2-title",
+      "bbox": [
+        722,
+        400,
+        250,
+        42
+      ],
+      "geometry": "rect",
+      "text": "API",
+      "textPreview": "API",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "API"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "API",
+          "runs": [
+            {
+              "index": 1,
+              "text": "API",
+              "fontSize": 29,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lkjm1cfa",
+      "id": "19",
+      "name": "step-2-body",
+      "bbox": [
+        722,
+        448,
+        250,
+        130
+      ],
+      "geometry": "rect",
+      "text": "Routers FastAPI por dominio: mesas, menu, pedidos, caja, reportes.",
+      "textPreview": "Routers FastAPI por dominio: mesas, menu, pedidos, caja, reportes.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Routers FastAPI por dominio:"
+          },
+          {
+            "index": 2,
+            "text": "mesas, menu, pedidos, caja,"
+          },
+          {
+            "index": 3,
+            "text": "reportes."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Routers FastAPI por dominio: mesas, menu, pedidos, caja, reportes.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Routers FastAPI por dominio: mesas, menu, pedidos, caja, reportes.",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lc7u54zi",
+      "id": "20",
+      "name": "step-2-arrow-line",
+      "bbox": [
+        810,
+        352,
+        148,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wra5gbq1",
+      "id": "21",
+      "name": "step-2-arrow-head",
+      "bbox": [
+        948,
+        331,
+        42,
+        45
+      ],
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 34,
+              "typeface": "Aptos",
+              "color": "#FF6B35",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/36hcrmhk",
+      "id": "22",
+      "name": "step-3-num",
+      "bbox": [
+        1008,
+        330,
+        72,
+        44
+      ],
+      "geometry": "rect",
+      "text": "04",
+      "textPreview": "04",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "04"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "04",
+          "runs": [
+            {
+              "index": 1,
+              "text": "04",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/eloj2t83",
+      "id": "23",
+      "name": "step-3-title",
+      "bbox": [
+        1008,
+        400,
+        250,
+        42
+      ],
+      "geometry": "rect",
+      "text": "Interfaz",
+      "textPreview": "Interfaz",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Interfaz"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Interfaz",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Interfaz",
+              "fontSize": 29,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l0rqd4vm",
+      "id": "24",
+      "name": "step-3-body",
+      "bbox": [
+        1008,
+        448,
+        250,
+        130
+      ],
+      "geometry": "rect",
+      "text": "HTML/CSS/JS vanilla servido por el mismo backend.",
+      "textPreview": "HTML/CSS/JS vanilla servido por el mismo backend.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "HTML/CSS/JS vanilla servido"
+          },
+          {
+            "index": 2,
+            "text": "por el mismo backend."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "HTML/CSS/JS vanilla servido por el mismo backend.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "HTML/CSS/JS vanilla servido por el mismo backend.",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wfyxobm5",
+      "id": "25",
+      "name": "step-3-arrow-line",
+      "bbox": [
+        1096,
+        352,
+        148,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7u54zido",
+      "id": "26",
+      "name": "step-3-arrow-head",
+      "bbox": [
+        1234,
+        331,
+        42,
+        45
+      ],
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 34,
+              "typeface": "Aptos",
+              "color": "#00D4A1",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ed8bat47",
+      "id": "27",
+      "name": "step-4-num",
+      "bbox": [
+        1294,
+        330,
+        72,
+        44
+      ],
+      "geometry": "rect",
+      "text": "05",
+      "textPreview": "05",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "05"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "05",
+          "runs": [
+            {
+              "index": 1,
+              "text": "05",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/psfil0rq",
+      "id": "28",
+      "name": "step-4-title",
+      "bbox": [
+        1294,
+        400,
+        250,
+        42
+      ],
+      "geometry": "rect",
+      "text": "IA/WhatsApp",
+      "textPreview": "IA/WhatsApp",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "IA/WhatsApp"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "IA/WhatsApp",
+          "runs": [
+            {
+              "index": 1,
+              "text": "IA/WhatsApp",
+              "fontSize": 29,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w7mp0bi9",
+      "id": "29",
+      "name": "step-4-body",
+      "bbox": [
+        1294,
+        448,
+        250,
+        130
+      ],
+      "geometry": "rect",
+      "text": "Servicio conversacional, prompts y estados de pedido.",
+      "textPreview": "Servicio conversacional, prompts y estados de pedido.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Servicio conversacional,"
+          },
+          {
+            "index": 2,
+            "text": "prompts y estados de pedido."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Servicio conversacional, prompts y estados de pedido.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Servicio conversacional, prompts y estados de pedido.",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65wjudg7",
+      "id": "30",
+      "name": "step-4-arrow-line",
+      "bbox": [
+        1382,
+        352,
+        148,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "31",
+      "name": "step-4-arrow-head",
+      "bbox": [
+        1520,
+        331,
+        42,
+        45
+      ],
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 34,
+              "typeface": "Aptos",
+              "color": "#FF6B35",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/obm58z25",
+      "id": "32",
+      "name": "step-5-num",
+      "bbox": [
+        1580,
+        330,
+        72,
+        44
+      ],
+      "geometry": "rect",
+      "text": "06",
+      "textPreview": "06",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "06"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "06",
+          "runs": [
+            {
+              "index": 1,
+              "text": "06",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "33",
+      "name": "step-5-title",
+      "bbox": [
+        1580,
+        400,
+        250,
+        42
+      ],
+      "geometry": "rect",
+      "text": "Deploy",
+      "textPreview": "Deploy",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Deploy"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Deploy",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Deploy",
+              "fontSize": 29,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6xkf6dcb",
+      "id": "34",
+      "name": "step-5-body",
+      "bbox": [
+        1580,
+        448,
+        250,
+        130
+      ],
+      "geometry": "rect",
+      "text": "Railway, Procfile, runtime y variables de entorno.",
+      "textPreview": "Railway, Procfile, runtime y variables de entorno.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Railway, Procfile, runtime y"
+          },
+          {
+            "index": 2,
+            "text": "variables de entorno."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Railway, Procfile, runtime y variables de entorno.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Railway, Procfile, runtime y variables de entorno.",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zed8v6ps",
+      "id": "35",
+      "name": "central-idea",
+      "bbox": [
+        230,
+        760,
+        1460,
+        130
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oza1gvy9",
+      "id": "36",
+      "name": "central-idea-accent",
+      "bbox": [
+        230,
+        760,
+        10,
+        130
+      ],
+      "geometry": "rect",
+      "fillColor": "#7C3AED"
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hk3q5o7q",
+      "id": "37",
+      "name": "central-idea-title",
+      "bbox": [
+        264,
+        784,
+        1402,
+        34
+      ],
+      "geometry": "rect",
+      "text": "Idea central",
+      "textPreview": "Idea central",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Idea central"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Idea central",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Idea central",
+              "fontSize": 28,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/al87ed8b",
+      "id": "38",
+      "name": "central-idea-body",
+      "bbox": [
+        264,
+        826,
+        1402,
+        40
+      ],
+      "geometry": "rect",
+      "text": "El programa no es una sola pieza grande: es una cadena de archivos especializados que se comunican por modelos, endpoints y llamadas HTTP.",
+      "textPreview": "El programa no es una sola pieza grande: es una cadena de archivos especializados que se comunican por modelos, endpoints y llamadas HTTP.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "El programa no es una sola pieza grande: es una cadena de archivos especializados que se comunican por modelos, endpoints y"
+          },
+          {
+            "index": 2,
+            "text": "llamadas HTTP."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "El programa no es una sola pieza grande: es una cadena de archivos especializados que se comunican por modelos, endpoints y llamadas HTTP.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "El programa no es una sola pieza grande: es una cadena de archivos especializados que se comunican por modelos, endpoints y llamadas HTTP.",
+              "fontSize": 25,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

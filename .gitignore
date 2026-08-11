@@ -37,3 +37,22 @@ Thumbs.db
 # Archivos temporales
 *.tmp
 ticket_*.txt
+# Node dependencies
+node_modules/
+
+# Frontend build output
+frontend/dist/
+
+# Generated/output folders
+output/
+
+# Secrets file
+secrets.json
+
+# Build artifacts
+*.egg
+*.egg-info/
+
+# Misc
+*.bak
+*.tmp

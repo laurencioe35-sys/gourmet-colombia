@@ -1,0 +1,1276 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/0z61032l",
+    "id": "0z61032l",
+    "slide": 8,
+    "layoutId": "/ppt/slideLayouts/slideLayout2.xml",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt",
+      "Aptos",
+      "Aptos Display"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout2.xml",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qd4vmtwr",
+      "id": "1",
+      "name": "slide-background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "geometry": "rect",
+      "fillColor": "#FAF7F0"
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "2",
+      "name": "slide-7-title",
+      "bbox": [
+        96,
+        58,
+        1300,
+        74
+      ],
+      "geometry": "rect",
+      "text": "Backend nucleo: datos, contratos y vida del servidor",
+      "textPreview": "Backend nucleo: datos, contratos y vida del servidor",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Backend nucleo: datos, contratos y vida del servidor"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Backend nucleo: datos, contratos y vida del servidor",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Backend nucleo: datos, contratos y vida del servidor",
+              "fontSize": 50,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "3",
+      "name": "slide-7-subtitle",
+      "bbox": [
+        96,
+        130,
+        1370,
+        46
+      ],
+      "geometry": "rect",
+      "text": "La IA primero definio el corazon del sistema antes de pintar pantallas.",
+      "textPreview": "La IA primero definio el corazon del sistema antes de pintar pantallas.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "La IA primero definio el corazon del sistema antes de pintar pantallas."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "La IA primero definio el corazon del sistema antes de pintar pantallas.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "La IA primero definio el corazon del sistema antes de pintar pantallas.",
+              "fontSize": 24,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fa9w3m94",
+      "id": "4",
+      "name": "num-7",
+      "bbox": [
+        1750,
+        70,
+        74,
+        42
+      ],
+      "geometry": "rect",
+      "text": "07",
+      "textPreview": "07",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "07"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "07",
+          "runs": [
+            {
+              "index": 1,
+              "text": "07",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpg3ex0n",
+      "id": "5",
+      "name": "title-rule-7",
+      "bbox": [
+        96,
+        190,
+        1728,
+        4
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xczed8v6",
+      "id": "6",
+      "name": "footer-7",
+      "bbox": [
+        96,
+        1024,
+        1728,
+        28
+      ],
+      "geometry": "rect",
+      "text": "GourmetPOS ERP | construccion explicada por capas | 07",
+      "textPreview": "GourmetPOS ERP | construccion explicada por capas | 07",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GourmetPOS ERP | construccion explicada por capas | 07"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GourmetPOS ERP | construccion explicada por capas | 07",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GourmetPOS ERP | construccion explicada por capas | 07",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8v6psfil",
+      "id": "7",
+      "name": "backend-core",
+      "bbox": [
+        150,
+        280,
+        1560,
+        456
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/je9cvixc",
+      "id": "8",
+      "name": "backend-core-header",
+      "bbox": [
+        150,
+        280,
+        1560,
+        48
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qtcj6tov",
+      "id": "9",
+      "name": "backend-core-h-0",
+      "bbox": [
+        164,
+        292,
+        442,
+        32
+      ],
+      "geometry": "rect",
+      "text": "Archivo",
+      "textPreview": "Archivo",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Archivo"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Archivo",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Archivo",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/svu9knih",
+      "id": "10",
+      "name": "backend-core-h-1",
+      "bbox": [
+        634,
+        292,
+        1062,
+        32
+      ],
+      "geometry": "rect",
+      "text": "Rol exacto",
+      "textPreview": "Rol exacto",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Rol exacto"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Rol exacto",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Rol exacto",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hgn29gr2",
+      "id": "11",
+      "name": "backend-core-rule-0",
+      "bbox": [
+        150,
+        328,
+        1560,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ap4r65wj",
+      "id": "12",
+      "name": "backend-core-r0-c0",
+      "bbox": [
+        164,
+        338,
+        442,
+        56
+      ],
+      "geometry": "rect",
+      "text": "backend/__init__.py",
+      "textPreview": "backend/__init__.py",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "backend/__init__.py"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "backend/__init__.py",
+          "runs": [
+            {
+              "index": 1,
+              "text": "backend/__init__.py",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/za1gvy90",
+      "id": "13",
+      "name": "backend-core-r0-c1",
+      "bbox": [
+        634,
+        338,
+        1062,
+        56
+      ],
+      "geometry": "rect",
+      "text": "Convierte backend en paquete importable.",
+      "textPreview": "Convierte backend en paquete importable.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Convierte backend en paquete importable."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Convierte backend en paquete importable.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Convierte backend en paquete importable.",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s36hcrmh",
+      "id": "14",
+      "name": "backend-core-alt-1",
+      "bbox": [
+        150,
+        396,
+        1560,
+        68
+      ],
+      "geometry": "rect",
+      "fillColor": "#F1EBDD"
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hoza1gvy",
+      "id": "15",
+      "name": "backend-core-rule-1",
+      "bbox": [
+        150,
+        396,
+        1560,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a1gvy90j",
+      "id": "16",
+      "name": "backend-core-r1-c0",
+      "bbox": [
+        164,
+        406,
+        442,
+        56
+      ],
+      "geometry": "rect",
+      "text": "database.py",
+      "textPreview": "database.py",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "database.py"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "database.py",
+          "runs": [
+            {
+              "index": 1,
+              "text": "database.py",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zidonyd0",
+      "id": "17",
+      "name": "backend-core-r1-c1",
+      "bbox": [
+        634,
+        406,
+        1062,
+        56
+      ],
+      "geometry": "rect",
+      "text": "Crea engine, SessionLocal y get_db para inyeccion.",
+      "textPreview": "Crea engine, SessionLocal y get_db para inyeccion.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Crea engine, SessionLocal y get_db para inyeccion."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Crea engine, SessionLocal y get_db para inyeccion.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Crea engine, SessionLocal y get_db para inyeccion.",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s72x4nap",
+      "id": "18",
+      "name": "backend-core-rule-2",
+      "bbox": [
+        150,
+        464,
+        1560,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lszqtcj6",
+      "id": "19",
+      "name": "backend-core-r2-c0",
+      "bbox": [
+        164,
+        474,
+        442,
+        56
+      ],
+      "geometry": "rect",
+      "text": "models.py",
+      "textPreview": "models.py",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "models.py"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "models.py",
+          "runs": [
+            {
+              "index": 1,
+              "text": "models.py",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pg3ex0nu",
+      "id": "20",
+      "name": "backend-core-r2-c1",
+      "bbox": [
+        634,
+        474,
+        1062,
+        56
+      ],
+      "geometry": "rect",
+      "text": "Define tablas y relaciones SQLAlchemy del negocio.",
+      "textPreview": "Define tablas y relaciones SQLAlchemy del negocio.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Define tablas y relaciones SQLAlchemy del negocio."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Define tablas y relaciones SQLAlchemy del negocio.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Define tablas y relaciones SQLAlchemy del negocio.",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wval87ed",
+      "id": "21",
+      "name": "backend-core-alt-3",
+      "bbox": [
+        150,
+        532,
+        1560,
+        68
+      ],
+      "geometry": "rect",
+      "fillColor": "#F1EBDD"
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7adsji5s",
+      "id": "22",
+      "name": "backend-core-rule-3",
+      "bbox": [
+        150,
+        532,
+        1560,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/epkzupwb",
+      "id": "23",
+      "name": "backend-core-r3-c0",
+      "bbox": [
+        164,
+        542,
+        442,
+        56
+      ],
+      "geometry": "rect",
+      "text": "schemas.py",
+      "textPreview": "schemas.py",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "schemas.py"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "schemas.py",
+          "runs": [
+            {
+              "index": 1,
+              "text": "schemas.py",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/psfil0rq",
+      "id": "24",
+      "name": "backend-core-r3-c1",
+      "bbox": [
+        634,
+        542,
+        1062,
+        56
+      ],
+      "geometry": "rect",
+      "text": "Define contratos Pydantic de entrada/salida.",
+      "textPreview": "Define contratos Pydantic de entrada/salida.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Define contratos Pydantic de entrada/salida."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Define contratos Pydantic de entrada/salida.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Define contratos Pydantic de entrada/salida.",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w7mp0bi9",
+      "id": "25",
+      "name": "backend-core-rule-4",
+      "bbox": [
+        150,
+        600,
+        1560,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7mp0bi9s",
+      "id": "26",
+      "name": "backend-core-r4-c0",
+      "bbox": [
+        164,
+        610,
+        442,
+        56
+      ],
+      "geometry": "rect",
+      "text": "seed_data.py",
+      "textPreview": "seed_data.py",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "seed_data.py"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "seed_data.py",
+          "runs": [
+            {
+              "index": 1,
+              "text": "seed_data.py",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e1w7mp0b",
+      "id": "27",
+      "name": "backend-core-r4-c1",
+      "bbox": [
+        634,
+        610,
+        1062,
+        56
+      ],
+      "geometry": "rect",
+      "text": "Siembra config, categorias base y 16 mesas.",
+      "textPreview": "Siembra config, categorias base y 16 mesas.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Siembra config, categorias base y 16 mesas."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Siembra config, categorias base y 16 mesas.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Siembra config, categorias base y 16 mesas.",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l0rqd4vm",
+      "id": "28",
+      "name": "backend-core-alt-5",
+      "bbox": [
+        150,
+        668,
+        1560,
+        68
+      ],
+      "geometry": "rect",
+      "fillColor": "#F1EBDD"
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wfyxobm5",
+      "id": "29",
+      "name": "backend-core-rule-5",
+      "bbox": [
+        150,
+        668,
+        1560,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9w3m94f",
+      "id": "30",
+      "name": "backend-core-r5-c0",
+      "bbox": [
+        164,
+        678,
+        442,
+        56
+      ],
+      "geometry": "rect",
+      "text": "main.py",
+      "textPreview": "main.py",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "main.py"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "main.py",
+          "runs": [
+            {
+              "index": 1,
+              "text": "main.py",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zupwb2hw",
+      "id": "31",
+      "name": "backend-core-r5-c1",
+      "bbox": [
+        634,
+        678,
+        1062,
+        56
+      ],
+      "geometry": "rect",
+      "text": "Crea app, CORS, WebSocket, scheduler, routers y frontend.",
+      "textPreview": "Crea app, CORS, WebSocket, scheduler, routers y frontend.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Crea app, CORS, WebSocket, scheduler, routers y frontend."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Crea app, CORS, WebSocket, scheduler, routers y frontend.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Crea app, CORS, WebSocket, scheduler, routers y frontend.",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sfil0rqd",
+      "id": "32",
+      "name": "backend-decision",
+      "bbox": [
+        270,
+        815,
+        1380,
+        110
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h0fepkzu",
+      "id": "33",
+      "name": "backend-decision-accent",
+      "bbox": [
+        270,
+        815,
+        10,
+        110
+      ],
+      "geometry": "rect",
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/al87ed8b",
+      "id": "34",
+      "name": "backend-decision-title",
+      "bbox": [
+        304,
+        839,
+        1322,
+        34
+      ],
+      "geometry": "rect",
+      "text": "Decision tecnica",
+      "textPreview": "Decision tecnica",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Decision tecnica"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Decision tecnica",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Decision tecnica",
+              "fontSize": 25,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z61032ls",
+      "id": "35",
+      "name": "backend-decision-body",
+      "bbox": [
+        304,
+        881,
+        1322,
+        20
+      ],
+      "geometry": "rect",
+      "text": "FastAPI queda como centro: valida por schemas, persiste por SQLAlchemy y sirve el frontend estatico.",
+      "textPreview": "FastAPI queda como centro: valida por schemas, persiste por SQLAlchemy y sirve el frontend estatico.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "FastAPI queda como centro: valida por schemas, persiste por SQLAlchemy y sirve el frontend estatico."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "FastAPI queda como centro: valida por schemas, persiste por SQLAlchemy y sirve el frontend estatico.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "FastAPI queda como centro: valida por schemas, persiste por SQLAlchemy y sirve el frontend estatico.",
+              "fontSize": 25,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

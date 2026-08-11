@@ -1,0 +1,1630 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/mhk3q5o7",
+    "id": "mhk3q5o7",
+    "slide": 22,
+    "layoutId": "/ppt/slideLayouts/slideLayout2.xml",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt",
+      "Aptos",
+      "Aptos Display"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout2.xml",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z25kb6xk",
+      "id": "1",
+      "name": "slide-background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "geometry": "rect",
+      "fillColor": "#FAF7F0"
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/onyd0z61",
+      "id": "2",
+      "name": "slide-21-title",
+      "bbox": [
+        96,
+        58,
+        1300,
+        74
+      ],
+      "geometry": "rect",
+      "text": "Mapa completo de archivos por responsabilidad",
+      "textPreview": "Mapa completo de archivos por responsabilidad",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Mapa completo de archivos por responsabilidad"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Mapa completo de archivos por responsabilidad",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Mapa completo de archivos por responsabilidad",
+              "fontSize": 50,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d8v6psfi",
+      "id": "3",
+      "name": "slide-21-subtitle",
+      "bbox": [
+        96,
+        130,
+        1370,
+        46
+      ],
+      "geometry": "rect",
+      "text": "Resumen final para defender el proyecto archivo por archivo.",
+      "textPreview": "Resumen final para defender el proyecto archivo por archivo.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Resumen final para defender el proyecto archivo por archivo."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Resumen final para defender el proyecto archivo por archivo.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Resumen final para defender el proyecto archivo por archivo.",
+              "fontSize": 24,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6tovahoz",
+      "id": "4",
+      "name": "num-21",
+      "bbox": [
+        1750,
+        70,
+        74,
+        42
+      ],
+      "geometry": "rect",
+      "text": "21",
+      "textPreview": "21",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "21"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "21",
+          "runs": [
+            {
+              "index": 1,
+              "text": "21",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#4FC3F7"
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vahoza1g",
+      "id": "5",
+      "name": "title-rule-21",
+      "bbox": [
+        96,
+        190,
+        1728,
+        4
+      ],
+      "geometry": "rect",
+      "fillColor": "#4FC3F7"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ovahoza1",
+      "id": "6",
+      "name": "footer-21",
+      "bbox": [
+        96,
+        1024,
+        1728,
+        28
+      ],
+      "geometry": "rect",
+      "text": "GourmetPOS ERP | construccion explicada por capas | 21",
+      "textPreview": "GourmetPOS ERP | construccion explicada por capas | 21",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GourmetPOS ERP | construccion explicada por capas | 21"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GourmetPOS ERP | construccion explicada por capas | 21",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GourmetPOS ERP | construccion explicada por capas | 21",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dg7adsji",
+      "id": "7",
+      "name": "all-files",
+      "bbox": [
+        120,
+        250,
+        1610,
+        648
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/61032lsz",
+      "id": "8",
+      "name": "all-files-header",
+      "bbox": [
+        120,
+        250,
+        1610,
+        48
+      ],
+      "geometry": "rect",
+      "fillColor": "#4FC3F7"
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vmtwra5g",
+      "id": "9",
+      "name": "all-files-h-0",
+      "bbox": [
+        134,
+        262,
+        282,
+        32
+      ],
+      "geometry": "rect",
+      "text": "Grupo",
+      "textPreview": "Grupo",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Grupo"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Grupo",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Grupo",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b2hwfyxo",
+      "id": "10",
+      "name": "all-files-h-1",
+      "bbox": [
+        444,
+        262,
+        1272,
+        32
+      ],
+      "geometry": "rect",
+      "text": "Archivos",
+      "textPreview": "Archivos",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Archivos"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Archivos",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Archivos",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhk3q5o7",
+      "id": "11",
+      "name": "all-files-rule-0",
+      "bbox": [
+        120,
+        298,
+        1610,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t83itgfm",
+      "id": "12",
+      "name": "all-files-r0-c0",
+      "bbox": [
+        134,
+        308,
+        282,
+        48
+      ],
+      "geometry": "rect",
+      "text": "Raiz",
+      "textPreview": "Raiz",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Raiz"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Raiz",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Raiz",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4nap4r65",
+      "id": "13",
+      "name": "all-files-r0-c1",
+      "bbox": [
+        444,
+        308,
+        1272,
+        48
+      ],
+      "geometry": "rect",
+      "text": "README.md, requirements.txt, .env.example, .gitignore",
+      "textPreview": "README.md, requirements.txt, .env.example, .gitignore",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "README.md, requirements.txt, .env.example, .gitignore"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "README.md, requirements.txt, .env.example, .gitignore",
+          "runs": [
+            {
+              "index": 1,
+              "text": "README.md, requirements.txt, .env.example, .gitignore",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bq1oryts",
+      "id": "14",
+      "name": "all-files-alt-1",
+      "bbox": [
+        120,
+        358,
+        1610,
+        60
+      ],
+      "geometry": "rect",
+      "fillColor": "#F1EBDD"
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m58z25kb",
+      "id": "15",
+      "name": "all-files-rule-1",
+      "bbox": [
+        120,
+        358,
+        1610,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/twra5gbq",
+      "id": "16",
+      "name": "all-files-r1-c0",
+      "bbox": [
+        134,
+        368,
+        282,
+        48
+      ],
+      "geometry": "rect",
+      "text": "Arranque",
+      "textPreview": "Arranque",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Arranque"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Arranque",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Arranque",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4byhgn29",
+      "id": "17",
+      "name": "all-files-r1-c1",
+      "bbox": [
+        444,
+        368,
+        1272,
+        48
+      ],
+      "geometry": "rect",
+      "text": "start.bat, instalar_dependencias.bat",
+      "textPreview": "start.bat, instalar_dependencias.bat",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "start.bat, instalar_dependencias.bat"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "start.bat, instalar_dependencias.bat",
+          "runs": [
+            {
+              "index": 1,
+              "text": "start.bat, instalar_dependencias.bat",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bm58z25k",
+      "id": "18",
+      "name": "all-files-rule-2",
+      "bbox": [
+        120,
+        418,
+        1610,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m1cfa9w3",
+      "id": "19",
+      "name": "all-files-r2-c0",
+      "bbox": [
+        134,
+        428,
+        282,
+        48
+      ],
+      "geometry": "rect",
+      "text": "Deploy",
+      "textPreview": "Deploy",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Deploy"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Deploy",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Deploy",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q5o7qpg3",
+      "id": "20",
+      "name": "all-files-r2-c1",
+      "bbox": [
+        444,
+        428,
+        1272,
+        48
+      ],
+      "geometry": "rect",
+      "text": "Procfile, railway.toml, runtime.txt",
+      "textPreview": "Procfile, railway.toml, runtime.txt",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Procfile, railway.toml, runtime.txt"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Procfile, railway.toml, runtime.txt",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Procfile, railway.toml, runtime.txt",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jqh0fepk",
+      "id": "21",
+      "name": "all-files-alt-3",
+      "bbox": [
+        120,
+        478,
+        1610,
+        60
+      ],
+      "geometry": "rect",
+      "fillColor": "#F1EBDD"
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8bat47y1",
+      "id": "22",
+      "name": "all-files-rule-3",
+      "bbox": [
+        120,
+        478,
+        1610,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1w7mp0bi",
+      "id": "23",
+      "name": "all-files-r3-c0",
+      "bbox": [
+        134,
+        488,
+        282,
+        48
+      ],
+      "geometry": "rect",
+      "text": "Base local",
+      "textPreview": "Base local",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Base local"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Base local",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Base local",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qh0fepkz",
+      "id": "24",
+      "name": "all-files-r3-c1",
+      "bbox": [
+        444,
+        488,
+        1272,
+        48
+      ],
+      "geometry": "rect",
+      "text": "gormet_pos.db",
+      "textPreview": "gormet_pos.db",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "gormet_pos.db"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "gormet_pos.db",
+          "runs": [
+            {
+              "index": 1,
+              "text": "gormet_pos.db",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2t83itg",
+      "id": "25",
+      "name": "all-files-rule-4",
+      "bbox": [
+        120,
+        538,
+        1610,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8nqxs72x",
+      "id": "26",
+      "name": "all-files-r4-c0",
+      "bbox": [
+        134,
+        548,
+        282,
+        48
+      ],
+      "geometry": "rect",
+      "text": "Backend core",
+      "textPreview": "Backend core",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Backend core"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Backend core",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Backend core",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/18jqh0fe",
+      "id": "27",
+      "name": "all-files-r4-c1",
+      "bbox": [
+        444,
+        548,
+        1272,
+        48
+      ],
+      "geometry": "rect",
+      "text": "__init__.py, database.py, main.py, models.py, schemas.py, seed_data.py",
+      "textPreview": "__init__.py, database.py, main.py, models.py, schemas.py, seed_data.py",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "__init__.py, database.py, main.py, models.py, schemas.py, seed_data.py"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "__init__.py, database.py, main.py, models.py, schemas.py, seed_data.py",
+          "runs": [
+            {
+              "index": 1,
+              "text": "__init__.py, database.py, main.py, models.py, schemas.py, seed_data.py",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ulwval87",
+      "id": "28",
+      "name": "all-files-alt-5",
+      "bbox": [
+        120,
+        598,
+        1610,
+        60
+      ],
+      "geometry": "rect",
+      "fillColor": "#F1EBDD"
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j6tovaho",
+      "id": "29",
+      "name": "all-files-rule-5",
+      "bbox": [
+        120,
+        598,
+        1610,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pwb2hwfy",
+      "id": "30",
+      "name": "all-files-r5-c0",
+      "bbox": [
+        134,
+        608,
+        282,
+        48
+      ],
+      "geometry": "rect",
+      "text": "Backend routes",
+      "textPreview": "Backend routes",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Backend routes"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Backend routes",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Backend routes",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0bi9s36h",
+      "id": "31",
+      "name": "all-files-r5-c1",
+      "bbox": [
+        444,
+        608,
+        1272,
+        48
+      ],
+      "geometry": "rect",
+      "text": "__init__.py, caja.py, clientes.py, config.py, menu.py, mesas.py, pedidos.py, reportes.py, whatsapp_webhook.py",
+      "textPreview": "__init__.py, caja.py, clientes.py, config.py, menu.py, mesas.py, pedidos.py, reportes.py, whatsapp_webhook.py",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "__init__.py, caja.py, clientes.py, config.py, menu.py, mesas.py, pedidos.py, reportes.py, whatsapp_webhook.py"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "__init__.py, caja.py, clientes.py, config.py, menu.py, mesas.py, pedidos.py, reportes.py, whatsapp_webhook.py",
+          "runs": [
+            {
+              "index": 1,
+              "text": "__init__.py, caja.py, clientes.py, config.py, menu.py, mesas.py, pedidos.py, reportes.py, whatsapp_webhook.py",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7qpg3ex0",
+      "id": "32",
+      "name": "all-files-rule-6",
+      "bbox": [
+        120,
+        658,
+        1610,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i5sneloj",
+      "id": "33",
+      "name": "all-files-r6-c0",
+      "bbox": [
+        134,
+        668,
+        282,
+        48
+      ],
+      "geometry": "rect",
+      "text": "Backend service",
+      "textPreview": "Backend service",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Backend service"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Backend service",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Backend service",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p4r65wju",
+      "id": "34",
+      "name": "all-files-r6-c1",
+      "bbox": [
+        444,
+        668,
+        1272,
+        48
+      ],
+      "geometry": "rect",
+      "text": "services/__init__.py, services/whatsapp_service.py",
+      "textPreview": "services/__init__.py, services/whatsapp_service.py",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "services/__init__.py, services/whatsapp_service.py"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "services/__init__.py, services/whatsapp_service.py",
+          "runs": [
+            {
+              "index": 1,
+              "text": "services/__init__.py, services/whatsapp_service.py",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wjudg7ad",
+      "id": "35",
+      "name": "all-files-alt-7",
+      "bbox": [
+        120,
+        718,
+        1610,
+        60
+      ],
+      "geometry": "rect",
+      "fillColor": "#F1EBDD"
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7y1kre1w",
+      "id": "36",
+      "name": "all-files-rule-7",
+      "bbox": [
+        120,
+        718,
+        1610,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ed8v6psf",
+      "id": "37",
+      "name": "all-files-r7-c0",
+      "bbox": [
+        134,
+        728,
+        282,
+        48
+      ],
+      "geometry": "rect",
+      "text": "Frontend pages",
+      "textPreview": "Frontend pages",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Frontend pages"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Frontend pages",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Frontend pages",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p8nqxs72",
+      "id": "38",
+      "name": "all-files-r7-c1",
+      "bbox": [
+        444,
+        728,
+        1272,
+        48
+      ],
+      "geometry": "rect",
+      "text": "admin.html, clientes.html, cocina.html, index.html, menu-dia.html, pos.html, reportes.html, whatsapp.html",
+      "textPreview": "admin.html, clientes.html, cocina.html, index.html, menu-dia.html, pos.html, reportes.html, whatsapp.html",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "admin.html, clientes.html, cocina.html, index.html, menu-dia.html, pos.html, reportes.html, whatsapp.html"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "admin.html, clientes.html, cocina.html, index.html, menu-dia.html, pos.html, reportes.html, whatsapp.html",
+          "runs": [
+            {
+              "index": 1,
+              "text": "admin.html, clientes.html, cocina.html, index.html, menu-dia.html, pos.html, reportes.html, whatsapp.html",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 39,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0nuxc3yl",
+      "id": "39",
+      "name": "all-files-rule-8",
+      "bbox": [
+        120,
+        778,
+        1610,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 40,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4zidonyd",
+      "id": "40",
+      "name": "all-files-r8-c0",
+      "bbox": [
+        134,
+        788,
+        282,
+        48
+      ],
+      "geometry": "rect",
+      "text": "Frontend assets",
+      "textPreview": "Frontend assets",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Frontend assets"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Frontend assets",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Frontend assets",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 41,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xkf6dcbu",
+      "id": "41",
+      "name": "all-files-r8-c1",
+      "bbox": [
+        444,
+        788,
+        1272,
+        48
+      ],
+      "geometry": "rect",
+      "text": "assets/css/style.css, assets/js/api.js",
+      "textPreview": "assets/css/style.css, assets/js/api.js",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "assets/css/style.css, assets/js/api.js"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "assets/css/style.css, assets/js/api.js",
+          "runs": [
+            {
+              "index": 1,
+              "text": "assets/css/style.css, assets/js/api.js",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 42,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mtwra5gb",
+      "id": "42",
+      "name": "all-files-alt-9",
+      "bbox": [
+        120,
+        838,
+        1610,
+        60
+      ],
+      "geometry": "rect",
+      "fillColor": "#F1EBDD"
+    },
+    {
+      "order": 43,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fepkzupw",
+      "id": "43",
+      "name": "all-files-rule-9",
+      "bbox": [
+        120,
+        838,
+        1610,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 44,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4r65wjud",
+      "id": "44",
+      "name": "all-files-r9-c0",
+      "bbox": [
+        134,
+        848,
+        282,
+        48
+      ],
+      "geometry": "rect",
+      "text": "WhatsApp bot",
+      "textPreview": "WhatsApp bot",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WhatsApp bot"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WhatsApp bot",
+          "runs": [
+            {
+              "index": 1,
+              "text": "WhatsApp bot",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 45,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xc3ylc7u",
+      "id": "45",
+      "name": "all-files-r9-c1",
+      "bbox": [
+        444,
+        848,
+        1272,
+        48
+      ],
+      "geometry": "rect",
+      "text": "__init__.py, bot.py, pipeline.py, prompts.py, handlers/__init__.py",
+      "textPreview": "__init__.py, bot.py, pipeline.py, prompts.py, handlers/__init__.py",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "__init__.py, bot.py, pipeline.py, prompts.py, handlers/__init__.py"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "__init__.py, bot.py, pipeline.py, prompts.py, handlers/__init__.py",
+          "runs": [
+            {
+              "index": 1,
+              "text": "__init__.py, bot.py, pipeline.py, prompts.py, handlers/__init__.py",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

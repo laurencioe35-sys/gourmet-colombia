@@ -1,0 +1,1483 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/8z25kb6x",
+    "id": "8z25kb6x",
+    "slide": 17,
+    "layoutId": "/ppt/slideLayouts/slideLayout2.xml",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt",
+      "Aptos",
+      "Aptos Display"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout2.xml",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/epkzupwb",
+      "id": "1",
+      "name": "slide-background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "geometry": "rect",
+      "fillColor": "#FAF7F0"
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pg3ex0nu",
+      "id": "2",
+      "name": "slide-16-title",
+      "bbox": [
+        96,
+        58,
+        1300,
+        74
+      ],
+      "geometry": "rect",
+      "text": "Como se conectan pantallas y endpoints",
+      "textPreview": "Como se conectan pantallas y endpoints",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Como se conectan pantallas y endpoints"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Como se conectan pantallas y endpoints",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Como se conectan pantallas y endpoints",
+              "fontSize": 50,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wval87ed",
+      "id": "3",
+      "name": "slide-16-subtitle",
+      "bbox": [
+        96,
+        130,
+        1370,
+        46
+      ],
+      "geometry": "rect",
+      "text": "El frontend no toca la base directamente: todo pasa por `/api`.",
+      "textPreview": "El frontend no toca la base directamente: todo pasa por `/api`.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "El frontend no toca la base directamente: todo pasa por `/api`."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "El frontend no toca la base directamente: todo pasa por `/api`.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "El frontend no toca la base directamente: todo pasa por `/api`.",
+              "fontSize": 24,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7mp0bi9s",
+      "id": "4",
+      "name": "num-16",
+      "bbox": [
+        1750,
+        70,
+        74,
+        42
+      ],
+      "geometry": "rect",
+      "text": "16",
+      "textPreview": "16",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "16"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "16",
+          "runs": [
+            {
+              "index": 1,
+              "text": "16",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#7C3AED"
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e1w7mp0b",
+      "id": "5",
+      "name": "title-rule-16",
+      "bbox": [
+        96,
+        190,
+        1728,
+        4
+      ],
+      "geometry": "rect",
+      "fillColor": "#7C3AED"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/psfil0rq",
+      "id": "6",
+      "name": "footer-16",
+      "bbox": [
+        96,
+        1024,
+        1728,
+        28
+      ],
+      "geometry": "rect",
+      "text": "GourmetPOS ERP | construccion explicada por capas | 16",
+      "textPreview": "GourmetPOS ERP | construccion explicada por capas | 16",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GourmetPOS ERP | construccion explicada por capas | 16"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GourmetPOS ERP | construccion explicada por capas | 16",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GourmetPOS ERP | construccion explicada por capas | 16",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w7mp0bi9",
+      "id": "7",
+      "name": "screen-endpoints",
+      "bbox": [
+        115,
+        250,
+        1740,
+        528
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7u54zido",
+      "id": "8",
+      "name": "screen-endpoints-header",
+      "bbox": [
+        115,
+        250,
+        1740,
+        48
+      ],
+      "geometry": "rect",
+      "fillColor": "#7C3AED"
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ed8bat47",
+      "id": "9",
+      "name": "screen-endpoints-h-0",
+      "bbox": [
+        129,
+        262,
+        232,
+        32
+      ],
+      "geometry": "rect",
+      "text": "Modulo visual",
+      "textPreview": "Modulo visual",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Modulo visual"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Modulo visual",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Modulo visual",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/onyd0z61",
+      "id": "10",
+      "name": "screen-endpoints-h-1",
+      "bbox": [
+        389,
+        262,
+        392,
+        32
+      ],
+      "geometry": "rect",
+      "text": "Archivo",
+      "textPreview": "Archivo",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Archivo"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Archivo",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Archivo",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d8v6psfi",
+      "id": "11",
+      "name": "screen-endpoints-h-2",
+      "bbox": [
+        809,
+        262,
+        1032,
+        32
+      ],
+      "geometry": "rect",
+      "text": "Endpoints principales",
+      "textPreview": "Endpoints principales",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Endpoints principales"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Endpoints principales",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Endpoints principales",
+              "fontSize": 18,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6hcrmhk3",
+      "id": "12",
+      "name": "screen-endpoints-rule-0",
+      "bbox": [
+        115,
+        298,
+        1740,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z25kb6xk",
+      "id": "13",
+      "name": "screen-endpoints-r0-c0",
+      "bbox": [
+        129,
+        308,
+        232,
+        68
+      ],
+      "geometry": "rect",
+      "text": "Dashboard",
+      "textPreview": "Dashboard",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Dashboard"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Dashboard",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Dashboard",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ovahoza1",
+      "id": "14",
+      "name": "screen-endpoints-r0-c1",
+      "bbox": [
+        389,
+        308,
+        392,
+        68
+      ],
+      "geometry": "rect",
+      "text": "index.html",
+      "textPreview": "index.html",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "index.html"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "index.html",
+          "runs": [
+            {
+              "index": 1,
+              "text": "index.html",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dg7adsji",
+      "id": "15",
+      "name": "screen-endpoints-r0-c2",
+      "bbox": [
+        809,
+        308,
+        1032,
+        68
+      ],
+      "geometry": "rect",
+      "text": "/reportes/dashboard, /productos-top, /metodos-pago, /ventas-por-hora",
+      "textPreview": "/reportes/dashboard, /productos-top, /metodos-pago, /ventas-por-hora",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "/reportes/dashboard, /productos-top, /metodos-pago, /ventas-por-hora"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "/reportes/dashboard, /productos-top, /metodos-pago, /ventas-por-hora",
+          "runs": [
+            {
+              "index": 1,
+              "text": "/reportes/dashboard, /productos-top, /metodos-pago, /ventas-por-hora",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6tovahoz",
+      "id": "16",
+      "name": "screen-endpoints-alt-1",
+      "bbox": [
+        115,
+        378,
+        1740,
+        80
+      ],
+      "geometry": "rect",
+      "fillColor": "#F1EBDD"
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vahoza1g",
+      "id": "17",
+      "name": "screen-endpoints-rule-1",
+      "bbox": [
+        115,
+        378,
+        1740,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/o7qpg3ex",
+      "id": "18",
+      "name": "screen-endpoints-r1-c0",
+      "bbox": [
+        129,
+        388,
+        232,
+        68
+      ],
+      "geometry": "rect",
+      "text": "POS",
+      "textPreview": "POS",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "POS"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "POS",
+          "runs": [
+            {
+              "index": 1,
+              "text": "POS",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dsji5sne",
+      "id": "19",
+      "name": "screen-endpoints-r1-c1",
+      "bbox": [
+        389,
+        388,
+        392,
+        68
+      ],
+      "geometry": "rect",
+      "text": "pos.html",
+      "textPreview": "pos.html",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "pos.html"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "pos.html",
+          "runs": [
+            {
+              "index": 1,
+              "text": "pos.html",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hk3q5o7q",
+      "id": "20",
+      "name": "screen-endpoints-r1-c2",
+      "bbox": [
+        809,
+        388,
+        1032,
+        68
+      ],
+      "geometry": "rect",
+      "text": "/mesas, /menu/completo, /pedidos, /pedidos/{id}/pagar",
+      "textPreview": "/mesas, /menu/completo, /pedidos, /pedidos/{id}/pagar",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "/mesas, /menu/completo, /pedidos, /pedidos/{id}/pagar"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "/mesas, /menu/completo, /pedidos, /pedidos/{id}/pagar",
+          "runs": [
+            {
+              "index": 1,
+              "text": "/mesas, /menu/completo, /pedidos, /pedidos/{id}/pagar",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oza1gvy9",
+      "id": "21",
+      "name": "screen-endpoints-rule-2",
+      "bbox": [
+        115,
+        458,
+        1740,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zed8v6ps",
+      "id": "22",
+      "name": "screen-endpoints-r2-c0",
+      "bbox": [
+        129,
+        468,
+        232,
+        68
+      ],
+      "geometry": "rect",
+      "text": "Cocina",
+      "textPreview": "Cocina",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Cocina"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Cocina",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Cocina",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6xkf6dcb",
+      "id": "23",
+      "name": "screen-endpoints-r2-c1",
+      "bbox": [
+        389,
+        468,
+        392,
+        68
+      ],
+      "geometry": "rect",
+      "text": "cocina.html",
+      "textPreview": "cocina.html",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "cocina.html"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "cocina.html",
+          "runs": [
+            {
+              "index": 1,
+              "text": "cocina.html",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "24",
+      "name": "screen-endpoints-r2-c2",
+      "bbox": [
+        809,
+        468,
+        1032,
+        68
+      ],
+      "geometry": "rect",
+      "text": "/pedidos/cocina, /items/{id}/listo, /prioridad",
+      "textPreview": "/pedidos/cocina, /items/{id}/listo, /prioridad",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "/pedidos/cocina, /items/{id}/listo, /prioridad"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "/pedidos/cocina, /items/{id}/listo, /prioridad",
+          "runs": [
+            {
+              "index": 1,
+              "text": "/pedidos/cocina, /items/{id}/listo, /prioridad",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/obm58z25",
+      "id": "25",
+      "name": "screen-endpoints-alt-3",
+      "bbox": [
+        115,
+        538,
+        1740,
+        80
+      ],
+      "geometry": "rect",
+      "fillColor": "#F1EBDD"
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "26",
+      "name": "screen-endpoints-rule-3",
+      "bbox": [
+        115,
+        538,
+        1740,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65wjudg7",
+      "id": "27",
+      "name": "screen-endpoints-r3-c0",
+      "bbox": [
+        129,
+        548,
+        232,
+        68
+      ],
+      "geometry": "rect",
+      "text": "Clientes",
+      "textPreview": "Clientes",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clientes"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clientes",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clientes",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h0fepkzu",
+      "id": "28",
+      "name": "screen-endpoints-r3-c1",
+      "bbox": [
+        389,
+        548,
+        392,
+        68
+      ],
+      "geometry": "rect",
+      "text": "clientes.html",
+      "textPreview": "clientes.html",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "clientes.html"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "clientes.html",
+          "runs": [
+            {
+              "index": 1,
+              "text": "clientes.html",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sfil0rqd",
+      "id": "29",
+      "name": "screen-endpoints-r3-c2",
+      "bbox": [
+        809,
+        548,
+        1032,
+        68
+      ],
+      "geometry": "rect",
+      "text": "/clientes, /clientes/{id}/historial, /puntos",
+      "textPreview": "/clientes, /clientes/{id}/historial, /puntos",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "/clientes, /clientes/{id}/historial, /puntos"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "/clientes, /clientes/{id}/historial, /puntos",
+          "runs": [
+            {
+              "index": 1,
+              "text": "/clientes, /clientes/{id}/historial, /puntos",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ixczed8v",
+      "id": "30",
+      "name": "screen-endpoints-rule-4",
+      "bbox": [
+        115,
+        618,
+        1740,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bi9s36hc",
+      "id": "31",
+      "name": "screen-endpoints-r4-c0",
+      "bbox": [
+        129,
+        628,
+        232,
+        68
+      ],
+      "geometry": "rect",
+      "text": "WhatsApp",
+      "textPreview": "WhatsApp",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WhatsApp"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WhatsApp",
+          "runs": [
+            {
+              "index": 1,
+              "text": "WhatsApp",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/032lszqt",
+      "id": "32",
+      "name": "screen-endpoints-r4-c1",
+      "bbox": [
+        389,
+        628,
+        392,
+        68
+      ],
+      "geometry": "rect",
+      "text": "whatsapp.html",
+      "textPreview": "whatsapp.html",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "whatsapp.html"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "whatsapp.html",
+          "runs": [
+            {
+              "index": 1,
+              "text": "whatsapp.html",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tovahoza",
+      "id": "33",
+      "name": "screen-endpoints-r4-c2",
+      "bbox": [
+        809,
+        628,
+        1032,
+        68
+      ],
+      "geometry": "rect",
+      "text": "/whatsapp/conversaciones, /contactos, /envio-masivo",
+      "textPreview": "/whatsapp/conversaciones, /contactos, /envio-masivo",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "/whatsapp/conversaciones, /contactos, /envio-masivo"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "/whatsapp/conversaciones, /contactos, /envio-masivo",
+          "runs": [
+            {
+              "index": 1,
+              "text": "/whatsapp/conversaciones, /contactos, /envio-masivo",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i9s36hcr",
+      "id": "34",
+      "name": "screen-endpoints-alt-5",
+      "bbox": [
+        115,
+        698,
+        1740,
+        80
+      ],
+      "geometry": "rect",
+      "fillColor": "#F1EBDD"
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bulwval8",
+      "id": "35",
+      "name": "screen-endpoints-rule-5",
+      "bbox": [
+        115,
+        698,
+        1740,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#D7CEBC"
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0fepkzup",
+      "id": "36",
+      "name": "screen-endpoints-r5-c0",
+      "bbox": [
+        129,
+        708,
+        232,
+        68
+      ],
+      "geometry": "rect",
+      "text": "Admin/Menu",
+      "textPreview": "Admin/Menu",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Admin/Menu"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Admin/Menu",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Admin/Menu",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p0bi9s36",
+      "id": "37",
+      "name": "screen-endpoints-r5-c1",
+      "bbox": [
+        389,
+        708,
+        392,
+        68
+      ],
+      "geometry": "rect",
+      "text": "admin.html + menu-dia.html",
+      "textPreview": "admin.html + menu-dia.html",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "admin.html + menu-dia.html"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "admin.html + menu-dia.html",
+          "runs": [
+            {
+              "index": 1,
+              "text": "admin.html + menu-dia.html",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/idonyd0z",
+      "id": "38",
+      "name": "screen-endpoints-r5-c2",
+      "bbox": [
+        809,
+        708,
+        1032,
+        68
+      ],
+      "geometry": "rect",
+      "text": "/config, /menu/categorias, /menu/productos, /menu/activar-dia",
+      "textPreview": "/config, /menu/categorias, /menu/productos, /menu/activar-dia",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "/config, /menu/categorias, /menu/productos, /menu/activar-dia"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "/config, /menu/categorias, /menu/productos, /menu/activar-dia",
+          "runs": [
+            {
+              "index": 1,
+              "text": "/config, /menu/categorias, /menu/productos, /menu/activar-dia",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

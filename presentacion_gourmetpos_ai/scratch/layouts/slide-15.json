@@ -1,0 +1,1357 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/7y1kre1w",
+    "id": "7y1kre1w",
+    "slide": 16,
+    "layoutId": "/ppt/slideLayouts/slideLayout2.xml",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt",
+      "Aptos",
+      "Aptos Display"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout2.xml",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/90je9cvi",
+      "id": "1",
+      "name": "slide-background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "geometry": "rect",
+      "fillColor": "#FAF7F0"
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yd0z6103",
+      "id": "2",
+      "name": "slide-15-title",
+      "bbox": [
+        96,
+        58,
+        1300,
+        74
+      ],
+      "geometry": "rect",
+      "text": "Pantallas de gestion, reportes y canal digital",
+      "textPreview": "Pantallas de gestion, reportes y canal digital",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Pantallas de gestion, reportes y canal digital"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Pantallas de gestion, reportes y canal digital",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Pantallas de gestion, reportes y canal digital",
+              "fontSize": 50,
+              "typeface": "Aptos Display",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rytsvu9k",
+      "id": "3",
+      "name": "slide-15-subtitle",
+      "bbox": [
+        96,
+        130,
+        1370,
+        46
+      ],
+      "geometry": "rect",
+      "text": "Estas vistas completan administracion, analitica y comunicacion con clientes.",
+      "textPreview": "Estas vistas completan administracion, analitica y comunicacion con clientes.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Estas vistas completan administracion, analitica y comunicacion con clientes."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Estas vistas completan administracion, analitica y comunicacion con clientes.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Estas vistas completan administracion, analitica y comunicacion con clientes.",
+              "fontSize": 24,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g7adsji5",
+      "id": "4",
+      "name": "num-15",
+      "bbox": [
+        1750,
+        70,
+        74,
+        42
+      ],
+      "geometry": "rect",
+      "text": "15",
+      "textPreview": "15",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "15"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "15",
+          "runs": [
+            {
+              "index": 1,
+              "text": "15",
+              "fontSize": 20,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ]
+        }
+      ],
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9s36hcrm",
+      "id": "5",
+      "name": "title-rule-15",
+      "bbox": [
+        96,
+        190,
+        1728,
+        4
+      ],
+      "geometry": "rect",
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y1kre1w7",
+      "id": "6",
+      "name": "footer-15",
+      "bbox": [
+        96,
+        1024,
+        1728,
+        28
+      ],
+      "geometry": "rect",
+      "text": "GourmetPOS ERP | construccion explicada por capas | 15",
+      "textPreview": "GourmetPOS ERP | construccion explicada por capas | 15",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GourmetPOS ERP | construccion explicada por capas | 15"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GourmetPOS ERP | construccion explicada por capas | 15",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GourmetPOS ERP | construccion explicada por capas | 15",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rmhk3q5o",
+      "id": "7",
+      "name": "screen-b-0",
+      "bbox": [
+        145,
+        300,
+        360,
+        460
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "8",
+      "name": "screen-b-0-bar",
+      "bbox": [
+        145,
+        300,
+        360,
+        20
+      ],
+      "geometry": "rect",
+      "fillColor": "#7C3AED"
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o7qpg3e",
+      "id": "9",
+      "name": "screen-b-file-0",
+      "bbox": [
+        171,
+        350,
+        310,
+        42
+      ],
+      "geometry": "rect",
+      "text": "reportes.html",
+      "textPreview": "reportes.html",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "reportes.html"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "reportes.html",
+          "runs": [
+            {
+              "index": 1,
+              "text": "reportes.html",
+              "fontSize": 25,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "10",
+      "name": "screen-b-title-0",
+      "bbox": [
+        171,
+        405,
+        310,
+        46
+      ],
+      "geometry": "rect",
+      "text": "Reportes",
+      "textPreview": "Reportes",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Reportes"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Reportes",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Reportes",
+              "fontSize": 32,
+              "typeface": "Aptos Display",
+              "color": "#7C3AED",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cvixczed",
+      "id": "11",
+      "name": "screen-b-body-0",
+      "bbox": [
+        171,
+        485,
+        310,
+        145
+      ],
+      "geometry": "rect",
+      "text": "Filtros, top productos, metodos de pago y Excel.",
+      "textPreview": "Filtros, top productos, metodos de pago y Excel.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Filtros, top productos, metodos"
+          },
+          {
+            "index": 2,
+            "text": "de pago y Excel."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Filtros, top productos, metodos de pago y Excel.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Filtros, top productos, metodos de pago y Excel.",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nap4r65w",
+      "id": "12",
+      "name": "screen-b-note-0",
+      "bbox": [
+        171,
+        650,
+        300,
+        76
+      ],
+      "geometry": "rect",
+      "text": "llama al API\nusa api.js\nhereda style.css",
+      "textPreview": "llama al API | usa api.js | hereda style.css",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "llama al API"
+          },
+          {
+            "index": 2,
+            "text": "usa api.js"
+          },
+          {
+            "index": 3,
+            "text": "hereda style.css"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "llama al API",
+          "runs": [
+            {
+              "index": 1,
+              "text": "llama al API",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "usa api.js",
+          "runs": [
+            {
+              "index": 1,
+              "text": "usa api.js",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "hereda style.css",
+          "runs": [
+            {
+              "index": 1,
+              "text": "hereda style.css",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upwb2hwf",
+      "id": "13",
+      "name": "screen-b-1",
+      "bbox": [
+        580,
+        300,
+        360,
+        460
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/54zidony",
+      "id": "14",
+      "name": "screen-b-1-bar",
+      "bbox": [
+        580,
+        300,
+        360,
+        20
+      ],
+      "geometry": "rect",
+      "fillColor": "#00D4A1"
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cj6tovah",
+      "id": "15",
+      "name": "screen-b-file-1",
+      "bbox": [
+        606,
+        350,
+        310,
+        42
+      ],
+      "geometry": "rect",
+      "text": "whatsapp.html",
+      "textPreview": "whatsapp.html",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "whatsapp.html"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "whatsapp.html",
+          "runs": [
+            {
+              "index": 1,
+              "text": "whatsapp.html",
+              "fontSize": 25,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nyd0z610",
+      "id": "16",
+      "name": "screen-b-title-1",
+      "bbox": [
+        606,
+        405,
+        310,
+        46
+      ],
+      "geometry": "rect",
+      "text": "Centro WhatsApp",
+      "textPreview": "Centro WhatsApp",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Centro WhatsApp"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Centro WhatsApp",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Centro WhatsApp",
+              "fontSize": 32,
+              "typeface": "Aptos Display",
+              "color": "#00D4A1",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/udg7adsj",
+      "id": "17",
+      "name": "screen-b-body-1",
+      "bbox": [
+        606,
+        485,
+        310,
+        145
+      ],
+      "geometry": "rect",
+      "text": "Conversaciones, contactos, envios, programados y pipeline.",
+      "textPreview": "Conversaciones, contactos, envios, programados y pipeline.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Conversaciones, contactos,"
+          },
+          {
+            "index": 2,
+            "text": "envios, programados y pipeline."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Conversaciones, contactos, envios, programados y pipeline.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Conversaciones, contactos, envios, programados y pipeline.",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1032lszq",
+      "id": "18",
+      "name": "screen-b-note-1",
+      "bbox": [
+        606,
+        650,
+        300,
+        76
+      ],
+      "geometry": "rect",
+      "text": "llama al API\nusa api.js\nhereda style.css",
+      "textPreview": "llama al API | usa api.js | hereda style.css",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "llama al API"
+          },
+          {
+            "index": 2,
+            "text": "usa api.js"
+          },
+          {
+            "index": 3,
+            "text": "hereda style.css"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "llama al API",
+          "runs": [
+            {
+              "index": 1,
+              "text": "llama al API",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "usa api.js",
+          "runs": [
+            {
+              "index": 1,
+              "text": "usa api.js",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "hereda style.css",
+          "runs": [
+            {
+              "index": 1,
+              "text": "hereda style.css",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cfa9w3m9",
+      "id": "19",
+      "name": "screen-b-2",
+      "bbox": [
+        1015,
+        300,
+        360,
+        460
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/obm58z25",
+      "id": "20",
+      "name": "screen-b-2-bar",
+      "bbox": [
+        1015,
+        300,
+        360,
+        20
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "21",
+      "name": "screen-b-file-2",
+      "bbox": [
+        1041,
+        350,
+        310,
+        42
+      ],
+      "geometry": "rect",
+      "text": "admin.html",
+      "textPreview": "admin.html",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "admin.html"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "admin.html",
+          "runs": [
+            {
+              "index": 1,
+              "text": "admin.html",
+              "fontSize": 25,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65wjudg7",
+      "id": "22",
+      "name": "screen-b-title-2",
+      "bbox": [
+        1041,
+        405,
+        310,
+        46
+      ],
+      "geometry": "rect",
+      "text": "Configuracion",
+      "textPreview": "Configuracion",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Configuracion"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Configuracion",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Configuracion",
+              "fontSize": 32,
+              "typeface": "Aptos Display",
+              "color": "#FF6B35",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "23",
+      "name": "screen-b-body-2",
+      "bbox": [
+        1041,
+        485,
+        310,
+        145
+      ],
+      "geometry": "rect",
+      "text": "Restaurante, pagos, carta, mesas y credenciales API.",
+      "textPreview": "Restaurante, pagos, carta, mesas y credenciales API.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Restaurante, pagos, carta,"
+          },
+          {
+            "index": 2,
+            "text": "mesas y credenciales API."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Restaurante, pagos, carta, mesas y credenciales API.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Restaurante, pagos, carta, mesas y credenciales API.",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oza1gvy9",
+      "id": "24",
+      "name": "screen-b-note-2",
+      "bbox": [
+        1041,
+        650,
+        300,
+        76
+      ],
+      "geometry": "rect",
+      "text": "llama al API\nusa api.js\nhereda style.css",
+      "textPreview": "llama al API | usa api.js | hereda style.css",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "llama al API"
+          },
+          {
+            "index": 2,
+            "text": "usa api.js"
+          },
+          {
+            "index": 3,
+            "text": "hereda style.css"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "llama al API",
+          "runs": [
+            {
+              "index": 1,
+              "text": "llama al API",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "usa api.js",
+          "runs": [
+            {
+              "index": 1,
+              "text": "usa api.js",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "hereda style.css",
+          "runs": [
+            {
+              "index": 1,
+              "text": "hereda style.css",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hk3q5o7q",
+      "id": "25",
+      "name": "screen-b-3",
+      "bbox": [
+        1450,
+        300,
+        360,
+        460
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7CEBC"
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6xkf6dcb",
+      "id": "26",
+      "name": "screen-b-3-bar",
+      "bbox": [
+        1450,
+        300,
+        360,
+        20
+      ],
+      "geometry": "rect",
+      "fillColor": "#4FC3F7"
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zed8v6ps",
+      "id": "27",
+      "name": "screen-b-file-3",
+      "bbox": [
+        1476,
+        350,
+        310,
+        42
+      ],
+      "geometry": "rect",
+      "text": "menu-dia.html",
+      "textPreview": "menu-dia.html",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "menu-dia.html"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "menu-dia.html",
+          "runs": [
+            {
+              "index": 1,
+              "text": "menu-dia.html",
+              "fontSize": 25,
+              "typeface": "Aptos",
+              "color": "#101820",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/orytsvu9",
+      "id": "28",
+      "name": "screen-b-title-3",
+      "bbox": [
+        1476,
+        405,
+        310,
+        46
+      ],
+      "geometry": "rect",
+      "text": "Menu del dia",
+      "textPreview": "Menu del dia",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Menu del dia"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Menu del dia",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Menu del dia",
+              "fontSize": 32,
+              "typeface": "Aptos Display",
+              "color": "#4FC3F7",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hcrmhk3q",
+      "id": "29",
+      "name": "screen-b-body-3",
+      "bbox": [
+        1476,
+        485,
+        310,
+        145
+      ],
+      "geometry": "rect",
+      "text": "Biblioteca de platos, seleccion, preview y envio masivo.",
+      "textPreview": "Biblioteca de platos, seleccion, preview y envio masivo.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Biblioteca de platos, seleccion,"
+          },
+          {
+            "index": 2,
+            "text": "preview y envio masivo."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Biblioteca de platos, seleccion, preview y envio masivo.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Biblioteca de platos, seleccion, preview y envio masivo.",
+              "fontSize": 22,
+              "typeface": "Aptos",
+              "color": "#657283",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/72x4nap4",
+      "id": "30",
+      "name": "screen-b-note-3",
+      "bbox": [
+        1476,
+        650,
+        300,
+        76
+      ],
+      "geometry": "rect",
+      "text": "llama al API\nusa api.js\nhereda style.css",
+      "textPreview": "llama al API | usa api.js | hereda style.css",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "llama al API"
+          },
+          {
+            "index": 2,
+            "text": "usa api.js"
+          },
+          {
+            "index": 3,
+            "text": "hereda style.css"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "llama al API",
+          "runs": [
+            {
+              "index": 1,
+              "text": "llama al API",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "usa api.js",
+          "runs": [
+            {
+              "index": 1,
+              "text": "usa api.js",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "hereda style.css",
+          "runs": [
+            {
+              "index": 1,
+              "text": "hereda style.css",
+              "fontSize": 19,
+              "typeface": "Aptos",
+              "color": "#243247",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

@@ -1,0 +1,600 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/5wjudg7a",
+    "id": "5wjudg7a",
+    "slide": 23,
+    "layoutId": "/ppt/slideLayouts/slideLayout2.xml",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt",
+      "Aptos",
+      "Aptos Display"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout2.xml",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yxobm58z",
+      "id": "1",
+      "name": "slide-background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "geometry": "rect",
+      "fillColor": "#101820"
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o7qpg3e",
+      "id": "2",
+      "name": "final-bg",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "geometry": "rect",
+      "fillColor": "#101820"
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "3",
+      "name": "final-band",
+      "bbox": [
+        0,
+        910,
+        1920,
+        170
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B35"
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r65wjudg",
+      "id": "4",
+      "name": "final-title",
+      "bbox": [
+        96,
+        120,
+        900,
+        85
+      ],
+      "geometry": "rect",
+      "text": "Resultado",
+      "textPreview": "Resultado",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Resultado"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Resultado",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Resultado",
+              "fontSize": 78,
+              "typeface": "Aptos Display",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ylc7u54z",
+      "id": "5",
+      "name": "final-claim",
+      "bbox": [
+        96,
+        250,
+        1380,
+        120
+      ],
+      "geometry": "rect",
+      "text": "GourmetPOS queda explicado como un sistema completo: datos, API, interfaz, WhatsApp IA y despliegue.",
+      "textPreview": "GourmetPOS queda explicado como un sistema completo: datos, API, interfaz, WhatsApp IA y despliegue.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GourmetPOS queda explicado como un sistema completo: datos, API, interfaz,"
+          },
+          {
+            "index": 2,
+            "text": "WhatsApp IA y despliegue."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GourmetPOS queda explicado como un sistema completo: datos, API, interfaz, WhatsApp IA y despliegue.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GourmetPOS queda explicado como un sistema completo: datos, API, interfaz, WhatsApp IA y despliegue.",
+              "fontSize": 40,
+              "typeface": "Aptos",
+              "color": "#DCE7F5",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9cvixcze",
+      "id": "6",
+      "name": "final-out-0-title",
+      "bbox": [
+        96,
+        505,
+        420,
+        50
+      ],
+      "geometry": "rect",
+      "text": "Entendible",
+      "textPreview": "Entendible",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Entendible"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Entendible",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Entendible",
+              "fontSize": 35,
+              "typeface": "Aptos",
+              "color": "#00D4A1",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gr2p8nqx",
+      "id": "7",
+      "name": "final-out-0-body",
+      "bbox": [
+        96,
+        565,
+        420,
+        70
+      ],
+      "geometry": "rect",
+      "text": "Cada archivo tiene rol claro.",
+      "textPreview": "Cada archivo tiene rol claro.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Cada archivo tiene rol claro."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Cada archivo tiene rol claro.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Cada archivo tiene rol claro.",
+              "fontSize": 26,
+              "typeface": "Aptos",
+              "color": "#B9C6D6",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rytsvu9k",
+      "id": "8",
+      "name": "final-out-1-title",
+      "bbox": [
+        656,
+        505,
+        420,
+        50
+      ],
+      "geometry": "rect",
+      "text": "Presentable",
+      "textPreview": "Presentable",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Presentable"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Presentable",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Presentable",
+              "fontSize": 35,
+              "typeface": "Aptos",
+              "color": "#4FC3F7",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yd0z6103",
+      "id": "9",
+      "name": "final-out-1-body",
+      "bbox": [
+        656,
+        565,
+        420,
+        70
+      ],
+      "geometry": "rect",
+      "text": "Arquitectura visual para exponer.",
+      "textPreview": "Arquitectura visual para exponer.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Arquitectura visual para exponer."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Arquitectura visual para exponer.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Arquitectura visual para exponer.",
+              "fontSize": 26,
+              "typeface": "Aptos",
+              "color": "#B9C6D6",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "10",
+      "name": "final-out-2-title",
+      "bbox": [
+        1216,
+        505,
+        420,
+        50
+      ],
+      "geometry": "rect",
+      "text": "Escalable",
+      "textPreview": "Escalable",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Escalable"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Escalable",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Escalable",
+              "fontSize": 35,
+              "typeface": "Aptos",
+              "color": "#FFB800",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "11",
+      "name": "final-out-2-body",
+      "bbox": [
+        1216,
+        565,
+        420,
+        70
+      ],
+      "geometry": "rect",
+      "text": "Capas separadas para mantener.",
+      "textPreview": "Capas separadas para mantener.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Capas separadas para mantener."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Capas separadas para mantener.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Capas separadas para mantener.",
+              "fontSize": 26,
+              "typeface": "Aptos",
+              "color": "#B9C6D6",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e9cvixcz",
+      "id": "12",
+      "name": "final-meta",
+      "bbox": [
+        96,
+        968,
+        900,
+        42
+      ],
+      "geometry": "rect",
+      "text": "PDF profesional generado desde el repositorio local",
+      "textPreview": "PDF profesional generado desde el repositorio local",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PDF profesional generado desde el repositorio local"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PDF profesional generado desde el repositorio local",
+          "runs": [
+            {
+              "index": 1,
+              "text": "PDF profesional generado desde el repositorio local",
+              "fontSize": 28,
+              "typeface": "Aptos",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3q5o7qpg",
+      "id": "13",
+      "name": "footer-22",
+      "bbox": [
+        96,
+        1024,
+        1728,
+        28
+      ],
+      "geometry": "rect",
+      "text": "GourmetPOS ERP | construccion explicada por capas | 22",
+      "textPreview": "GourmetPOS ERP | construccion explicada por capas | 22",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GourmetPOS ERP | construccion explicada por capas | 22"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GourmetPOS ERP | construccion explicada por capas | 22",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GourmetPOS ERP | construccion explicada por capas | 22",
+              "fontSize": 15,
+              "typeface": "Aptos",
+              "color": "#9FB0C5",
+              "alignment": "left"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}
