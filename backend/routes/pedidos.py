@@ -14,12 +14,12 @@ from ..schemas import (
 
 router = APIRouter()
 
-IGV = 0.18
+IVA = 0.19
 
 
-def _recalcular_totales(pedido: Pedido, igv_rate: float = IGV):
+def _recalcular_totales(pedido: Pedido, iva_rate: float = IVA):
     subtotal = sum(d.subtotal for d in pedido.detalles)
-    igv = round(subtotal * igv_rate, 2)
+    igv = round(subtotal * iva_rate, 2)
     pedido.subtotal = round(subtotal, 2)
     pedido.igv = igv
     pedido.total = round(subtotal + igv - pedido.descuento, 2)

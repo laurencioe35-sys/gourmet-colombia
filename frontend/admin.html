@@ -45,8 +45,8 @@
           <div class="form-group"><label>RUC / NIT</label><input type="text" id="cfg-ruc" placeholder="20512345678"></div>
           <div class="form-group"><label>Dirección</label><input type="text" id="cfg-direccion"></div>
           <div class="form-group"><label>Teléfono</label><input type="text" id="cfg-telefono"></div>
-          <div class="form-group"><label>Moneda (símbolo)</label><input type="text" id="cfg-moneda" placeholder="S/"></div>
-          <div class="form-group"><label>IGV (decimal, ej: 0.18)</label><input type="number" id="cfg-igv" step="0.01" placeholder="0.18"></div>
+          <div class="form-group"><label>Moneda (COP)</label><input type="text" id="cfg-moneda" placeholder="$"></div>
+          <div class="form-group"><label>IVA (decimal, ej: 0.19)</label><input type="number" id="cfg-igv" step="0.01" placeholder="0.19"></div>
         </div>
       </div>
     </div>
@@ -56,8 +56,8 @@
       <div class="card">
         <div class="card-title">Cuentas de Pago Digital</div>
         <div class="grid-2">
-          <div class="form-group"><label>💜 Número Yape</label><input type="text" id="cfg-yape" placeholder="944 123 456"></div>
-          <div class="form-group"><label>🔵 Número Plin</label><input type="text" id="cfg-plin" placeholder="944 123 456"></div>
+          <div class="form-group"><label>💜 Número Nequi</label><input type="text" id="cfg-nequi" placeholder="300 123 4567"></div>
+          <div class="form-group"><label>🔵 Número Daviplata</label><input type="text" id="cfg-daviplata" placeholder="300 123 4567"></div>
           <div class="form-group"><label>🟢 Número Nequi</label><input type="text" id="cfg-nequi" placeholder="311 123 4567"></div>
           <div class="form-group"><label>🟠 Número Daviplata</label><input type="text" id="cfg-daviplata" placeholder="311 123 4567"></div>
         </div>
@@ -134,7 +134,7 @@
   <div class="modal">
     <div class="modal-header"><div class="modal-title">Nuevo Producto</div><button class="modal-close" onclick="hideModal('modal-nuevo-prod')">×</button></div>
     <div class="form-group"><label>Categoría</label><select id="nprod-cat"></select></div>
-    <div class="form-group"><label>Nombre</label><input type="text" id="nprod-nombre" placeholder="Lomo Saltado"></div>
+    <div class="form-group"><label>Nombre</label><input type="text" id="nprod-nombre" placeholder="Bandeja paisa"></div>
     <div class="form-group"><label>Descripción</label><textarea id="nprod-desc" rows="2"></textarea></div>
     <div class="grid-2">
       <div class="form-group"><label>Precio</label><input type="number" id="nprod-precio" step="0.50" placeholder="0.00"></div>
@@ -166,8 +166,8 @@ async function cargarConfig() {
     cfg.forEach(c => map[c.clave] = c.valor);
     const campos = {
       'cfg-nombre': 'nombre', 'cfg-ruc': 'ruc', 'cfg-direccion': 'direccion',
-      'cfg-telefono': 'telefono', 'cfg-moneda': 'moneda', 'cfg-igv': 'igv',
-      'cfg-yape': 'yape', 'cfg-plin': 'plin', 'cfg-nequi': 'nequi', 'cfg-daviplata': 'daviplata',
+      'cfg-telefono': 'telefono', 'cfg-moneda': 'moneda', 'cfg-igv': 'iva',
+      'cfg-nequi': 'nequi', 'cfg-daviplata': 'daviplata',
       'cfg-whatsapp': 'whatsapp', 'cfg-wa-token': 'whatsapp_token',
       'cfg-wa-phone-id': 'whatsapp_phone_id', 'cfg-gemini': 'gemini_api_key',
       'cfg-bienvenida': 'mensaje_bienvenida',
@@ -188,9 +188,9 @@ async function guardarConfig() {
     direccion: document.getElementById('cfg-direccion').value,
     telefono: document.getElementById('cfg-telefono').value,
     moneda: document.getElementById('cfg-moneda').value,
-    igv: document.getElementById('cfg-igv').value,
-    yape: document.getElementById('cfg-yape').value,
-    plin: document.getElementById('cfg-plin').value,
+    iva: document.getElementById('cfg-igv').value,
+    nequi: document.getElementById('cfg-nequi').value,
+    daviplata: document.getElementById('cfg-daviplata').value,
     nequi: document.getElementById('cfg-nequi').value || '',
     daviplata: document.getElementById('cfg-daviplata').value || '',
     whatsapp: document.getElementById('cfg-whatsapp').value,
@@ -232,7 +232,7 @@ async function cargarProductos() {
       <span style="font-size:18px">${p.emoji}</span>
       <div style="flex:1">
         <div style="font-weight:600;font-size:13px">${p.nombre}</div>
-        <div style="font-size:12px;color:var(--accent)">S/ ${p.precio.toFixed(2)}</div>
+        <div style="font-size:12px;color:var(--accent)">${fmt(p.precio)}</div>
       </div>
       <button class="btn ${p.disponible ? 'btn-ghost' : 'btn-danger'} btn-sm"
         onclick="toggleDisp(${p.id}, ${p.disponible})">

@@ -280,7 +280,7 @@ function renderCard(p) {
         </div>
         <div style="text-align:right">
           <div class="k-timer" style="color:${col}">⏱️ ${p.minutos} min</div>
-          ${p.total ? `<div style="font-size:11px;color:#aaa">S/ ${p.total.toFixed(2)}</div>` : ''}
+          ${p.total ? `<div style="font-size:11px;color:#aaa">${fmt(p.total)}</div>` : ''}
         </div>
       </div>
 

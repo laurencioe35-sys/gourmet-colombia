@@ -73,9 +73,9 @@
           </div>
           <div class="cart-footer">
             <div class="cart-totals">
-              <div class="cart-row"><span>Subtotal</span><span id="cart-subtotal">S/ 0.00</span></div>
-              <div class="cart-row"><span>IGV (18%)</span><span id="cart-igv">S/ 0.00</span></div>
-              <div class="cart-row total"><span>TOTAL</span><span id="cart-total">S/ 0.00</span></div>
+              <div class="cart-row"><span>Subtotal</span><span id="cart-subtotal">$ 0</span></div>
+              <div class="cart-row"><span>IVA (19%)</span><span id="cart-igv">$ 0</span></div>
+              <div class="cart-row total"><span>TOTAL</span><span id="cart-total">$ 0</span></div>
             </div>
             <div style="display:flex;flex-direction:column;gap:8px">
               <button class="btn btn-primary btn-full btn-lg" onclick="abrirPago()" id="btn-pagar" disabled>
@@ -108,8 +108,8 @@
       <label>Método de Pago</label>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="metodos-pago-grid">
         <button class="btn btn-ghost metodo-btn" data-metodo="efectivo" onclick="selMetodo(this)">💵 Efectivo</button>
-        <button class="btn btn-ghost metodo-btn" data-metodo="yape" onclick="selMetodo(this)">💜 Yape</button>
-        <button class="btn btn-ghost metodo-btn" data-metodo="plin" onclick="selMetodo(this)">🔵 Plin</button>
+        <button class="btn btn-ghost metodo-btn" data-metodo="nequi" onclick="selMetodo(this)">💜 Nequi</button>
+        <button class="btn btn-ghost metodo-btn" data-metodo="daviplata" onclick="selMetodo(this)">🔵 Daviplata</button>
         <button class="btn btn-ghost metodo-btn" data-metodo="tarjeta" onclick="selMetodo(this)">💳 Tarjeta</button>
       </div>
     </div>
@@ -118,12 +118,12 @@
       <label>Monto Recibido</label>
       <input type="number" id="pago-monto-recibido" placeholder="0.00" oninput="calcVuelto()">
       <div style="margin-top:8px;font-size:14px;color:var(--accent2)">
-        Vuelto: <strong id="pago-vuelto">S/ 0.00</strong>
+        Vuelto: <strong id="pago-vuelto">$ 0</strong>
       </div>
     </div>
 
     <div class="form-group">
-      <label>Descuento (S/)</label>
+      <label>Descuento ($)</label>
       <input type="number" id="pago-descuento" placeholder="0.00" value="0" min="0">
     </div>
 
@@ -355,7 +355,7 @@ function renderCarrito() {
   `).join('');
 
   const subtotal = estadoPOS.carrito.reduce((s, i) => s + i.subtotal, 0);
-  const igv = Math.round(subtotal * 0.18 * 100) / 100;
+  const igv = Math.round(subtotal * 0.19 * 100) / 100;
   const total = Math.round((subtotal + igv) * 100) / 100;
   actualizarTotales(subtotal, igv, total);
   document.getElementById('btn-pagar').disabled = false;
@@ -378,11 +378,11 @@ async function limpiarCarrito() {
 // ── PAGO ───────────────────────────────────────────────────────────────────
 
 function abrirPago() {
-  const total = parseFloat(document.getElementById('cart-total').textContent.replace('S/ ', ''));
+  const total = parseFloat(document.getElementById('cart-total').textContent.replace(/[^0-9.-]/g, '').replace(/\./g, ''));
   document.getElementById('pago-total-display').value = fmt(total);
   document.getElementById('pago-descuento').value = '0';
   document.getElementById('pago-monto-recibido').value = '';
-  document.getElementById('pago-vuelto').textContent = 'S/ 0.00';
+  document.getElementById('pago-vuelto').textContent = '$ 0';
   estadoPOS.metodo = null;
   document.querySelectorAll('.metodo-btn').forEach(b => b.classList.remove('btn-primary'));
   showModal('modal-pago');
@@ -396,7 +396,7 @@ function selMetodo(btn) {
 }
 
 function calcVuelto() {
-  const total = parseFloat(document.getElementById('cart-total').textContent.replace('S/ ', '')) || 0;
+  const total = parseFloat(document.getElementById('cart-total').textContent.replace(/[^0-9.-]/g, '').replace(/\./g, '')) || 0;
   const recibido = parseFloat(document.getElementById('pago-monto-recibido').value) || 0;
   const descuento = parseFloat(document.getElementById('pago-descuento').value) || 0;
   const vuelto = Math.max(0, recibido - (total - descuento));

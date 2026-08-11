@@ -206,7 +206,7 @@ class WhatsAppService:
         lat  = float(self.cfg("lat",  "-12.0464"))
         lon  = float(self.cfg("lon",  "-77.0428"))
         name = self.cfg("nombre", "GourmetPOS")
-        addr = self.cfg("direccion", "Lima, Perú")
+        addr = self.cfg("direccion", "Bogotá, Colombia")
         return await self._send(_build_location(to, lat, lon, name, addr))
 
     # ── CARGA DEL MENÚ DESDE LA BASE DE DATOS ─────────────────────────────────
@@ -456,7 +456,7 @@ class WhatsAppService:
             await self.enviar_texto(tel, "😔 No hay productos disponibles en esta categoría.")
             return "menu_categorias", datos
 
-        moneda = self.cfg("moneda", "S/")
+        moneda = self.cfg("moneda", "$")
 
         # Si la categoría tiene imagen configurada, enviarla primero
         img_cat = self.cfg(f"img_cat_{cat_id}", "")
@@ -500,7 +500,7 @@ class WhatsAppService:
             await self.enviar_texto(tel, "❌ Producto no disponible.")
             return "menu_categorias", datos
 
-        moneda = self.cfg("moneda", "S/")
+        moneda = self.cfg("moneda", "$")
 
         # Si el producto tiene imagen, enviarla primero
         img_url = getattr(prod, "imagen_url", None) or ""
@@ -569,7 +569,7 @@ class WhatsAppService:
             Producto.disponible == True
         ).limit(8).all()
 
-        moneda = self.cfg("moneda", "S/")
+        moneda = self.cfg("moneda", "$")
 
         if bebidas:
             rows = [
@@ -633,8 +633,8 @@ class WhatsAppService:
             await self.enviar_texto(tel, "🛒 Tu carrito está vacío. Escribe 'menú' para ver las opciones.")
             return
 
-        moneda    = self.cfg("moneda", "S/")
-        igv_rate  = float(self.cfg("igv", "0.18"))
+        moneda    = self.cfg("moneda", "$")
+        igv_rate  = float(self.cfg("iva", "0.19"))
         subtotal  = sum(i["subtotal"] for i in carrito)
         igv       = round(subtotal * igv_rate, 2)
         total     = round(subtotal + igv, 2)
@@ -649,7 +649,7 @@ class WhatsAppService:
             tel,
             f"🧾 *Resumen de tu Pedido*\n\n{lineas}\n\n"
             f"Subtotal:  {moneda} {subtotal:.2f}\n"
-            f"IGV (18%): {moneda} {igv:.2f}\n"
+            f"IVA (19%): {moneda} {igv:.2f}\n"
             f"*TOTAL:    {moneda} {total:.2f}*",
             [
                 {"id": "pagar_ahora", "title": "💳 Pagar Ahora"},
@@ -665,23 +665,23 @@ class WhatsAppService:
         if msg == "modificar":
             return await self._paso_categorias(tel, msg, datos)
 
-        moneda = self.cfg("moneda", "S/")
-        yape   = self.cfg("yape",   "No configurado")
-        plin   = self.cfg("plin",   "No configurado")
+        moneda = self.cfg("moneda", "$")
+        nequi      = self.cfg("nequi", "No configurado")
+        daviplata  = self.cfg("daviplata", "No configurado")
         total  = datos.get("total", 0)
 
         await self.enviar_lista(
             tel,
             f"💰 Total a pagar: *{moneda} {total:.2f}*\n\n"
-            f"📱 *Yape:* {yape}\n"
-            f"📱 *Plin:* {plin}\n\n"
+            f"📱 *Nequi:* {nequi}\n"
+            f"📱 *Daviplata:* {daviplata}\n\n"
             "Elige tu método de pago:",
             "Ver Métodos",
             [{
                 "title": "Métodos de Pago",
                 "rows": [
-                    {"id": "pago_yape",     "title": "💜 Yape",               "description": f"Enviar a {yape}"[:72]},
-                    {"id": "pago_plin",     "title": "🔵 Plin",               "description": f"Enviar a {plin}"[:72]},
+                    {"id": "pago_nequi",      "title": "💜 Nequi",              "description": f"Enviar a {nequi}"[:72]},
+                    {"id": "pago_daviplata", "title": "🔵 Daviplata",          "description": f"Enviar a {daviplata}"[:72]},
                     {"id": "pago_tarjeta",  "title": "💳 Tarjeta Visa/MC",    "description": "Visa o Mastercard"},
                     {"id": "pago_efectivo", "title": "💵 Efectivo",           "description": "Contra entrega"},
                 ]
@@ -694,15 +694,15 @@ class WhatsAppService:
 
     async def _paso_post_pago(self, tel: str, msg: str, datos: dict):
         metodo = {
-            "pago_yape":    "Yape",
-            "pago_plin":    "Plin",
+            "pago_nequi":     "Nequi",
+            "pago_daviplata": "Daviplata",
             "pago_tarjeta": "Tarjeta",
             "pago_efectivo":"Efectivo",
         }.get(msg, "Efectivo")
         datos["metodo_pago"] = metodo
 
         pedido_id = await self._registrar_pedido_en_bd(tel, datos)
-        moneda    = self.cfg("moneda", "S/")
+        moneda    = self.cfg("moneda", "$")
         total     = datos.get("total", 0)
 
         await self.enviar_texto(
@@ -740,7 +740,7 @@ class WhatsAppService:
         if not pedidos:
             await self.enviar_texto(tel, "📭 No tienes pedidos registrados aún.")
         else:
-            moneda = self.cfg("moneda", "S/")
+            moneda = self.cfg("moneda", "$")
             lineas = "\n".join(
                 f"• Pedido #{p.id} — {moneda} {p.total:.2f} — {p.estado.value.upper()}"
                 for p in pedidos

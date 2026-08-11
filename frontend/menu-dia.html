@@ -201,11 +201,12 @@
 </div>
 
 <script src="assets/js/api.js"></script>
+<script src="assets/js/biblioteca-colombia.js"></script>
 <script>
 // ════════════════════════════════════════════════════════════════
 //  BIBLIOTECA COMPLETA DE PLATOS PERUANOS
 // ════════════════════════════════════════════════════════════════
-const BIBLIOTECA = [
+const BIBLIOTECA = window.BIBLIOTECA_COLOMBIA || [
   {
     cat:"Entradas", emoji:"🥗", color:"#00D4A1",
     platos:[
@@ -370,7 +371,7 @@ function renderBiblioteca() {
                 <div class="plato-desc">${p.d}</div>
               </div>
               <div class="plato-price" onclick="event.stopPropagation()">
-                <span>S/</span>
+                <span>$</span>
                 <input type="number" class="price-inp" value="${precio}" min="0" step="0.5"
                   ${sel?'':'disabled'}
                   id="price-${sec.cat.replace(/\W/g,'')}-${i}"
@@ -563,7 +564,7 @@ function buildMsgWA() {
     const sec = BIBLIOTECA.find(s=>s.cat===cat);
     msg += `${sec?.emoji||'🍽️'} *${cat.toUpperCase()}*\n`;
     platos.forEach(p => {
-      msg += `  ${p.emoji} ${p.nombre} — S/ ${p.precio.toFixed(2)}\n`;
+      msg += `  ${p.emoji} ${p.nombre} — $ ${Math.round(p.precio).toLocaleString('es-CO')}\n`;
     });
     msg += '\n';
   });

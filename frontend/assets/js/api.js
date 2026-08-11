@@ -59,8 +59,8 @@ function toast(msg, tipo = 'info', duracion = 3000) {
 }
 
 /* ── FORMATO ── */
-const fmt = (n, sym = 'S/') => `${sym} ${(+n || 0).toFixed(2)}`;
-const fmtFecha = (iso) => new Date(iso).toLocaleString('es-PE', { dateStyle: 'short', timeStyle: 'short' });
+const fmt = (n, sym = '$') => `${sym} ${Math.round(+n || 0).toLocaleString('es-CO')}`;
+const fmtFecha = (iso) => new Date(iso).toLocaleString('es-CO', { dateStyle: 'short', timeStyle: 'short' });
 
 /* ── BADGES ── */
 const BADGE = {
