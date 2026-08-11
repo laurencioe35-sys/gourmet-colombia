@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --root frontend",
-    "build": "vite build --root frontend --outDir frontend/dist",
+    "build": "cd frontend && vite build --outDir dist",
     "preview": "vite preview --root frontend --port 5173"
   },
   "devDependencies": {
