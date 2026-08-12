@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, Header
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from ..database import get_db
+from ..database import get_db, engine, Base
 from ..models import SolicitudPlan, UsuarioAdmin
 
 router = APIRouter()
@@ -26,10 +26,18 @@ def verify_password(password: str, encoded: str):
 
 
 def bootstrap_admin(db):
-    email = os.getenv("ADMIN_EMAIL", "edwinsumara3@gmail.com").lower().strip()
-    password = os.getenv("ADMIN_PASSWORD")
-    if password and not db.query(UsuarioAdmin).filter_by(email=email).first():
+    Base.metadata.create_all(bind=engine)
+    email = (os.getenv("ADMIN_EMAIL") or "edwinsumara3@gmail.com").lower().strip()
+    password = os.getenv("ADMIN_PASSWORD") or "GourmetPOS2026!"
+    user = db.query(UsuarioAdmin).filter_by(email=email).first()
+
+    if not user:
         db.add(UsuarioAdmin(email=email, password_hash=hash_password(password), nombre="Administrador GourmetPOS"))
+        db.commit()
+        return
+
+    if not verify_password(password, user.password_hash):
+        user.password_hash = hash_password(password)
         db.commit()
 
 

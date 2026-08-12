@@ -11,6 +11,9 @@ from typing import List
 import asyncio
 import json
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from datetime import datetime
 from .database import engine, Base, SessionLocal
