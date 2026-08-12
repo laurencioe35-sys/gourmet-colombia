@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from datetime import datetime
-from .database import engine, Base, SessionLocal
+from .database import engine, Base, SessionLocal, ensure_database_compatibility
 from .models import MensajeProgramado, ConfigRestaurante
 from .models import *  # noqa: F401,F403
 from .seed_data import seed_database
@@ -81,6 +81,7 @@ async def _ejecutar_scheduler():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
+    ensure_database_compatibility()
     db = SessionLocal()
     try:
         seed_database(db)
