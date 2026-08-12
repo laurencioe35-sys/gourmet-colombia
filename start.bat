@@ -33,20 +33,29 @@ if not errorlevel 1 (
     echo Puerto 8000 ocupado, usando 8001...
 )
 
+for /f "usebackq delims=" %%i in (`powershell -NoLogo -NoProfile -Command "$ips = Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue | Where-Object { $_.IPAddress -notmatch '127.0.0.1' -and $_.IPAddress -notmatch '^169\.254\.' }; if ($ips) { $ips[0].IPAddress } else { 'localhost' }" 2^>nul`) do set LAN_IP=%%i
+
+if not defined LAN_IP set LAN_IP=localhost
+
+set OPEN_URL=http://%LAN_IP%:%PORT%
+
+if "%LAN_IP%"=="localhost" set OPEN_URL=http://localhost:%PORT%
+
 echo.
 echo ------------------------------------------------
-echo   Dashboard:  http://localhost:%PORT%
-echo   POS:        http://localhost:%PORT%/pos.html
-echo   Cocina:     http://localhost:%PORT%/cocina.html
-echo   Reportes:   http://localhost:%PORT%/reportes.html
-echo   WhatsApp:   http://localhost:%PORT%/whatsapp.html
-echo   API Docs:   http://localhost:%PORT%/docs
+echo   Red local:  %OPEN_URL%
+echo   Dashboard:  %OPEN_URL%
+echo   POS:        %OPEN_URL%/pos.html
+echo   Cocina:     %OPEN_URL%/cocina.html
+echo   Reportes:   %OPEN_URL%/reportes.html
+echo   WhatsApp:   %OPEN_URL%/whatsapp.html
+echo   API Docs:   %OPEN_URL%/docs
 echo ------------------------------------------------
 echo.
 echo Presiona Ctrl+C para detener
 echo.
 
-start /b cmd /c "timeout /t 3 /nobreak >nul && start http://localhost:%PORT%"
+start /b cmd /c "timeout /t 3 /nobreak >nul && start %OPEN_URL%"
 
 python -m uvicorn backend.main:app --host 0.0.0.0 --port %PORT% --reload
 
