@@ -14,7 +14,7 @@
       </button>
 
       <div class="auth-row">
-        <button class="action-btn secondary" type="button" onclick="document.getElementById('correo').focus()">Ingresar</button>
+        <button class="action-btn secondary" type="button" onclick="validarAccesoCliente()">Ingresar</button>
         <button class="action-btn primary" type="button" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'});">Crear cuenta</button>
       </div>
 
@@ -150,6 +150,28 @@
       document.getElementById('plan-price').textContent = fmt(plans[p][1]) + ' /mes';
     }
 
+    async function validarAccesoCliente() {
+      const email = window.prompt('Escribe el correo con el que te registraste y fue aprobado por el administrador:');
+      const referencia = window.prompt('Escribe la referencia de pago aprobada por el administrador:');
+      if (!email || !referencia) {
+        toast('Debes ingresar el correo y la referencia aprobada.', 'error');
+        return;
+      }
+
+      try {
+        const r = await API.post('/suscripciones/validar-acceso', {
+          email: email.trim(),
+          referencia: referencia.trim(),
+        });
+
+        sessionStorage.setItem('gourmetpos_cliente_token', r.token);
+        toast('Acceso habilitado. Bienvenido.', 'success');
+        window.location.href = 'index.html';
+      } catch (e) {
+        toast(e.message || 'La cuenta aún no está aprobada por el administrador.', 'error');
+      }
+    }
+
     function syncReferenciaRequirement() {
       const metodo = document.querySelector('[name=metodo]:checked').value;
       const referenciaInput = document.getElementById('referencia');
@@ -194,16 +216,16 @@
 
         document.querySelector('.subscription-shell').innerHTML = `
           <div class="card success-card">
-            <h2>Solicitud registrada</h2>
-            <p>${r.mensaje}</p>
+            <h2>Solicitud enviada</h2>
+            <p>Tu solicitud quedó registrada y pendiente por validación del administrador.</p>
             <div class="success-box">
-              <b>Referencia:</b> ${r.referencia}<br>
-              <b>Plan:</b> ${r.plan}<br>
-              <b>Total:</b> ${fmt(r.valor)} al mes<br>
-              <b>Cuenta destino:</b> ${r.cuenta_destino}
+              <b>Referencia enviada:</b> ${referencia}<br>
+              <b>Plan:</b> ${selected}<br>
+              <b>Estado:</b> Pendiente de aprobación<br>
+              <b>Correo:</b> ${document.getElementById('correo').value}
             </div>
-            <p>Incluye la referencia al pagar.</p>
-            <a class="btn btn-primary" href="index.html">Ir al Dashboard</a>
+            <p>No podrás ingresar al sistema hasta que el administrador apruebe la referencia de pago.</p>
+            <button class="btn btn-primary" type="button" onclick="location.reload()">Volver</button>
           </div>
         `;
       } catch (e) {

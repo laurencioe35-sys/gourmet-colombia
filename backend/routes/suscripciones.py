@@ -1,3 +1,4 @@
+import secrets
 from datetime import datetime
 from uuid import uuid4
 
@@ -9,6 +10,7 @@ from ..models import ConfigRestaurante, SolicitudPlan
 from ..schemas import SolicitudPlanCreate
 
 router = APIRouter()
+cliente_tokens = {}
 
 PLANES = {
     "esencial": {"nombre": "Esencial", "valor": 49000},
@@ -21,6 +23,19 @@ def _normalizar_referencia(valor: str) -> str:
     return (valor or "").strip()
 
 
+def _aprobacion_valida(db: Session, email: str, referencia: str):
+    email_normal = (email or "").strip().lower()
+    referencia_normal = _normalizar_referencia(referencia)
+    if not email_normal or not referencia_normal:
+        return False
+    solicitud = db.query(SolicitudPlan).filter(
+        SolicitudPlan.email == email_normal,
+        SolicitudPlan.referencia_pago == referencia_normal,
+        SolicitudPlan.estado == "aprobado",
+    ).first()
+    return solicitud is not None
+
+
 def _config(db, clave, defecto=""):
     item = db.query(ConfigRestaurante).filter(ConfigRestaurante.clave == clave).first()
     return item.valor if item and item.valor else defecto
@@ -29,6 +44,17 @@ def _config(db, clave, defecto=""):
 @router.get("/planes")
 def listar_planes():
     return PLANES
+
+
+@router.post("/validar-acceso")
+def validar_acceso(data: dict, db: Session = Depends(get_db)):
+    email = (data.get("email") or "").strip().lower()
+    referencia = _normalizar_referencia(data.get("referencia"))
+    if not _aprobacion_valida(db, email, referencia):
+        raise HTTPException(status_code=403, detail="La cuenta aún no está aprobada por el administrador")
+    token = secrets.token_urlsafe(32)
+    cliente_tokens[token] = {"email": email, "referencia": referencia, "aprobado": True}
+    return {"ok": True, "token": token, "mensaje": "Acceso habilitado"}
 
 
 @router.post("/solicitudes")

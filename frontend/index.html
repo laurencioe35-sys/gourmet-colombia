@@ -94,6 +94,12 @@
   </div>
 </div>
 
+<script>
+  const clienteToken = sessionStorage.getItem('gourmetpos_cliente_token');
+  if (!clienteToken) {
+    window.location.href = 'planes.html';
+  }
+</script>
 <script type="module" src="/src/main.js"></script>
 <script type="module" src="assets/js/api.js"></script>
 <script>
