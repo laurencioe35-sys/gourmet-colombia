@@ -128,6 +128,28 @@
     let selected = 'profesional';
     const GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID || '';
 
+    async function redirectIfApprovedSession() {
+      const token = sessionStorage.getItem('gourmetpos_cliente_token');
+      if (token) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const savedEmail = localStorage.getItem('gourmetpos_google_email');
+      if (!savedEmail) return;
+
+      try {
+        const estado = await API.post('/suscripciones/estado-google', { email: savedEmail });
+        if (!estado.aprobado) return;
+
+        const r = await API.post('/suscripciones/validar-acceso-google', { email: savedEmail });
+        sessionStorage.setItem('gourmetpos_cliente_token', r.token);
+        window.location.href = 'index.html';
+      } catch (error) {
+        console.warn('No se pudo restaurar la sesión del usuario:', error);
+      }
+    }
+
     function normalizeGoogleEmail(email) {
       return (email || '').trim().toLowerCase();
     }
@@ -135,6 +157,7 @@
     function applyGoogleAccount(email, displayName = '') {
       const normalized = normalizeGoogleEmail(email);
       if (!normalized) return;
+      localStorage.setItem('gourmetpos_google_email', normalized);
 
       const correoInput = document.getElementById('correo');
       const responsableInput = document.getElementById('responsable');
@@ -175,6 +198,7 @@
             try {
               const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
               const email = normalizeGoogleEmail(payload.email);
+              localStorage.setItem('gourmetpos_google_email', email);
 
               try {
                 const estado = await API.post('/suscripciones/estado-google', { email });
@@ -202,6 +226,10 @@
 
       toast('Configura el CLIENT_ID de Google para usar Gmail real.', 'error');
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      redirectIfApprovedSession();
+    });
 
     function choose(p) {
       selected = p;
