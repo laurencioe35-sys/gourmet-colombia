@@ -280,7 +280,15 @@
             }
           }
         });
-        google.accounts.id.prompt();
+
+        try {
+          if (typeof google.accounts.id.prompt === 'function') {
+            google.accounts.id.prompt();
+          }
+        } catch (error) {
+          console.warn('Google One Tap no está disponible en este navegador:', error);
+          toast('Google One Tap no está disponible aquí; usa el acceso manual o vuelve a intentarlo.', 'warning');
+        }
         return;
       }
 
