@@ -5,7 +5,7 @@ Versión 2.0 Profesional
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from contextlib import asynccontextmanager
 from typing import List
 import asyncio
@@ -17,7 +17,7 @@ from .database import engine, Base, SessionLocal
 from .models import MensajeProgramado, ConfigRestaurante
 from .models import *  # noqa: F401,F403
 from .seed_data import seed_database
-from .routes import mesas, menu, pedidos, caja, clientes, reportes, whatsapp_webhook, config, suscripciones
+from .routes import mesas, menu, pedidos, caja, clientes, reportes, whatsapp_webhook, config, suscripciones, admin_acceso
 from .services.whatsapp_service import WhatsAppService
 
 
@@ -156,6 +156,7 @@ app.include_router(reportes.router,            prefix="/api/reportes",   tags=["
 app.include_router(whatsapp_webhook.router,    prefix="/api/whatsapp",   tags=["WhatsApp"])
 app.include_router(config.router,              prefix="/api/config",     tags=["Config"])
 app.include_router(suscripciones.router,       prefix="/api/suscripciones", tags=["Suscripciones"])
+app.include_router(admin_acceso.router,        prefix="/api/admin", tags=["Administración"])
 
 
 # ── HEALTH CHECK ──────────────────────────────────────────────────────────────
@@ -168,5 +169,12 @@ def health():
 # ── SERVIR FRONTEND ────────────────────────────────────────────────────────────
 
 frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
+
+
+@app.get("/", include_in_schema=False)
+def inicio():
+    """La entrada pública empieza por la adquisición/configuración del plan."""
+    return FileResponse(os.path.join(frontend_path, "planes.html"))
+
 if os.path.exists(frontend_path):
     app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")

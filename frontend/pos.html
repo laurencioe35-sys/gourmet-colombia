@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GourmetPOS - POS Terminal</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .servicio-dia { margin-bottom:16px; padding:14px; border-radius:14px; background:linear-gradient(135deg,#192844,#152136); border:1px solid var(--border); }
+    .servicio-dia h3 { margin:0 0 3px; font-size:16px; }.servicio-dia p { margin:0; font-size:12px; color:var(--text-muted); }
+    .servicio-filtros { display:flex; gap:8px; overflow-x:auto; padding-top:12px; }.servicio-filtros button { white-space:nowrap; }.servicio-filtros .active { background:var(--accent); color:#fff; border-color:var(--accent); }
+    .menu-seccion-titulo { font-size:15px; font-weight:800; margin:16px 0 10px; }
+    @media (max-width:768px) { .header{padding:12px 16px}.header-title{font-size:16px}.content{padding:14px}.pos-layout{gap:14px}.productos-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.prod-card{min-height:112px;padding:12px 8px}.prod-emoji{font-size:27px}.prod-nombre{font-size:12px}.pos-cart{position:sticky;bottom:0;z-index:5}.cat-tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}.cat-tab{white-space:nowrap} }
+  </style>
 </head>
 <body>
 
@@ -56,6 +63,12 @@
       <div class="pos-layout">
         <!-- MENÚ -->
         <div class="pos-menu">
+          <div class="servicio-dia">
+            <h3 id="servicio-titulo">Menú del momento</h3>
+            <p id="servicio-subtitulo">Organiza la venta por horario.</p>
+            <div class="servicio-filtros" id="servicio-filtros"></div>
+          </div>
+          <div class="menu-seccion-titulo" id="menu-seccion-titulo">Platos disponibles</div>
           <div class="cat-tabs" id="cat-tabs"></div>
           <div class="productos-grid" id="productos-grid">
             <div class="loading"><div class="spinner"></div></div>

@@ -220,6 +220,17 @@ class SolicitudPlan(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
+class UsuarioAdmin(Base):
+    __tablename__ = "usuarios_admin"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String(150), unique=True, nullable=False, index=True)
+    password_hash = Column(String(200), nullable=False)
+    nombre = Column(String(150), default="Administrador")
+    activo = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
 class MensajeProgramado(Base):
     """Mensajes automáticos que se envían a todos los contactos en el horario configurado."""
     __tablename__ = "mensajes_programados"

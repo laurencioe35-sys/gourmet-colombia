@@ -12,7 +12,7 @@ router = APIRouter()
 
 PLANES = {
     "esencial": {"nombre": "Esencial", "valor": 49000},
-    "profesional": {"nombre": "Profesional", "valor": 89000},
+    "profesional": {"nombre": "Profesional", "valor": 20000},
     "empresa": {"nombre": "Empresa", "valor": 149000},
 }
 

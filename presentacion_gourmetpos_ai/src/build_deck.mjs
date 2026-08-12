@@ -629,21 +629,41 @@ function slide14(p, n) {
 
 function slide15(p, n) {
   const s = addSlide(p);
-  addHeader(s, "Pantallas de gestion, reportes y canal digital", "Estas vistas completan administracion, analitica y comunicacion con clientes.", n, { accent: C.teal });
-  const screens = [
-    ["reportes.html", "Reportes", "Filtros, top productos, metodos de pago y Excel.", C.purple],
-    ["whatsapp.html", "Centro WhatsApp", "Conversaciones, contactos, envios, programados y pipeline.", C.teal],
-    ["admin.html", "Configuracion", "Restaurante, pagos, carta, mesas y credenciales API.", C.orange],
-    ["menu-dia.html", "Menu del dia", "Biblioteca de platos, seleccion, preview y envio masivo.", C.blue],
+  addHeader(s, "ERP móvil: menú del día por horario", "La experiencia empieza con las comidas corrientes seleccionadas del día, luego platos especiales y opciones acorde al momento: desayuno, almuerzo y cena.", n, { accent: C.orange });
+
+  const schedule = [
+    ["Desayuno", ["Avena o yogurt con fruta", "Huevos con arepa y café", "Tostadas + jugo natural"], C.orange],
+    ["Almuerzo", ["Plato corriente del día", "Sopa o entrada del momento", "Proteína + arroz + ensalada"], C.teal],
+    ["Cena", ["Especial de la casa", "Plato principal del menú", "Bebidas calientes o frías"], C.blue],
   ];
-  screens.forEach((sc, i) => {
-    const x = 145 + i * 435;
-    addRect(s, x, 300, 360, 460, C.white, `screen-b-${i}`, solid(C.line));
-    addRect(s, x, 300, 360, 20, sc[3], `screen-b-${i}-bar`, NO);
-    addText(s, sc[0], x + 26, 350, 310, 42, { name: `screen-b-file-${i}`, size: 25, bold: true, color: C.ink });
-    addText(s, sc[1], x + 26, 405, 310, 46, { name: `screen-b-title-${i}`, typeface: FONT.display, size: 32, bold: true, color: sc[3] });
-    addText(s, sc[2], x + 26, 485, 310, 145, { name: `screen-b-body-${i}`, size: 22, color: C.muted });
-    addText(s, "llama al API\nusa api.js\nhereda style.css", x + 26, 650, 300, 76, { name: `screen-b-note-${i}`, size: 19, color: C.ink3 });
+
+  schedule.forEach((slot, i) => {
+    const x = 120 + i * 560;
+    addRect(s, x, 260, 500, 500, C.white, `mobile-slot-${i}`, solid(C.line));
+    addRect(s, x, 260, 500, 80, slot[2], `mobile-slot-${i}-bar`, NO);
+    addText(s, slot[0], x + 30, 286, 260, 40, { name: `mobile-slot-${i}-title`, typeface: FONT.display, size: 34, bold: true, color: C.ink });
+    slot[1].forEach((item, index) => {
+      const y = 370 + index * 100;
+      addRect(s, x + 30, y, 440, 70, index % 2 ? C.paper2 : C.white, `mobile-item-${i}-${index}`, solid(C.line));
+      addText(s, item, x + 50, y + 18, 400, 34, { name: `mobile-item-${i}-${index}-label`, size: 22, bold: true, color: C.ink });
+    });
+  });
+
+  addCard(s, 150, 800, 720, 150, "Platos especiales del día", "Ofertas premium, platos destacados, baja disponibilidad y descripción breve para facilitar la elección rápida desde celular.", C.purple, {
+    name: "mobile-specials",
+    titleSize: 30,
+    bodySize: 24,
+  });
+  addCard(s, 930, 800, 850, 150, "Otras comidas y bebidas", "Entradas, postres, café, jugos, agua, refrescos y opciones según la hora del día para completar la compra sin saturar la pantalla.", C.teal, {
+    name: "mobile-others",
+    titleSize: 30,
+    bodySize: 24,
+  });
+  addText(s, "Diseño móvil: primero lo cotidiano del día, luego lo destacado y finalmente las bebidas u otras opciones por horario.", 180, 980, 1560, 38, {
+    name: "mobile-summary",
+    size: 26,
+    color: C.muted,
+    align: "center",
   });
 }
 
