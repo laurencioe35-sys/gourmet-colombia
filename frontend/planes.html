@@ -126,7 +126,7 @@
           client_id: GOOGLE_CLIENT_ID,
           callback: (response) => {
             try {
-              const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))));
+              const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
               applyGoogleAccount(payload.email, payload.name || payload.given_name || 'Usuario de Google');
             } catch (error) {
               toast('No se pudo leer la cuenta de Google. Intenta nuevamente.', 'error');
