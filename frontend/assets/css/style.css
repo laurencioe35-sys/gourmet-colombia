@@ -27,6 +27,7 @@ body {
   display: flex;
   height: 100vh;
   overflow: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ── SCROLLBAR ── */
@@ -838,11 +839,22 @@ input:focus, select:focus, textarea:focus {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  body {
+  html, body {
     display: block;
     height: auto;
     min-height: 100vh;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body, .main-wrapper, .content, .pos-layout, .pos-menu, .pos-cart, .sidebar {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+  }
+
+  button, a, .btn, .action-btn, input, select, textarea, .modal, .modal-overlay {
+    touch-action: manipulation;
   }
 
   .sidebar { display: none; }
@@ -850,6 +862,7 @@ input:focus, select:focus, textarea:focus {
   .main-wrapper {
     width: 100%;
     min-height: 100vh;
+    overflow: visible;
   }
 
   .header {

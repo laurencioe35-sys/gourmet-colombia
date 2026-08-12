@@ -45,6 +45,24 @@
   }
 </style></head>
 <body>
+  <div id="custom-prompt" class="modal-overlay" style="display:none;">
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-header">
+        <div class="modal-title">Acceso autorizado</div>
+        <button class="modal-close" type="button" onclick="closeAccessModal()" aria-label="Cerrar">×</button>
+      </div>
+      <div class="form-group">
+        <label>Correo aprobado</label>
+        <input id="prompt-email" type="email" placeholder="correo@ejemplo.com">
+      </div>
+      <div class="form-group">
+        <label>Referencia aprobada</label>
+        <input id="prompt-referencia" type="text" placeholder="Ej: NEQUI 123456">
+      </div>
+      <button class="btn btn-primary btn-full" type="button" onclick="submitAccessModal()">Ingresar</button>
+    </div>
+  </div>
+
   <div class="subscription-shell">
     <div class="welcome-card">
       <h1>Bienvenido a GourmetPOS Colombia</h1>
@@ -280,18 +298,34 @@
       document.getElementById('plan-price').textContent = fmt(plans[p][1]) + ' /mes';
     }
 
-    async function validarAccesoCliente() {
-      const email = window.prompt('Escribe el correo con el que te registraste y fue aprobado por el administrador:');
-      const referencia = window.prompt('Escribe la referencia de pago aprobada por el administrador:');
+    function openAccessModal() {
+      const overlay = document.getElementById('custom-prompt');
+      const emailInput = document.getElementById('prompt-email');
+      const refInput = document.getElementById('prompt-referencia');
+      if (overlay) overlay.style.display = 'flex';
+      if (emailInput) { emailInput.value = ''; emailInput.focus(); }
+      if (refInput) refInput.value = '';
+    }
+
+    function closeAccessModal() {
+      const overlay = document.getElementById('custom-prompt');
+      if (overlay) overlay.style.display = 'none';
+    }
+
+    async function submitAccessModal() {
+      const email = document.getElementById('prompt-email')?.value.trim() || '';
+      const referencia = document.getElementById('prompt-referencia')?.value.trim() || '';
       if (!email || !referencia) {
         toast('Debes ingresar el correo y la referencia aprobada.', 'error');
         return;
       }
 
+      closeAccessModal();
+
       try {
         const estado = await API.post('/suscripciones/estado', {
-          email: email.trim(),
-          referencia: referencia.trim(),
+          email,
+          referencia,
         });
 
         if (!estado.aprobado) {
@@ -300,16 +334,20 @@
         }
 
         const r = await API.post('/suscripciones/validar-acceso', {
-          email: email.trim(),
-          referencia: referencia.trim(),
+          email,
+          referencia,
         });
 
         sessionStorage.setItem('gourmetpos_cliente_token', r.token);
         toast('Acceso habilitado. Bienvenido.', 'success');
-        window.location.href = 'index.html';
+        setTimeout(() => window.location.href = 'index.html', 500);
       } catch (e) {
         toast(e.message || 'La cuenta aún no está aprobada por el administrador.', 'error');
       }
+    }
+
+    function validarAccesoCliente() {
+      openAccessModal();
     }
 
     function syncReferenciaRequirement() {
