@@ -153,6 +153,20 @@
       toast('Cuenta de Google conectada', 'success');
     }
 
+    function showApprovedGoogleAccess(email) {
+      document.querySelector('.subscription-shell').innerHTML = `
+        <div class="card success-card">
+          <h2>Cuenta aprobada</h2>
+          <p>Tu correo ${email} ya está activo en GourmetPOS.</p>
+          <div class="success-box">
+            <b>Correo:</b> ${email}<br>
+            <b>Estado:</b> Acceso habilitado
+          </div>
+          <button class="btn btn-primary" type="button" onclick="window.location.href='index.html'">Entrar al ERP</button>
+        </div>
+      `;
+    }
+
     async function continueWithGoogle() {
       if (window.google && google.accounts && google.accounts.id && GOOGLE_CLIENT_ID) {
         google.accounts.id.initialize({
@@ -161,17 +175,22 @@
             try {
               const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
               const email = normalizeGoogleEmail(payload.email);
-              applyGoogleAccount(email, payload.name || payload.given_name || 'Usuario de Google');
 
               try {
-                const r = await API.post('/suscripciones/validar-acceso-google', { email });
-                sessionStorage.setItem('gourmetpos_cliente_token', r.token);
-                toast('Acceso habilitado con Gmail. Bienvenido.', 'success');
-                setTimeout(() => window.location.href = 'index.html', 600);
-                return;
+                const estado = await API.post('/suscripciones/estado-google', { email });
+                if (estado.aprobado) {
+                  const r = await API.post('/suscripciones/validar-acceso-google', { email });
+                  sessionStorage.setItem('gourmetpos_cliente_token', r.token);
+                  showApprovedGoogleAccess(email);
+                  setTimeout(() => window.location.href = 'index.html', 800);
+                  return;
+                }
               } catch (error) {
-                toast(error.message || 'Esta cuenta de Gmail aún no está aprobada.', 'error');
+                // no-op: si no está aprobado, se sigue con el flujo de registro normal
               }
+
+              applyGoogleAccount(email, payload.name || payload.given_name || 'Usuario de Google');
+              toast('Cuenta de Google conectada. Completa el registro si aún no estás activo.', 'info');
             } catch (error) {
               toast('No se pudo leer la cuenta de Google. Intenta nuevamente.', 'error');
             }
