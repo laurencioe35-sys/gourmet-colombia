@@ -23,17 +23,20 @@ def _normalizar_referencia(valor: str) -> str:
     return (valor or "").strip()
 
 
-def _aprobacion_valida(db: Session, email: str, referencia: str):
+def _solicitud_por_email_referencia(db: Session, email: str, referencia: str):
     email_normal = (email or "").strip().lower()
     referencia_normal = _normalizar_referencia(referencia)
     if not email_normal or not referencia_normal:
-        return False
-    solicitud = db.query(SolicitudPlan).filter(
+        return None
+    return db.query(SolicitudPlan).filter(
         SolicitudPlan.email == email_normal,
         SolicitudPlan.referencia_pago == referencia_normal,
-        SolicitudPlan.estado == "aprobado",
-    ).first()
-    return solicitud is not None
+    ).order_by(SolicitudPlan.created_at.desc()).first()
+
+
+def _aprobacion_valida(db: Session, email: str, referencia: str):
+    solicitud = _solicitud_por_email_referencia(db, email, referencia)
+    return solicitud is not None and solicitud.estado == "aprobado"
 
 
 def _config(db, clave, defecto=""):
@@ -46,11 +49,69 @@ def listar_planes():
     return PLANES
 
 
+@router.post("/estado")
+def estado_solicitud(data: dict, db: Session = Depends(get_db)):
+    email = (data.get("email") or "").strip().lower()
+    referencia = _normalizar_referencia(data.get("referencia"))
+    if not email or not referencia:
+        raise HTTPException(status_code=400, detail="Debes ingresar el correo y la referencia para consultar el estado.")
+
+    solicitud = _solicitud_por_email_referencia(db, email, referencia)
+    if solicitud is None:
+        return {"estado": "pendiente", "aprobado": False, "mensaje": "No existe una solicitud registrada para este correo y referencia."}
+
+    if solicitud.estado == "aprobado":
+        return {"estado": "aprobado", "aprobado": True, "mensaje": "La solicitud ya fue aprobada por el administrador."}
+
+    return {"estado": solicitud.estado, "aprobado": False, "mensaje": "La solicitud sigue pendiente por validación del administrador."}
+
+
+@router.post("/estado-google")
+def estado_google(data: dict, db: Session = Depends(get_db)):
+    email = (data.get("email") or "").strip().lower()
+    if not email:
+        raise HTTPException(status_code=400, detail="Debes ingresar tu correo de Google/Gmail.")
+
+    solicitud = db.query(SolicitudPlan).filter(
+        SolicitudPlan.email == email,
+        SolicitudPlan.estado == "aprobado",
+    ).order_by(SolicitudPlan.created_at.desc()).first()
+
+    if solicitud is None:
+        return {"estado": "pendiente", "aprobado": False, "mensaje": "Esta cuenta de Gmail aún no está aprobada para acceder."}
+
+    return {"estado": "aprobado", "aprobado": True, "mensaje": "La cuenta de Gmail ya está activa."}
+
+
+@router.post("/validar-acceso-google")
+def validar_acceso_google(data: dict, db: Session = Depends(get_db)):
+    email = (data.get("email") or "").strip().lower()
+    if not email:
+        raise HTTPException(status_code=400, detail="Debes ingresar tu correo de Google/Gmail.")
+
+    solicitud = db.query(SolicitudPlan).filter(
+        SolicitudPlan.email == email,
+        SolicitudPlan.estado == "aprobado",
+    ).order_by(SolicitudPlan.created_at.desc()).first()
+    if solicitud is None:
+        raise HTTPException(status_code=403, detail="Esta cuenta de Gmail aún no está aprobada por el administrador.")
+
+    token = secrets.token_urlsafe(32)
+    cliente_tokens[token] = {
+        "email": email,
+        "referencia": solicitud.referencia_pago,
+        "aprobado": True,
+        "metodo": "google",
+    }
+    return {"ok": True, "token": token, "mensaje": "Acceso habilitado con Google"}
+
+
 @router.post("/validar-acceso")
 def validar_acceso(data: dict, db: Session = Depends(get_db)):
     email = (data.get("email") or "").strip().lower()
     referencia = _normalizar_referencia(data.get("referencia"))
-    if not _aprobacion_valida(db, email, referencia):
+    estado = estado_solicitud({"email": email, "referencia": referencia}, db)
+    if not estado.get("aprobado"):
         raise HTTPException(status_code=403, detail="La cuenta aún no está aprobada por el administrador")
     token = secrets.token_urlsafe(32)
     cliente_tokens[token] = {"email": email, "referencia": referencia, "aprobado": True}

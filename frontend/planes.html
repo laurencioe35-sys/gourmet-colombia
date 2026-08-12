@@ -153,14 +153,25 @@
       toast('Cuenta de Google conectada', 'success');
     }
 
-    function continueWithGoogle() {
+    async function continueWithGoogle() {
       if (window.google && google.accounts && google.accounts.id && GOOGLE_CLIENT_ID) {
         google.accounts.id.initialize({
           client_id: GOOGLE_CLIENT_ID,
-          callback: (response) => {
+          callback: async (response) => {
             try {
               const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-              applyGoogleAccount(payload.email, payload.name || payload.given_name || 'Usuario de Google');
+              const email = normalizeGoogleEmail(payload.email);
+              applyGoogleAccount(email, payload.name || payload.given_name || 'Usuario de Google');
+
+              try {
+                const r = await API.post('/suscripciones/validar-acceso-google', { email });
+                sessionStorage.setItem('gourmetpos_cliente_token', r.token);
+                toast('Acceso habilitado con Gmail. Bienvenido.', 'success');
+                setTimeout(() => window.location.href = 'index.html', 600);
+                return;
+              } catch (error) {
+                toast(error.message || 'Esta cuenta de Gmail aún no está aprobada.', 'error');
+              }
             } catch (error) {
               toast('No se pudo leer la cuenta de Google. Intenta nuevamente.', 'error');
             }
@@ -189,6 +200,16 @@
       }
 
       try {
+        const estado = await API.post('/suscripciones/estado', {
+          email: email.trim(),
+          referencia: referencia.trim(),
+        });
+
+        if (!estado.aprobado) {
+          toast(estado.mensaje || 'La cuenta aún no está aprobada por el administrador.', 'error');
+          return;
+        }
+
         const r = await API.post('/suscripciones/validar-acceso', {
           email: email.trim(),
           referencia: referencia.trim(),
