@@ -88,6 +88,9 @@
     </div>
   </div>
 
+  <script>
+    window.GOOGLE_CLIENT_ID = '956223061656-keifivrhjkk97nfdhogg1mvgcr0vi5qi.apps.googleusercontent.com';
+  </script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="assets/js/api.js"></script>
   <script>
@@ -137,10 +140,7 @@
         return;
       }
 
-      const demoEmails = ['usuario@gmail.com', 'admin@contapro.com'];
-      const fallback = demoEmails.find(e => e !== normalizeGoogleEmail(document.getElementById('correo').value)) || demoEmails[0];
-      applyGoogleAccount(fallback, 'Usuario de Google');
-      toast('Uso local de Google: se completó el correo con una cuenta de prueba.', 'info');
+      toast('Configura el CLIENT_ID de Google para usar Gmail real.', 'error');
     }
 
     function choose(p) {
