@@ -20,6 +20,12 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+button, a, input, select, textarea, label {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: var(--bg);
@@ -853,8 +859,15 @@ input:focus, select:focus, textarea:focus {
     overflow-x: hidden !important;
   }
 
-  button, a, .btn, .action-btn, input, select, textarea, .modal, .modal-overlay {
+  button, a, .btn, .action-btn, .plan, .kpi-card, .card, input, select, textarea, .modal, .modal-overlay {
     touch-action: manipulation;
+    pointer-events: auto !important;
+    cursor: pointer;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
   }
 
   .sidebar { display: none; }
