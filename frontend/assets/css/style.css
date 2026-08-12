@@ -859,10 +859,16 @@ input:focus, select:focus, textarea:focus {
     overflow-x: hidden !important;
   }
 
-  button, a, .btn, .action-btn, .plan, .kpi-card, .card, input, select, textarea, .modal, .modal-overlay {
+  button, a, .btn, .action-btn, .plan, .kpi-card, .card, input, select, textarea, .modal, .modal-overlay,
+  .mesa-card, .prod-card, .cat-tab, .qty-btn, .plato-row, .item-action, .modal-close {
     touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     pointer-events: auto !important;
     cursor: pointer;
+  }
+
+  .btn, .mesa-card, .prod-card, .cat-tab, .qty-btn, .plato-row, .item-action {
+    min-height: 42px;
   }
 
   .content {
