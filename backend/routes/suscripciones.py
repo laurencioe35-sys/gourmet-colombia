@@ -17,6 +17,10 @@ PLANES = {
 }
 
 
+def _normalizar_referencia(valor: str) -> str:
+    return (valor or "").strip()
+
+
 def _config(db, clave, defecto=""):
     item = db.query(ConfigRestaurante).filter(ConfigRestaurante.clave == clave).first()
     return item.valor if item and item.valor else defecto
@@ -36,12 +40,40 @@ def crear_solicitud(data: SolicitudPlanCreate, db: Session = Depends(get_db)):
     if not data.acepta_terminos:
         raise HTTPException(status_code=400, detail="Debes aceptar el tratamiento de datos")
 
+    referencia_pago = _normalizar_referencia(data.referencia_pago)
+    if not referencia_pago:
+        raise HTTPException(status_code=400, detail="Debes ingresar la referencia del pago de Nequi o Daviplata antes de continuar")
+
+    referencia_existente = db.query(SolicitudPlan).filter(
+        SolicitudPlan.referencia_pago == referencia_pago,
+        SolicitudPlan.email != (data.email or "").strip().lower(),
+    ).first()
+    if referencia_existente:
+        raise HTTPException(
+            status_code=400,
+            detail="La referencia de pago ya está asociada a otro usuario o correo y no puede reutilizarse.",
+        )
+
+    email_existente = db.query(SolicitudPlan).filter(
+        SolicitudPlan.email == (data.email or "").strip().lower(),
+        SolicitudPlan.estado.in_(["pendiente", "reportado", "aprobado"]),
+    ).first()
+    if email_existente:
+        raise HTTPException(
+            status_code=400,
+            detail="Este correo ya tiene una solicitud de pago registrada y pendiente por validación.",
+        )
+
     info = PLANES[data.plan]
     referencia = f"GP-{datetime.now():%Y%m%d}-{uuid4().hex[:6].upper()}"
     solicitud = SolicitudPlan(
-        referencia=referencia, plan=data.plan, valor=info["valor"], estado="reportado" if data.referencia_pago else "pendiente",
-        **data.model_dump(exclude={"plan"})
+        referencia=referencia,
+        plan=data.plan,
+        valor=info["valor"],
+        estado="reportado" if referencia_pago else "pendiente",
+        **data.model_dump(exclude={"plan", "referencia_pago"}),
     )
+    solicitud.referencia_pago = referencia_pago
     db.add(solicitud)
 
     # Estos campos alimentan el encabezado de los tickets del POS.

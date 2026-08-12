@@ -76,7 +76,22 @@ def solicitudes(_: dict = Depends(require_admin), db: Session = Depends(get_db))
 @router.put("/solicitudes/{solicitud_id}/aprobar")
 def aprobar(solicitud_id: int, _: dict = Depends(require_admin), db: Session = Depends(get_db)):
     item = db.get(SolicitudPlan, solicitud_id)
-    if not item: raise HTTPException(status_code=404, detail="Solicitud no encontrada")
+    if not item:
+        raise HTTPException(status_code=404, detail="Solicitud no encontrada")
+
+    referencia_duplicada = db.query(SolicitudPlan).filter(
+        SolicitudPlan.referencia_pago == item.referencia_pago,
+        SolicitudPlan.id != item.id,
+    ).first()
+    if referencia_duplicada:
+        raise HTTPException(
+            status_code=400,
+            detail="No se puede aprobar: la referencia ya está asociada a otra solicitud o usuario.",
+        )
+
+    if item.estado == "aprobado":
+        return {"ok": True, "estado": item.estado, "mensaje": "La solicitud ya estaba aprobada."}
+
     item.estado = "aprobado"
     db.commit()
     return {"ok": True, "estado": item.estado}

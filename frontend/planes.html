@@ -10,7 +10,7 @@
 
       <button id="google-auth-btn" class="google-btn" type="button" onclick="continueWithGoogle()">
         <span class="google-mark">G</span>
-        <span>Continuar con Google (gratis)</span>
+        <span>Continuar con Google</span>
       </button>
 
       <div class="auth-row">
@@ -66,8 +66,8 @@
             </div>
 
             <div class="form-group">
-              <label>Referencia de pago (opcional)</label>
-              <input id="referencia">
+              <label>Referencia de pago *</label>
+              <input id="referencia" required placeholder="Ej: NEQUI 123456 o Daviplata 123456">
             </div>
 
             <label class="terms" style="text-transform:none;color:var(--text-muted);font-size:13px">
@@ -150,8 +150,31 @@
       document.getElementById('plan-price').textContent = fmt(plans[p][1]) + ' /mes';
     }
 
+    function syncReferenciaRequirement() {
+      const metodo = document.querySelector('[name=metodo]:checked').value;
+      const referenciaInput = document.getElementById('referencia');
+      const required = metodo === 'nequi' || metodo === 'daviplata';
+      referenciaInput.required = required;
+      referenciaInput.placeholder = required ? 'Ej: NEQUI 123456 o Daviplata 123456' : 'Opcional para pago en efectivo';
+      if (!required) {
+        referenciaInput.value = '';
+      }
+    }
+
+    document.querySelectorAll('input[name=metodo]').forEach(r => r.addEventListener('change', syncReferenciaRequirement));
+    syncReferenciaRequirement();
+
     async function send() {
       if (!document.getElementById('form').reportValidity()) return;
+
+      const metodo = document.querySelector('[name=metodo]:checked').value;
+      const referencia = document.getElementById('referencia').value.trim();
+      if ((metodo === 'nequi' || metodo === 'daviplata') && !referencia) {
+        toast('Debes ingresar la referencia del pago de ' + (metodo === 'nequi' ? 'Nequi' : 'Daviplata') + ' antes de continuar.', 'error');
+        document.getElementById('referencia').focus();
+        return;
+      }
+
       try {
         const id = x => document.getElementById(x).value;
         const r = await API.post('/suscripciones/solicitudes', {
@@ -164,8 +187,8 @@
           telefono: id('telefono'),
           direccion: id('direccion'),
           ciudad: id('ciudad'),
-          metodo_pago: document.querySelector('[name=metodo]:checked').value,
-          referencia_pago: id('referencia'),
+          metodo_pago: metodo,
+          referencia_pago: referencia,
           acepta_terminos: document.getElementById('acepta').checked,
         });
 
