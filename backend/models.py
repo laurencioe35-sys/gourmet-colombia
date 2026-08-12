@@ -197,6 +197,29 @@ class ConfigRestaurante(Base):
     descripcion = Column(String(300), default="")
 
 
+class SolicitudPlan(Base):
+    """Solicitud de suscripción creada antes de validar el pago manual."""
+    __tablename__ = "solicitudes_plan"
+
+    id = Column(Integer, primary_key=True, index=True)
+    referencia = Column(String(32), unique=True, nullable=False, index=True)
+    plan = Column(String(30), nullable=False)
+    valor = Column(Float, nullable=False)
+    estado = Column(String(20), default="pendiente")  # pendiente / reportado / aprobado
+    nombre_negocio = Column(String(150), nullable=False)
+    nit = Column(String(40), nullable=False)
+    razon_social = Column(String(180), default="")
+    responsable = Column(String(150), nullable=False)
+    email = Column(String(150), nullable=False)
+    telefono = Column(String(30), nullable=False)
+    direccion = Column(String(300), default="")
+    ciudad = Column(String(100), default="")
+    metodo_pago = Column(String(20), nullable=False)
+    referencia_pago = Column(String(100), default="")
+    acepta_terminos = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
 class MensajeProgramado(Base):
     """Mensajes automáticos que se envían a todos los contactos en el horario configurado."""
     __tablename__ = "mensajes_programados"

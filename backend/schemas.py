@@ -33,6 +33,21 @@ class CanalPedido(str, Enum):
     delivery = "delivery"
 
 
+class SolicitudPlanCreate(BaseModel):
+    plan: str
+    nombre_negocio: str = Field(min_length=2, max_length=150)
+    nit: str = Field(min_length=4, max_length=40)
+    razon_social: str = ""
+    responsable: str = Field(min_length=2, max_length=150)
+    email: str = Field(min_length=5, max_length=150)
+    telefono: str = Field(min_length=7, max_length=30)
+    direccion: str = ""
+    ciudad: str = ""
+    metodo_pago: str
+    referencia_pago: str = ""
+    acepta_terminos: bool
+
+
 # ─── CATEGORIA ───────────────────────────────────────────────────────────────
 
 class CategoriaBase(BaseModel):

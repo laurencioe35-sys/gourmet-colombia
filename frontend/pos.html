@@ -436,8 +436,11 @@ async function confirmarPago() {
   }
 }
 
-function mostrarTicket(res) {
+async function mostrarTicket(res) {
+  let negocio = {};
+  try { (await API.get('/config/')).forEach(c => negocio[c.clave] = c.valor); } catch (_) {}
   document.getElementById('ticket-detalle').innerHTML = `
+    ${negocio.nombre ? `<div style="text-align:center;border-bottom:1px dashed var(--border);padding-bottom:8px;margin-bottom:8px"><strong>${negocio.nombre}</strong><br>${negocio.ruc ? `NIT: ${negocio.ruc}<br>` : ''}${negocio.direccion || ''}</div>` : ''}
     <div>🎫 <strong>Ticket:</strong> ${res.ticket}</div>
     <div>💰 <strong>Total:</strong> ${fmt(res.total)}</div>
     <div>💳 <strong>Método:</strong> ${res.metodo.toUpperCase()}</div>

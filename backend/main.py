@@ -17,7 +17,7 @@ from .database import engine, Base, SessionLocal
 from .models import MensajeProgramado, ConfigRestaurante
 from .models import *  # noqa: F401,F403
 from .seed_data import seed_database
-from .routes import mesas, menu, pedidos, caja, clientes, reportes, whatsapp_webhook, config
+from .routes import mesas, menu, pedidos, caja, clientes, reportes, whatsapp_webhook, config, suscripciones
 from .services.whatsapp_service import WhatsAppService
 
 
@@ -155,6 +155,7 @@ app.include_router(clientes.router,            prefix="/api/clientes",   tags=["
 app.include_router(reportes.router,            prefix="/api/reportes",   tags=["Reportes"])
 app.include_router(whatsapp_webhook.router,    prefix="/api/whatsapp",   tags=["WhatsApp"])
 app.include_router(config.router,              prefix="/api/config",     tags=["Config"])
+app.include_router(suscripciones.router,       prefix="/api/suscripciones", tags=["Suscripciones"])
 
 
 # ── HEALTH CHECK ──────────────────────────────────────────────────────────────
