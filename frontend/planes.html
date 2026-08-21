@@ -1,4 +1,3 @@
-
 Planes · HTML
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -274,16 +273,12 @@ Planes · HTML
     function launchGooglePrompt() {
       try {
         if (typeof google.accounts.id.prompt === 'function') {
-          google.accounts.id.prompt((notification) => {
-            // Si el navegador bloquea el One Tap (p. ej. sin sesión de Google activa
-            // o el usuario ya lo cerró antes), simplemente no pasa nada: el usuario
-            // sigue teniendo el botón manual disponible.
-            if (notification.isNotDisplayed && notification.isNotDisplayed()) {
-              console.info('Google One Tap no se mostró:', notification.getNotDisplayedReason && notification.getNotDisplayedReason());
-            } else if (notification.isSkippedMoment && notification.isSkippedMoment()) {
-              console.info('Google One Tap fue omitido:', notification.getSkippedReason && notification.getSkippedReason());
-            }
-          });
+          // Nota: con FedCM activo (use_fedcm_for_prompt: true), los métodos de
+          // diagnóstico isNotDisplayed()/getNotDisplayedReason() están deprecados
+          // por Google y dejarán de funcionar, así que ya no los usamos aquí.
+          // Si el One Tap no se muestra (sin sesión de Google activa, modo
+          // incógnito, etc.), el usuario siempre tiene el botón manual disponible.
+          google.accounts.id.prompt();
         }
       } catch (error) {
         console.warn('Google One Tap no está disponible en este navegador:', error);
