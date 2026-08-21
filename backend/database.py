@@ -4,9 +4,15 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects import sqlite
 
-# Railway provee DATABASE_URL automaticamente con PostgreSQL
-# Localmente usa SQLite si no hay DATABASE_URL configurado
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./gormet_pos.db")
+# Railway provee DATABASE_URL automaticamente con PostgreSQL. Algunas
+# configuraciones exponen la URL privada o publica con nombres alternativos.
+# Localmente usa SQLite si ninguna URL fue configurada.
+DATABASE_URL = (
+    os.getenv("DATABASE_URL", "").strip()
+    or os.getenv("DATABASE_PRIVATE_URL", "").strip()
+    or os.getenv("DATABASE_PUBLIC_URL", "").strip()
+    or "sqlite:///./gormet_pos.db"
+)
 
 # Railway a veces usa "postgres://" — SQLAlchemy necesita "postgresql://"
 if DATABASE_URL.startswith("postgres://"):
