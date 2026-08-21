@@ -1,491 +1,2282 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GourmetPOS - POS Terminal</title>
-  <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    .servicio-dia { margin-bottom:16px; padding:14px; border-radius:14px; background:linear-gradient(135deg,#192844,#152136); border:1px solid var(--border); }
-    .servicio-dia h3 { margin:0 0 3px; font-size:16px; }.servicio-dia p { margin:0; font-size:12px; color:var(--text-muted); }
-    .servicio-filtros { display:flex; gap:8px; overflow-x:auto; padding-top:12px; }.servicio-filtros button { white-space:nowrap; }.servicio-filtros .active { background:var(--accent); color:#fff; border-color:var(--accent); }
-    .menu-seccion-titulo { font-size:15px; font-weight:800; margin:16px 0 10px; }
-    @media (max-width:768px) { .header{padding:12px 16px}.header-title{font-size:16px}.content{padding:14px}.pos-layout{gap:14px}.productos-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.prod-card{min-height:112px;padding:12px 8px}.prod-emoji{font-size:27px}.prod-nombre{font-size:12px}.pos-cart{position:sticky;bottom:0;z-index:5}.cat-tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}.cat-tab{white-space:nowrap} }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GourmetPOS - POS Terminal</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <style>
+        .servicio-dia {
+            margin-bottom: 16px;
+            padding: 14px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #192844, #152136);
+            border: 1px solid var(--border);
+        }
+
+        .servicio-dia h3 {
+            margin: 0 0 3px;
+            font-size: 16px;
+        }
+
+        .servicio-dia p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .servicio-filtros {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-top: 12px;
+        }
+
+        .servicio-filtros button {
+            white-space: nowrap;
+        }
+
+        .servicio-filtros .active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .menu-seccion-titulo {
+            font-size: 15px;
+            font-weight: 800;
+            margin: 16px 0 10px;
+        }
+
+        /* ==========================================================
+           FACTURA / TICKET PARA IMPRESIÓN
+        ========================================================== */
+
+        .ticket-impresion {
+            background: #fff;
+            color: #111;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+        }
+
+        .ticket-encabezado {
+            text-align: center;
+            border-bottom: 2px solid #111;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .ticket-negocio {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .ticket-datos-negocio {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .ticket-titulo {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .ticket-info {
+            font-size: 13px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .ticket-tabla {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .ticket-tabla th,
+        .ticket-tabla td {
+            padding: 7px 4px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .ticket-tabla th {
+            background: #f3f3f3;
+            font-weight: bold;
+        }
+
+        .ticket-tabla .texto-izq {
+            text-align: left;
+        }
+
+        .ticket-tabla .texto-centro {
+            text-align: center;
+        }
+
+        .ticket-tabla .texto-der {
+            text-align: right;
+        }
+
+        .ticket-totales {
+            margin-top: 12px;
+            border-top: 2px solid #111;
+            padding-top: 10px;
+        }
+
+        .ticket-total-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 13px;
+        }
+
+        .ticket-total-final {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .ticket-pie {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 12px;
+            border-top: 1px dashed #555;
+            font-size: 12px;
+        }
+
+        @media print {
+
+            body * {
+                visibility: hidden;
+            }
+
+            #area-ticket,
+            #area-ticket * {
+                visibility: visible;
+            }
+
+            #area-ticket {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: #fff;
+                color: #111;
+            }
+
+            .modal-overlay {
+                position: static !important;
+                background: transparent !important;
+            }
+
+            .modal {
+                box-shadow: none !important;
+                max-width: none !important;
+                width: 100% !important;
+            }
+
+            .botones-ticket {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .header {
+                padding: 12px 16px;
+            }
+
+            .header-title {
+                font-size: 16px;
+            }
+
+            .content {
+                padding: 14px;
+            }
+
+            .pos-layout {
+                gap: 14px;
+            }
+
+            .productos-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .prod-card {
+                min-height: 112px;
+                padding: 12px 8px;
+            }
+
+            .prod-emoji {
+                font-size: 27px;
+            }
+
+            .prod-nombre {
+                font-size: 12px;
+            }
+
+            .pos-cart {
+                position: sticky;
+                bottom: 0;
+                z-index: 5;
+            }
+
+            .cat-tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 4px;
+            }
+
+            .cat-tab {
+                white-space: nowrap;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- SIDEBAR -->
+<!-- ==========================================================
+     SIDEBAR
+========================================================== -->
+
 <nav class="sidebar">
-  <div class="sidebar-logo"><h1>🍽️ GourmetPOS</h1><p>ERP Restaurante v2.0</p></div>
-  <ul class="sidebar-nav">
-    <li><a href="index.html"><span class="icon">📊</span> Dashboard</a></li>
-    <li><a href="pos.html" class="active"><span class="icon">🛒</span> POS / Mesas</a></li>
-    <li><a href="menu-dia.html"><span class="icon">🍽️</span> Menú del Día</a></li>
-    <li><a href="cocina.html"><span class="icon">👨‍🍳</span> Cocina</a></li>
-    <li><a href="clientes.html"><span class="icon">👥</span> Clientes</a></li>
-    <li><a href="reportes.html"><span class="icon">📈</span> Reportes</a></li>
-    <li><a href="whatsapp.html"><span class="icon">💬</span> WhatsApp</a></li>
-    <li><a href="admin.html"><span class="icon">⚙️</span> Configuración</a></li>
-  </ul>
+
+    <div class="sidebar-logo">
+        <h1>🍽️ GourmetPOS</h1>
+        <p>ERP Restaurante v2.0</p>
+    </div>
+
+    <ul class="sidebar-nav">
+
+        <li>
+            <a href="index.html">
+                <span class="icon">📊</span>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="pos.html" class="active">
+                <span class="icon">🛒</span>
+                POS / Mesas
+            </a>
+        </li>
+
+        <li>
+            <a href="menu-dia.html">
+                <span class="icon">🍽️</span>
+                Menú del Día
+            </a>
+        </li>
+
+        <li>
+            <a href="cocina.html">
+                <span class="icon">👨‍🍳</span>
+                Cocina
+            </a>
+        </li>
+
+        <li>
+            <a href="clientes.html">
+                <span class="icon">👥</span>
+                Clientes
+            </a>
+        </li>
+
+        <li>
+            <a href="reportes.html">
+                <span class="icon">📈</span>
+                Reportes
+            </a>
+        </li>
+
+        <li>
+            <a href="whatsapp.html">
+                <span class="icon">💬</span>
+                WhatsApp
+            </a>
+        </li>
+
+        <li>
+            <a href="admin.html">
+                <span class="icon">⚙️</span>
+                Configuración
+            </a>
+        </li>
+
+    </ul>
+
 </nav>
 
+<!-- ==========================================================
+     CONTENIDO PRINCIPAL
+========================================================== -->
+
 <div class="main-wrapper">
-  <header class="header">
-    <div class="header-title" id="header-title">🛒 Mesas del Restaurante</div>
-    <div class="header-right">
-      <button class="btn btn-ghost btn-sm" id="btn-volver" onclick="mostrarMesas()" style="display:none">← Volver a Mesas</button>
-      <button class="btn btn-primary btn-sm" onclick="mostrarMesas()">🪑 Ver Mesas</button>
-    </div>
-  </header>
 
-  <div class="content">
+    <header class="header">
 
-    <!-- VISTA MESAS -->
-    <div id="vista-mesas">
-      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
-        <span style="font-size:13px;color:var(--text-muted)">Estado:</span>
-        <span class="badge badge-libre">Libre</span>
-        <span class="badge badge-ocupada">Ocupada</span>
-        <span class="badge badge-cuenta">Cuenta</span>
-        <div style="margin-left:auto;display:flex;gap:8px">
-          <button class="btn btn-success btn-sm" onclick="nuevoPedidoDelivery()">📱 Pedido Delivery</button>
-          <button class="btn btn-ghost btn-sm" onclick="cargarMesas()">🔄 Actualizar</button>
-        </div>
-      </div>
-      <div class="mesas-grid" id="mesas-grid">
-        <div class="loading"><div class="spinner"></div> Cargando mesas...</div>
-      </div>
-    </div>
-
-    <!-- VISTA POS -->
-    <div id="vista-pos" style="display:none">
-      <div class="pos-layout">
-        <!-- MENÚ -->
-        <div class="pos-menu">
-          <div class="servicio-dia">
-            <h3 id="servicio-titulo">Menú del momento</h3>
-            <p id="servicio-subtitulo">Organiza la venta por horario.</p>
-            <div class="servicio-filtros" id="servicio-filtros"></div>
-          </div>
-          <div class="menu-seccion-titulo" id="menu-seccion-titulo">Platos disponibles</div>
-          <div class="cat-tabs" id="cat-tabs"></div>
-          <div class="productos-grid" id="productos-grid">
-            <div class="loading"><div class="spinner"></div></div>
-          </div>
+        <div class="header-title" id="header-title">
+            🛒 Mesas del Restaurante
         </div>
 
-        <!-- CARRITO -->
-        <div class="card pos-cart">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-            <div class="card-title" style="margin:0">🛒 Pedido</div>
-            <div id="cart-mesa-badge"></div>
-          </div>
-          <div class="cart-items" id="cart-items">
-            <div class="empty-state"><div class="icon">🛒</div><p>Carrito vacío</p></div>
-          </div>
-          <div class="cart-footer">
-            <div class="cart-totals">
-              <div class="cart-row"><span>Subtotal</span><span id="cart-subtotal">$ 0</span></div>
-              <div class="cart-row"><span>IVA (19%)</span><span id="cart-igv">$ 0</span></div>
-              <div class="cart-row total"><span>TOTAL</span><span id="cart-total">$ 0</span></div>
+        <div class="header-right">
+
+            <button
+                class="btn btn-ghost btn-sm"
+                id="btn-volver"
+                onclick="mostrarMesas()"
+                style="display:none">
+                ← Volver a Mesas
+            </button>
+
+            <button
+                class="btn btn-primary btn-sm"
+                onclick="mostrarMesas()">
+                🪑 Ver Mesas
+            </button>
+
+        </div>
+
+    </header>
+
+    <div class="content">
+
+        <!-- ==================================================
+             VISTA MESAS
+        ================================================== -->
+
+        <div id="vista-mesas">
+
+            <div style="
+                display:flex;
+                gap:10px;
+                margin-bottom:16px;
+                flex-wrap:wrap;
+                align-items:center;
+            ">
+
+                <span style="font-size:13px;color:var(--text-muted)">
+                    Estado:
+                </span>
+
+                <span class="badge badge-libre">
+                    Libre
+                </span>
+
+                <span class="badge badge-ocupada">
+                    Ocupada
+                </span>
+
+                <span class="badge badge-cuenta">
+                    Cuenta
+                </span>
+
+                <div style="
+                    margin-left:auto;
+                    display:flex;
+                    gap:8px;
+                ">
+
+                    <button
+                        class="btn btn-success btn-sm"
+                        onclick="nuevoPedidoDelivery()">
+                        📱 Pedido Delivery
+                    </button>
+
+                    <button
+                        class="btn btn-ghost btn-sm"
+                        onclick="cargarMesas()">
+                        🔄 Actualizar
+                    </button>
+
+                </div>
+
             </div>
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <button class="btn btn-primary btn-full btn-lg" onclick="abrirPago()" id="btn-pagar" disabled>
-                💳 Cobrar
-              </button>
-              <button class="btn btn-ghost btn-full btn-sm" onclick="limpiarCarrito()">🗑️ Limpiar</button>
+
+            <div
+                class="mesas-grid"
+                id="mesas-grid">
+
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Cargando mesas...
+                </div>
+
             </div>
-          </div>
+
         </div>
-      </div>
+
+        <!-- ==================================================
+             VISTA POS
+        ================================================== -->
+
+        <div
+            id="vista-pos"
+            style="display:none">
+
+            <div class="pos-layout">
+
+                <!-- MENÚ -->
+
+                <div class="pos-menu">
+
+                    <div class="servicio-dia">
+
+                        <h3 id="servicio-titulo">
+                            Menú del momento
+                        </h3>
+
+                        <p id="servicio-subtitulo">
+                            Organiza la venta por horario.
+                        </p>
+
+                        <div
+                            class="servicio-filtros"
+                            id="servicio-filtros">
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="menu-seccion-titulo"
+                        id="menu-seccion-titulo">
+                        Platos disponibles
+                    </div>
+
+                    <div
+                        class="cat-tabs"
+                        id="cat-tabs">
+                    </div>
+
+                    <div
+                        class="productos-grid"
+                        id="productos-grid">
+
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- CARRITO -->
+
+                <div class="card pos-cart">
+
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                        margin-bottom:14px;
+                    ">
+
+                        <div
+                            class="card-title"
+                            style="margin:0">
+                            🛒 Pedido
+                        </div>
+
+                        <div id="cart-mesa-badge"></div>
+
+                    </div>
+
+                    <div
+                        class="cart-items"
+                        id="cart-items">
+
+                        <div class="empty-state">
+
+                            <div class="icon">
+                                🛒
+                            </div>
+
+                            <p>
+                                Carrito vacío
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="cart-footer">
+
+                        <div class="cart-totals">
+
+                            <div class="cart-row">
+                                <span>Subtotal</span>
+                                <span id="cart-subtotal">
+                                    $ 0
+                                </span>
+                            </div>
+
+                            <div class="cart-row">
+                                <span>IVA (19%)</span>
+                                <span id="cart-igv">
+                                    $ 0
+                                </span>
+                            </div>
+
+                            <div class="cart-row total">
+                                <span>TOTAL</span>
+                                <span id="cart-total">
+                                    $ 0
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div style="
+                            display:flex;
+                            flex-direction:column;
+                            gap:8px;
+                        ">
+
+                            <button
+                                class="btn btn-primary btn-full btn-lg"
+                                onclick="abrirPago()"
+                                id="btn-pagar"
+                                disabled>
+                                💳 Cobrar
+                            </button>
+
+                            <button
+                                class="btn btn-ghost btn-full btn-sm"
+                                onclick="limpiarCarrito()">
+                                🗑️ Limpiar
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-  </div>
 </div>
 
-<!-- MODAL PAGO -->
-<div class="modal-overlay" id="modal-pago">
-  <div class="modal" style="max-width:480px">
-    <div class="modal-header">
-      <div class="modal-title">💳 Cobrar Pedido</div>
-      <button class="modal-close" onclick="hideModal('modal-pago')">×</button>
+<!-- ==========================================================
+     MODAL PAGO
+========================================================== -->
+
+<div
+    class="modal-overlay"
+    id="modal-pago">
+
+    <div
+        class="modal"
+        style="max-width:480px">
+
+        <div class="modal-header">
+
+            <div class="modal-title">
+                💳 Cobrar Pedido
+            </div>
+
+            <button
+                class="modal-close"
+                onclick="hideModal('modal-pago')">
+                ×
+            </button>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Total a Cobrar
+            </label>
+
+            <input
+                type="text"
+                id="pago-total-display"
+                readonly
+                style="
+                    font-size:24px;
+                    font-weight:700;
+                    color:var(--accent);
+                ">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Método de Pago
+            </label>
+
+            <div
+                style="
+                    display:grid;
+                    grid-template-columns:1fr 1fr;
+                    gap:8px;
+                "
+                id="metodos-pago-grid">
+
+                <button
+                    class="btn btn-ghost metodo-btn"
+                    data-metodo="efectivo"
+                    onclick="selMetodo(this)">
+                    💵 Efectivo
+                </button>
+
+                <button
+                    class="btn btn-ghost metodo-btn"
+                    data-metodo="nequi"
+                    onclick="selMetodo(this)">
+                    💜 Nequi
+                </button>
+
+                <button
+                    class="btn btn-ghost metodo-btn"
+                    data-metodo="daviplata"
+                    onclick="selMetodo(this)">
+                    🔵 Daviplata
+                </button>
+
+                <button
+                    class="btn btn-ghost metodo-btn"
+                    data-metodo="tarjeta"
+                    onclick="selMetodo(this)">
+                    💳 Tarjeta
+                </button>
+
+                <button
+                    class="btn btn-ghost metodo-btn"
+                    data-metodo="yape"
+                    onclick="selMetodo(this)">
+                    🟣 Yape
+                </button>
+
+                <button
+                    class="btn btn-ghost metodo-btn"
+                    data-metodo="plin"
+                    onclick="selMetodo(this)">
+                    🟢 Plin
+                </button>
+
+            </div>
+
+        </div>
+
+        <div
+            class="form-group"
+            id="grupo-efectivo"
+            style="display:none">
+
+            <label>
+                Monto Recibido
+            </label>
+
+            <input
+                type="number"
+                id="pago-monto-recibido"
+                placeholder="0.00"
+                oninput="calcVuelto()">
+
+            <div style="
+                margin-top:8px;
+                font-size:14px;
+                color:var(--accent2);
+            ">
+
+                Vuelto:
+                <strong id="pago-vuelto">
+                    $ 0
+                </strong>
+
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Descuento ($)
+            </label>
+
+            <input
+                type="number"
+                id="pago-descuento"
+                placeholder="0.00"
+                value="0"
+                min="0">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Nombre del Cliente
+            </label>
+
+            <input
+                type="text"
+                id="pago-cliente-nombre"
+                placeholder="Nombre del cliente">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Teléfono
+            </label>
+
+            <input
+                type="text"
+                id="pago-cliente-tel"
+                placeholder="Teléfono">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Dirección
+            </label>
+
+            <input
+                type="text"
+                id="pago-cliente-direccion"
+                placeholder="Dirección del cliente">
+
+        </div>
+
+        <button
+            class="btn btn-success btn-full btn-lg"
+            onclick="confirmarPago()">
+            ✅ Confirmar Pago
+        </button>
+
     </div>
 
-    <div class="form-group">
-      <label>Total a Cobrar</label>
-      <input type="text" id="pago-total-display" readonly style="font-size:24px;font-weight:700;color:var(--accent)">
-    </div>
-
-    <div class="form-group">
-      <label>Método de Pago</label>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="metodos-pago-grid">
-        <button class="btn btn-ghost metodo-btn" data-metodo="efectivo" onclick="selMetodo(this)">💵 Efectivo</button>
-        <button class="btn btn-ghost metodo-btn" data-metodo="nequi" onclick="selMetodo(this)">💜 Nequi</button>
-        <button class="btn btn-ghost metodo-btn" data-metodo="daviplata" onclick="selMetodo(this)">🔵 Daviplata</button>
-        <button class="btn btn-ghost metodo-btn" data-metodo="tarjeta" onclick="selMetodo(this)">💳 Tarjeta</button>
-      </div>
-    </div>
-
-    <div class="form-group" id="grupo-efectivo" style="display:none">
-      <label>Monto Recibido</label>
-      <input type="number" id="pago-monto-recibido" placeholder="0.00" oninput="calcVuelto()">
-      <div style="margin-top:8px;font-size:14px;color:var(--accent2)">
-        Vuelto: <strong id="pago-vuelto">$ 0</strong>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>Descuento ($)</label>
-      <input type="number" id="pago-descuento" placeholder="0.00" value="0" min="0">
-    </div>
-
-    <div class="form-group">
-      <label>Nombre del Cliente (opcional)</label>
-      <input type="text" id="pago-cliente-nombre" placeholder="Juan Pérez">
-    </div>
-
-    <div class="form-group">
-      <label>Teléfono (opcional)</label>
-      <input type="text" id="pago-cliente-tel" placeholder="+51 999 000 000">
-    </div>
-
-    <button class="btn btn-success btn-full btn-lg" onclick="confirmarPago()">✅ Confirmar Pago</button>
-  </div>
 </div>
 
-<!-- MODAL TICKET -->
-<div class="modal-overlay" id="modal-ticket">
-  <div class="modal" style="max-width:400px;text-align:center">
-    <div style="font-size:64px;margin-bottom:16px">✅</div>
-    <h2 style="margin-bottom:8px">¡Pago Confirmado!</h2>
-    <div id="ticket-detalle" style="background:var(--surface2);border-radius:10px;padding:16px;margin:16px 0;text-align:left;font-size:14px;line-height:1.8"></div>
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-ghost btn-full" onclick="hideModal('modal-ticket');mostrarMesas()">← Volver</button>
-      <button class="btn btn-primary btn-full" onclick="imprimirTicket()">🖨️ Imprimir</button>
+<!-- ==========================================================
+     MODAL TICKET / FACTURA DETALLADA
+========================================================== -->
+
+<div
+    class="modal-overlay"
+    id="modal-ticket">
+
+    <div
+        class="modal"
+        style="max-width:600px">
+
+        <div id="area-ticket">
+
+            <div class="ticket-impresion">
+
+                <div id="ticket-detalle"></div>
+
+            </div>
+
+        </div>
+
+        <div
+            class="botones-ticket"
+            style="
+                display:flex;
+                gap:10px;
+                margin-top:15px;
+            ">
+
+            <button
+                class="btn btn-ghost btn-full"
+                onclick="hideModal('modal-ticket');mostrarMesas()">
+                ← Volver
+            </button>
+
+            <button
+                class="btn btn-primary btn-full"
+                onclick="imprimirTicket()">
+                🖨️ Imprimir
+            </button>
+
+        </div>
+
     </div>
-  </div>
+
 </div>
 
 <script src="assets/js/api.js"></script>
+
 <script>
+
 let estadoPOS = {
-  mesaId: null,
-  mesaNum: null,
-  pedidoId: null,
-  carrito: [],
-  menu: [],
-  catActual: null,
-  metodo: null,
-  ultimoTicket: null,
+
+    mesaId: null,
+    mesaNum: null,
+    pedidoId: null,
+
+    carrito: [],
+
+    menu: [],
+
+    catActual: null,
+
+    metodo: null,
+
+    ultimoTicket: null,
+
+    cliente: null
 };
 
-// ── MESAS ──────────────────────────────────────────────────────────────────
+
+// ==========================================================
+// MESAS
+// ==========================================================
 
 async function cargarMesas() {
-  const grid = document.getElementById('mesas-grid');
-  grid.innerHTML = '<div class="loading"><div class="spinner"></div> Cargando...</div>';
-  try {
-    const mesas = await API.get('/mesas/');
-    grid.innerHTML = mesas.map(m => `
-      <div class="mesa-card ${m.estado}" onclick="abrirMesa(${m.id}, ${m.numero}, '${m.estado}', ${m.pedido_activo_id || 'null'})">
-        <div class="mesa-numero">Mesa<br>${m.numero}</div>
-        <div class="mesa-estado">${BADGE[m.estado] || m.estado}</div>
-        ${m.total_pedido > 0 ? `<div class="mesa-total">${fmt(m.total_pedido)}</div>` : ''}
-        ${m.items_count > 0 ? `<div class="mesa-info">${m.items_count} items</div>` : ''}
-      </div>
-    `).join('');
-  } catch (e) {
-    grid.innerHTML = `<div class="empty-state"><div class="icon">❌</div><p>${e.message}</p></div>`;
-  }
-}
 
-async function abrirMesa(mesaId, mesaNum, estado, pedidoActivoId) {
-  estadoPOS.mesaId = mesaId;
-  estadoPOS.mesaNum = mesaNum;
-  estadoPOS.carrito = [];
+    const grid = document.getElementById('mesas-grid');
 
-  if (estado !== 'libre' && pedidoActivoId) {
-    estadoPOS.pedidoId = pedidoActivoId;
-    await cargarPedidoExistente(pedidoActivoId);
-  } else {
+    grid.innerHTML = `
+        <div class="loading">
+            <div class="spinner"></div>
+            Cargando...
+        </div>
+    `;
+
     try {
-      const p = await API.post('/pedidos/', { mesa_id: mesaId, canal: 'pos' });
-      estadoPOS.pedidoId = p.id;
-    } catch (e) {
-      toast(e.message, 'error');
-      return;
-    }
-  }
 
-  mostrarPOS();
+        const mesas = await API.get('/mesas/');
+
+        grid.innerHTML = mesas.map(m => `
+
+            <div
+                class="mesa-card ${m.estado}"
+                onclick="abrirMesa(
+                    ${m.id},
+                    ${m.numero},
+                    '${m.estado}',
+                    ${m.pedido_activo_id || 'null'}
+                )">
+
+                <div class="mesa-numero">
+                    Mesa<br>${m.numero}
+                </div>
+
+                <div class="mesa-estado">
+                    ${BADGE[m.estado] || m.estado}
+                </div>
+
+                ${m.total_pedido > 0
+                    ? `<div class="mesa-total">${fmt(m.total_pedido)}</div>`
+                    : ''
+                }
+
+                ${m.items_count > 0
+                    ? `<div class="mesa-info">${m.items_count} items</div>`
+                    : ''
+                }
+
+            </div>
+
+        `).join('');
+
+    } catch (e) {
+
+        grid.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">❌</div>
+                <p>${e.message}</p>
+            </div>
+        `;
+
+    }
 }
+
+
+// ==========================================================
+// ABRIR MESA
+// ==========================================================
+
+async function abrirMesa(
+    mesaId,
+    mesaNum,
+    estado,
+    pedidoActivoId
+) {
+
+    estadoPOS.mesaId = mesaId;
+    estadoPOS.mesaNum = mesaNum;
+    estadoPOS.carrito = [];
+
+    if (estado !== 'libre' && pedidoActivoId) {
+
+        estadoPOS.pedidoId = pedidoActivoId;
+
+        await cargarPedidoExistente(pedidoActivoId);
+
+    } else {
+
+        try {
+
+            const p = await API.post('/pedidos/', {
+                mesa_id: mesaId,
+                canal: 'pos'
+            });
+
+            estadoPOS.pedidoId = p.id;
+
+        } catch (e) {
+
+            toast(e.message, 'error');
+            return;
+
+        }
+
+    }
+
+    mostrarPOS();
+}
+
+
+// ==========================================================
+// CARGAR PEDIDO
+// ==========================================================
 
 async function cargarPedidoExistente(pedidoId) {
-  try {
-    const p = await API.get(`/pedidos/${pedidoId}`);
-    estadoPOS.carrito = p.detalles.map(d => ({
-      id: d.id,
-      prod_id: d.producto_id,
-      nombre: d.producto?.nombre || 'Producto',
-      emoji: d.producto?.emoji || '🍽️',
-      precio: d.precio_unitario,
-      cantidad: d.cantidad,
-      subtotal: d.subtotal,
-    }));
-  } catch (e) {
-    estadoPOS.carrito = [];
-  }
+
+    try {
+
+        const p = await API.get(`/pedidos/${pedidoId}`);
+
+        estadoPOS.carrito = p.detalles.map(d => ({
+
+            id: d.id,
+
+            prod_id: d.producto_id,
+
+            nombre: d.producto?.nombre || 'Producto',
+
+            emoji: d.producto?.emoji || '🍽️',
+
+            precio: d.precio_unitario,
+
+            cantidad: d.cantidad,
+
+            subtotal: d.subtotal
+
+        }));
+
+    } catch (e) {
+
+        estadoPOS.carrito = [];
+
+    }
 }
+
+
+// ==========================================================
+// MOSTRAR MESAS
+// ==========================================================
 
 function mostrarMesas() {
-  document.getElementById('vista-mesas').style.display = 'block';
-  document.getElementById('vista-pos').style.display = 'none';
-  document.getElementById('btn-volver').style.display = 'none';
-  document.getElementById('header-title').textContent = '🛒 Mesas del Restaurante';
-  cargarMesas();
+
+    document.getElementById('vista-mesas').style.display = 'block';
+
+    document.getElementById('vista-pos').style.display = 'none';
+
+    document.getElementById('btn-volver').style.display = 'none';
+
+    document.getElementById('header-title').textContent =
+        '🛒 Mesas del Restaurante';
+
+    cargarMesas();
 }
 
-// ── POS ────────────────────────────────────────────────────────────────────
+
+// ==========================================================
+// MOSTRAR POS
+// ==========================================================
 
 function mostrarPOS() {
-  document.getElementById('vista-mesas').style.display = 'none';
-  document.getElementById('vista-pos').style.display = 'block';
-  document.getElementById('btn-volver').style.display = 'inline-flex';
-  document.getElementById('header-title').textContent = `🛒 Mesa ${estadoPOS.mesaNum}`;
-  document.getElementById('cart-mesa-badge').innerHTML = `<span class="badge badge-ocupada">Mesa ${estadoPOS.mesaNum}</span>`;
-  cargarMenu();
-  renderCarrito();
+
+    document.getElementById('vista-mesas').style.display = 'none';
+
+    document.getElementById('vista-pos').style.display = 'block';
+
+    document.getElementById('btn-volver').style.display = 'inline-flex';
+
+    document.getElementById('header-title').textContent =
+        `🛒 Mesa ${estadoPOS.mesaNum}`;
+
+    document.getElementById('cart-mesa-badge').innerHTML = `
+        <span class="badge badge-ocupada">
+            Mesa ${estadoPOS.mesaNum}
+        </span>
+    `;
+
+    cargarMenu();
+
+    renderCarrito();
 }
+
+
+// ==========================================================
+// CARGAR MENÚ
+// ==========================================================
 
 async function cargarMenu() {
-  try {
-    estadoPOS.menu = await API.get('/menu/completo');
-    renderCatTabs();
-    if (estadoPOS.menu.length > 0) {
-      estadoPOS.catActual = estadoPOS.menu[0].id;
-      renderProductos(estadoPOS.catActual);
+
+    try {
+
+        estadoPOS.menu = await API.get('/menu/completo');
+
+        renderCatTabs();
+
+        if (estadoPOS.menu.length > 0) {
+
+            estadoPOS.catActual = estadoPOS.menu[0].id;
+
+            renderCatTabs();
+
+            renderProductos(estadoPOS.catActual);
+        }
+
+    } catch (e) {
+
+        toast(
+            'Error cargando menú: ' + e.message,
+            'error'
+        );
+
     }
-  } catch (e) {
-    toast('Error cargando menú: ' + e.message, 'error');
-  }
 }
+
+
+// ==========================================================
+// CATEGORÍAS
+// ==========================================================
 
 function renderCatTabs() {
-  const tabs = document.getElementById('cat-tabs');
-  tabs.innerHTML = estadoPOS.menu.map(c => `
-    <button class="cat-tab ${c.id === estadoPOS.catActual ? 'active' : ''}"
-      onclick="cambiarCat(${c.id}, this)">
-      ${c.emoji} ${c.nombre}
-    </button>
-  `).join('');
+
+    const tabs = document.getElementById('cat-tabs');
+
+    tabs.innerHTML = estadoPOS.menu.map(c => `
+
+        <button
+            class="cat-tab ${
+                c.id === estadoPOS.catActual
+                    ? 'active'
+                    : ''
+            }"
+            onclick="cambiarCat(${c.id}, this)">
+
+            ${c.emoji} ${c.nombre}
+
+        </button>
+
+    `).join('');
 }
+
 
 function cambiarCat(catId, btn) {
-  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  estadoPOS.catActual = catId;
-  renderProductos(catId);
+
+    document
+        .querySelectorAll('.cat-tab')
+        .forEach(b =>
+            b.classList.remove('active')
+        );
+
+    btn.classList.add('active');
+
+    estadoPOS.catActual = catId;
+
+    renderProductos(catId);
 }
+
+
+// ==========================================================
+// PRODUCTOS
+// ==========================================================
 
 function renderProductos(catId) {
-  const cat = estadoPOS.menu.find(c => c.id === catId);
-  const grid = document.getElementById('productos-grid');
-  if (!cat || !cat.productos.length) {
-    grid.innerHTML = '<div class="empty-state"><div class="icon">🍽️</div><p>Sin productos</p></div>';
-    return;
-  }
-  grid.innerHTML = cat.productos.map(p => `
-    <div class="prod-card" onclick="agregarAlCarrito(${p.id}, '${p.nombre.replace(/'/g,"\\'")}', ${p.precio}, '${p.emoji}')">
-      <div class="prod-emoji">${p.emoji}</div>
-      <div class="prod-nombre">${p.nombre}</div>
-      <div class="prod-precio">${fmt(p.precio)}</div>
-      ${p.destacado ? '<div style="font-size:10px;color:var(--accent3);margin-top:4px">⭐ Destacado</div>' : ''}
-    </div>
-  `).join('');
-}
 
-async function agregarAlCarrito(prodId, nombre, precio, emoji) {
-  const existente = estadoPOS.carrito.find(i => i.prod_id === prodId);
-  try {
-    if (existente) {
-      existente.cantidad++;
-      existente.subtotal = Math.round(existente.precio * existente.cantidad * 100) / 100;
-      await API.put(`/pedidos/${estadoPOS.pedidoId}/items/${existente.id}`, { cantidad: existente.cantidad });
-    } else {
-      const res = await API.post(`/pedidos/${estadoPOS.pedidoId}/items`, { producto_id: prodId, cantidad: 1 });
-      estadoPOS.carrito.push({ id: res.detalle_id, prod_id: prodId, nombre, emoji, precio, cantidad: 1, subtotal: precio });
+    const cat = estadoPOS.menu.find(
+        c => c.id === catId
+    );
+
+    const grid =
+        document.getElementById('productos-grid');
+
+    if (!cat || !cat.productos.length) {
+
+        grid.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">🍽️</div>
+                <p>Sin productos</p>
+            </div>
+        `;
+
+        return;
     }
-    renderCarrito();
-  } catch (e) {
-    toast(e.message, 'error');
-  }
+
+    grid.innerHTML = cat.productos.map(p => `
+
+        <div
+            class="prod-card"
+            onclick="agregarAlCarrito(
+                ${p.id},
+                '${p.nombre.replace(/'/g, "\\'")}',
+                ${p.precio},
+                '${p.emoji}'
+            )">
+
+            <div class="prod-emoji">
+                ${p.emoji}
+            </div>
+
+            <div class="prod-nombre">
+                ${p.nombre}
+            </div>
+
+            <div class="prod-precio">
+                ${fmt(p.precio)}
+            </div>
+
+            ${
+                p.destacado
+                    ? `
+                        <div style="
+                            font-size:10px;
+                            color:var(--accent3);
+                            margin-top:4px;
+                        ">
+                            ⭐ Destacado
+                        </div>
+                    `
+                    : ''
+            }
+
+        </div>
+
+    `).join('');
 }
 
-async function cambiarCantidad(itemId, delta) {
-  const item = estadoPOS.carrito.find(i => i.id === itemId);
-  if (!item) return;
-  const nuevaCant = item.cantidad + delta;
 
-  try {
-    if (nuevaCant <= 0) {
-      await API.delete(`/pedidos/${estadoPOS.pedidoId}/items/${itemId}`);
-      estadoPOS.carrito = estadoPOS.carrito.filter(i => i.id !== itemId);
-    } else {
-      await API.put(`/pedidos/${estadoPOS.pedidoId}/items/${itemId}`, { cantidad: nuevaCant });
-      item.cantidad = nuevaCant;
-      item.subtotal = Math.round(item.precio * nuevaCant * 100) / 100;
+// ==========================================================
+// AGREGAR AL CARRITO
+// ==========================================================
+
+async function agregarAlCarrito(
+    prodId,
+    nombre,
+    precio,
+    emoji
+) {
+
+    const existente =
+        estadoPOS.carrito.find(
+            i => i.prod_id === prodId
+        );
+
+    try {
+
+        if (existente) {
+
+            existente.cantidad++;
+
+            existente.subtotal =
+                Math.round(
+                    existente.precio *
+                    existente.cantidad *
+                    100
+                ) / 100;
+
+            await API.put(
+                `/pedidos/${estadoPOS.pedidoId}/items/${existente.id}`,
+                {
+                    cantidad: existente.cantidad
+                }
+            );
+
+        } else {
+
+            const res = await API.post(
+                `/pedidos/${estadoPOS.pedidoId}/items`,
+                {
+                    producto_id: prodId,
+                    cantidad: 1
+                }
+            );
+
+            estadoPOS.carrito.push({
+
+                id: res.detalle_id,
+
+                prod_id: prodId,
+
+                nombre,
+
+                emoji,
+
+                precio,
+
+                cantidad: 1,
+
+                subtotal: precio
+
+            });
+
+        }
+
+        renderCarrito();
+
+    } catch (e) {
+
+        toast(e.message, 'error');
+
     }
-    renderCarrito();
-  } catch (e) {
-    toast(e.message, 'error');
-  }
 }
+
+
+// ==========================================================
+// CAMBIAR CANTIDAD
+// ==========================================================
+
+async function cambiarCantidad(
+    itemId,
+    delta
+) {
+
+    const item =
+        estadoPOS.carrito.find(
+            i => i.id === itemId
+        );
+
+    if (!item) return;
+
+    const nuevaCant =
+        item.cantidad + delta;
+
+    try {
+
+        if (nuevaCant <= 0) {
+
+            await API.delete(
+                `/pedidos/${estadoPOS.pedidoId}/items/${itemId}`
+            );
+
+            estadoPOS.carrito =
+                estadoPOS.carrito.filter(
+                    i => i.id !== itemId
+                );
+
+        } else {
+
+            await API.put(
+                `/pedidos/${estadoPOS.pedidoId}/items/${itemId}`,
+                {
+                    cantidad: nuevaCant
+                }
+            );
+
+            item.cantidad = nuevaCant;
+
+            item.subtotal =
+                Math.round(
+                    item.precio *
+                    nuevaCant *
+                    100
+                ) / 100;
+
+        }
+
+        renderCarrito();
+
+    } catch (e) {
+
+        toast(e.message, 'error');
+
+    }
+}
+
+
+// ==========================================================
+// RENDER CARRITO
+// ==========================================================
 
 function renderCarrito() {
-  const container = document.getElementById('cart-items');
-  if (!estadoPOS.carrito.length) {
-    container.innerHTML = '<div class="empty-state"><div class="icon">🛒</div><p>Carrito vacío</p></div>';
-    document.getElementById('btn-pagar').disabled = true;
-    actualizarTotales(0, 0, 0);
-    return;
-  }
 
-  container.innerHTML = estadoPOS.carrito.map(item => `
-    <div class="cart-item">
-      <div class="cart-item-emoji">${item.emoji}</div>
-      <div class="cart-item-info">
-        <div class="cart-item-name">${item.nombre}</div>
-        <div class="cart-item-price">${fmt(item.precio)} c/u</div>
-      </div>
-      <div class="cart-item-qty">
-        <button class="qty-btn" onclick="cambiarCantidad(${item.id}, -1)">−</button>
-        <span class="cart-qty">${item.cantidad}</span>
-        <button class="qty-btn" onclick="cambiarCantidad(${item.id}, +1)">+</button>
-      </div>
-      <div style="min-width:70px;text-align:right;font-weight:600">${fmt(item.subtotal)}</div>
-    </div>
-  `).join('');
+    const container =
+        document.getElementById('cart-items');
 
-  const subtotal = estadoPOS.carrito.reduce((s, i) => s + i.subtotal, 0);
-  const igv = Math.round(subtotal * 0.19 * 100) / 100;
-  const total = Math.round((subtotal + igv) * 100) / 100;
-  actualizarTotales(subtotal, igv, total);
-  document.getElementById('btn-pagar').disabled = false;
-}
+    if (!estadoPOS.carrito.length) {
 
-function actualizarTotales(sub, igv, total) {
-  document.getElementById('cart-subtotal').textContent = fmt(sub);
-  document.getElementById('cart-igv').textContent = fmt(igv);
-  document.getElementById('cart-total').textContent = fmt(total);
-}
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">🛒</div>
+                <p>Carrito vacío</p>
+            </div>
+        `;
 
-async function limpiarCarrito() {
-  for (const item of estadoPOS.carrito) {
-    try { await API.delete(`/pedidos/${estadoPOS.pedidoId}/items/${item.id}`); } catch {}
-  }
-  estadoPOS.carrito = [];
-  renderCarrito();
-}
+        document.getElementById(
+            'btn-pagar'
+        ).disabled = true;
 
-// ── PAGO ───────────────────────────────────────────────────────────────────
+        actualizarTotales(0, 0, 0);
 
-function abrirPago() {
-  const total = parseFloat(document.getElementById('cart-total').textContent.replace(/[^0-9.-]/g, '').replace(/\./g, ''));
-  document.getElementById('pago-total-display').value = fmt(total);
-  document.getElementById('pago-descuento').value = '0';
-  document.getElementById('pago-monto-recibido').value = '';
-  document.getElementById('pago-vuelto').textContent = '$ 0';
-  estadoPOS.metodo = null;
-  document.querySelectorAll('.metodo-btn').forEach(b => b.classList.remove('btn-primary'));
-  showModal('modal-pago');
-}
-
-function selMetodo(btn) {
-  document.querySelectorAll('.metodo-btn').forEach(b => b.classList.remove('btn-primary'));
-  btn.classList.add('btn-primary');
-  estadoPOS.metodo = btn.dataset.metodo;
-  document.getElementById('grupo-efectivo').style.display = estadoPOS.metodo === 'efectivo' ? 'block' : 'none';
-}
-
-function calcVuelto() {
-  const total = parseFloat(document.getElementById('cart-total').textContent.replace(/[^0-9.-]/g, '').replace(/\./g, '')) || 0;
-  const recibido = parseFloat(document.getElementById('pago-monto-recibido').value) || 0;
-  const descuento = parseFloat(document.getElementById('pago-descuento').value) || 0;
-  const vuelto = Math.max(0, recibido - (total - descuento));
-  document.getElementById('pago-vuelto').textContent = fmt(vuelto);
-}
-
-async function confirmarPago() {
-  if (!estadoPOS.metodo) { toast('Selecciona un método de pago', 'warning'); return; }
-
-  const monto = parseFloat(document.getElementById('pago-monto-recibido').value) || null;
-  const descuento = parseFloat(document.getElementById('pago-descuento').value) || 0;
-  const nombre = document.getElementById('pago-cliente-nombre').value.trim();
-  const tel = document.getElementById('pago-cliente-tel').value.trim();
-
-  try {
-    if (nombre && tel) {
-      try {
-        let cliente;
-        try { cliente = await API.get(`/clientes/buscar?telefono=${encodeURIComponent(tel)}`); }
-        catch { cliente = await API.post('/clientes/', { nombre, telefono: tel }); }
-        await API.put(`/pedidos/${estadoPOS.pedidoId}/estado`, { estado: 'pendiente' });
-      } catch {}
+        return;
     }
 
-    const res = await API.post(`/pedidos/${estadoPOS.pedidoId}/pagar`, {
-      metodo_pago: estadoPOS.metodo,
-      monto_recibido: monto,
-      descuento,
-    });
+    container.innerHTML =
+        estadoPOS.carrito.map(item => `
 
-    estadoPOS.ultimoTicket = res;
-    hideModal('modal-pago');
-    mostrarTicket(res);
-    estadoPOS.carrito = [];
-  } catch (e) {
-    toast(e.message, 'error');
-  }
+        <div class="cart-item">
+
+            <div class="cart-item-emoji">
+                ${item.emoji}
+            </div>
+
+            <div class="cart-item-info">
+
+                <div class="cart-item-name">
+                    ${item.nombre}
+                </div>
+
+                <div class="cart-item-price">
+                    ${fmt(item.precio)} c/u
+                </div>
+
+            </div>
+
+            <div class="cart-item-qty">
+
+                <button
+                    class="qty-btn"
+                    onclick="cambiarCantidad(
+                        ${item.id},
+                        -1
+                    )">
+                    −
+                </button>
+
+                <span class="cart-qty">
+                    ${item.cantidad}
+                </span>
+
+                <button
+                    class="qty-btn"
+                    onclick="cambiarCantidad(
+                        ${item.id},
+                        +1
+                    )">
+                    +
+                </button>
+
+            </div>
+
+            <div style="
+                min-width:70px;
+                text-align:right;
+                font-weight:600;
+            ">
+                ${fmt(item.subtotal)}
+            </div>
+
+        </div>
+
+    `).join('');
+
+    const subtotal =
+        estadoPOS.carrito.reduce(
+            (s, i) => s + i.subtotal,
+            0
+        );
+
+    const igv =
+        Math.round(
+            subtotal * 0.19 * 100
+        ) / 100;
+
+    const total =
+        Math.round(
+            (subtotal + igv) * 100
+        ) / 100;
+
+    actualizarTotales(
+        subtotal,
+        igv,
+        total
+    );
+
+    document.getElementById(
+        'btn-pagar'
+    ).disabled = false;
 }
+
+
+// ==========================================================
+// TOTALES
+// ==========================================================
+
+function actualizarTotales(
+    sub,
+    igv,
+    total
+) {
+
+    document.getElementById(
+        'cart-subtotal'
+    ).textContent = fmt(sub);
+
+    document.getElementById(
+        'cart-igv'
+    ).textContent = fmt(igv);
+
+    document.getElementById(
+        'cart-total'
+    ).textContent = fmt(total);
+}
+
+
+// ==========================================================
+// LIMPIAR CARRITO
+// ==========================================================
+
+async function limpiarCarrito() {
+
+    for (
+        const item
+        of estadoPOS.carrito
+    ) {
+
+        try {
+
+            await API.delete(
+                `/pedidos/${estadoPOS.pedidoId}/items/${item.id}`
+            );
+
+        } catch {}
+
+    }
+
+    estadoPOS.carrito = [];
+
+    renderCarrito();
+}
+
+
+// ==========================================================
+// PAGO
+// ==========================================================
+
+function abrirPago() {
+
+    const total =
+        calcularTotalActual();
+
+    document.getElementById(
+        'pago-total-display'
+    ).value = fmt(total);
+
+    document.getElementById(
+        'pago-descuento'
+    ).value = '0';
+
+    document.getElementById(
+        'pago-monto-recibido'
+    ).value = '';
+
+    document.getElementById(
+        'pago-vuelto'
+    ).textContent = fmt(0);
+
+    document.getElementById(
+        'pago-cliente-nombre'
+    ).value = '';
+
+    document.getElementById(
+        'pago-cliente-tel'
+    ).value = '';
+
+    document.getElementById(
+        'pago-cliente-direccion'
+    ).value = '';
+
+    estadoPOS.metodo = null;
+
+    document
+        .querySelectorAll('.metodo-btn')
+        .forEach(
+            b => b.classList.remove('btn-primary')
+        );
+
+    document.getElementById(
+        'grupo-efectivo'
+    ).style.display = 'none';
+
+    showModal('modal-pago');
+}
+
+
+// ==========================================================
+// CALCULAR TOTAL ACTUAL
+// ==========================================================
+
+function calcularTotalActual() {
+
+    const subtotal =
+        estadoPOS.carrito.reduce(
+            (s, i) => s + i.subtotal,
+            0
+        );
+
+    const igv =
+        Math.round(
+            subtotal * 0.19 * 100
+        ) / 100;
+
+    return Math.round(
+        (subtotal + igv) * 100
+    ) / 100;
+}
+
+
+// ==========================================================
+// MÉTODO DE PAGO
+// ==========================================================
+
+function selMetodo(btn) {
+
+    document
+        .querySelectorAll('.metodo-btn')
+        .forEach(
+            b => b.classList.remove('btn-primary')
+        );
+
+    btn.classList.add('btn-primary');
+
+    estadoPOS.metodo =
+        btn.dataset.metodo;
+
+    document.getElementById(
+        'grupo-efectivo'
+    ).style.display =
+        estadoPOS.metodo === 'efectivo'
+            ? 'block'
+            : 'none';
+}
+
+
+// ==========================================================
+// VUELTO
+// ==========================================================
+
+function calcVuelto() {
+
+    const total =
+        calcularTotalActual();
+
+    const recibido =
+        parseFloat(
+            document.getElementById(
+                'pago-monto-recibido'
+            ).value
+        ) || 0;
+
+    const descuento =
+        parseFloat(
+            document.getElementById(
+                'pago-descuento'
+            ).value
+        ) || 0;
+
+    const vuelto =
+        Math.max(
+            0,
+            recibido -
+            (total - descuento)
+        );
+
+    document.getElementById(
+        'pago-vuelto'
+    ).textContent =
+        fmt(vuelto);
+}
+
+
+// ==========================================================
+// CONFIRMAR PAGO
+// ==========================================================
+
+async function confirmarPago() {
+
+    if (!estadoPOS.metodo) {
+
+        toast(
+            'Selecciona un método de pago',
+            'warning'
+        );
+
+        return;
+    }
+
+    const monto =
+        parseFloat(
+            document.getElementById(
+                'pago-monto-recibido'
+            ).value
+        ) || null;
+
+    const descuento =
+        parseFloat(
+            document.getElementById(
+                'pago-descuento'
+            ).value
+        ) || 0;
+
+    const nombre =
+        document.getElementById(
+            'pago-cliente-nombre'
+        ).value.trim();
+
+    const tel =
+        document.getElementById(
+            'pago-cliente-tel'
+        ).value.trim();
+
+    const direccion =
+        document.getElementById(
+            'pago-cliente-direccion'
+        ).value.trim();
+
+    try {
+
+        /* ==================================================
+           CREAR / BUSCAR CLIENTE
+        ================================================== */
+
+        if (nombre && tel) {
+
+            try {
+
+                let cliente;
+
+                try {
+
+                    cliente =
+                        await API.get(
+                            `/clientes/buscar?telefono=${encodeURIComponent(tel)}`
+                        );
+
+                } catch {
+
+                    cliente =
+                        await API.post(
+                            '/clientes/',
+                            {
+                                nombre: nombre,
+                                telefono: tel,
+                                direccion: direccion
+                            }
+                        );
+                }
+
+                if (cliente && cliente.id) {
+
+                    estadoPOS.cliente = cliente;
+
+                    await API.put(
+                        `/pedidos/${estadoPOS.pedidoId}/estado`,
+                        {
+                            notas: direccion
+                                ? `Dirección cliente: ${direccion}`
+                                : ''
+                        }
+                    );
+
+                }
+
+            } catch (clienteError) {
+
+                console.warn(
+                    'No se pudo guardar cliente:',
+                    clienteError
+                );
+
+            }
+
+        }
+
+
+        /* ==================================================
+           PAGAR
+        ================================================== */
+
+        const res =
+            await API.post(
+                `/pedidos/${estadoPOS.pedidoId}/pagar`,
+                {
+                    metodo_pago:
+                        estadoPOS.metodo,
+
+                    monto_recibido:
+                        monto,
+
+                    descuento:
+                        descuento
+                }
+            );
+
+        estadoPOS.ultimoTicket = res;
+
+        hideModal('modal-pago');
+
+        await mostrarTicket(res);
+
+        estadoPOS.carrito = [];
+
+    } catch (e) {
+
+        toast(
+            e.message,
+            'error'
+        );
+
+    }
+}
+
+
+// ==========================================================
+// MOSTRAR FACTURA / TICKET DETALLADO
+// ==========================================================
 
 async function mostrarTicket(res) {
-  let negocio = {};
-  try { (await API.get('/config/')).forEach(c => negocio[c.clave] = c.valor); } catch (_) {}
-  document.getElementById('ticket-detalle').innerHTML = `
-    ${negocio.nombre ? `<div style="text-align:center;border-bottom:1px dashed var(--border);padding-bottom:8px;margin-bottom:8px"><strong>${negocio.nombre}</strong><br>${negocio.ruc ? `NIT: ${negocio.ruc}<br>` : ''}${negocio.direccion || ''}</div>` : ''}
-    <div>🎫 <strong>Ticket:</strong> ${res.ticket}</div>
-    <div>💰 <strong>Total:</strong> ${fmt(res.total)}</div>
-    <div>💳 <strong>Método:</strong> ${res.metodo.toUpperCase()}</div>
-    ${res.vuelto > 0 ? `<div>💵 <strong>Vuelto:</strong> ${fmt(res.vuelto)}</div>` : ''}
-    <div>⏰ <strong>Hora:</strong> ${new Date().toLocaleTimeString('es-PE')}</div>
-  `;
-  showModal('modal-ticket');
+
+    let negocio = {};
+
+    let pedido = null;
+
+    try {
+
+        const config =
+            await API.get('/config/');
+
+        config.forEach(c => {
+
+            negocio[c.clave] =
+                c.valor;
+
+        });
+
+    } catch (e) {
+
+        console.warn(
+            'No se pudo cargar configuración',
+            e
+        );
+
+    }
+
+
+    /* ======================================================
+       RECUPERAR PEDIDO COMPLETO
+    ====================================================== */
+
+    try {
+
+        pedido =
+            await API.get(
+                `/pedidos/${estadoPOS.pedidoId}`
+            );
+
+    } catch (e) {
+
+        console.warn(
+            'No se pudo recuperar pedido:',
+            e
+        );
+
+    }
+
+
+    if (!pedido) {
+
+        toast(
+            'No se pudo generar el detalle del ticket',
+            'error'
+        );
+
+        return;
+    }
+
+
+    /* ======================================================
+       CLIENTE
+    ====================================================== */
+
+    const cliente =
+        pedido.cliente ||
+        estadoPOS.cliente ||
+        null;
+
+
+    /* ======================================================
+       PRODUCTOS
+    ====================================================== */
+
+    const detalles =
+        pedido.detalles || [];
+
+
+    const filasProductos =
+        detalles.map(d => {
+
+            const nombre =
+                d.producto?.nombre ||
+                'Producto';
+
+            const cantidad =
+                d.cantidad || 0;
+
+            const precio =
+                Number(
+                    d.precio_unitario || 0
+                );
+
+            const subtotal =
+                Number(
+                    d.subtotal ||
+                    cantidad * precio
+                );
+
+            return `
+
+                <tr>
+
+                    <td class="texto-izq">
+                        ${nombre}
+                    </td>
+
+                    <td class="texto-centro">
+                        ${cantidad}
+                    </td>
+
+                    <td class="texto-der">
+                        ${fmt(precio)}
+                    </td>
+
+                    <td class="texto-der">
+                        ${fmt(subtotal)}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }).join('');
+
+
+    /* ======================================================
+       DATOS CLIENTE
+    ====================================================== */
+
+    const clienteHtml = cliente
+        ? `
+
+            <div class="ticket-info">
+
+                <strong>DATOS DEL CLIENTE</strong><br>
+
+                Nombre:
+                ${cliente.nombre || '-'}<br>
+
+                Teléfono:
+                ${cliente.telefono || '-'}<br>
+
+                ${
+                    cliente.direccion
+                        ? `
+                            Dirección:
+                            ${cliente.direccion}<br>
+                          `
+                        : ''
+                }
+
+            </div>
+
+        `
+        : `
+            <div class="ticket-info">
+
+                <strong>CLIENTE</strong><br>
+                Consumidor final
+
+            </div>
+        `;
+
+
+    /* ======================================================
+       GENERAR TICKET
+    ====================================================== */
+
+    document.getElementById(
+        'ticket-detalle'
+    ).innerHTML = `
+
+        <div class="ticket-encabezado">
+
+            <div class="ticket-negocio">
+
+                ${
+                    negocio.nombre ||
+                    'GourmetPOS'
+                }
+
+            </div>
+
+            <div class="ticket-datos-negocio">
+
+                ${
+                    negocio.ruc
+                        ? `NIT/RUC: ${negocio.ruc}<br>`
+                        : ''
+                }
+
+                ${
+                    negocio.razon_social
+                        ? `${negocio.razon_social}<br>`
+                        : ''
+                }
+
+                ${
+                    negocio.direccion
+                        ? `${negocio.direccion}<br>`
+                        : ''
+                }
+
+                ${
+                    negocio.ciudad
+                        ? `${negocio.ciudad}<br>`
+                        : ''
+                }
+
+                ${
+                    negocio.telefono
+                        ? `Tel: ${negocio.telefono}<br>`
+                        : ''
+                }
+
+                ${
+                    negocio.email
+                        ? `${negocio.email}`
+                        : ''
+                }
+
+            </div>
+
+        </div>
+
+
+        <div class="ticket-titulo">
+
+            COMPROBANTE DE VENTA
+
+        </div>
+
+
+        <div class="ticket-info">
+
+            <strong>Ticket:</strong>
+            ${pedido.numero_ticket || res.ticket || '-'}
+            <br>
+
+            <strong>Pedido:</strong>
+            #${pedido.id}
+            <br>
+
+            <strong>Fecha:</strong>
+            ${new Date(
+                pedido.created_at
+            ).toLocaleDateString('es-PE')}
+            <br>
+
+            <strong>Hora:</strong>
+            ${new Date(
+                pedido.created_at
+            ).toLocaleTimeString('es-PE')}
+
+            <br>
+
+            <strong>Canal:</strong>
+            ${
+                pedido.canal
+                    ? pedido.canal.toUpperCase()
+                    : '-'
+            }
+
+            ${
+                pedido.mesa
+                    ? `
+                        <br>
+                        <strong>Mesa:</strong>
+                        ${pedido.mesa.numero}
+                      `
+                    : ''
+            }
+
+        </div>
+
+
+        ${clienteHtml}
+
+
+        <table class="ticket-tabla">
+
+            <thead>
+
+                <tr>
+
+                    <th class="texto-izq">
+                        Producto
+                    </th>
+
+                    <th class="texto-centro">
+                        Cant.
+                    </th>
+
+                    <th class="texto-der">
+                        Precio
+                    </th>
+
+                    <th class="texto-der">
+                        Importe
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${filasProductos}
+
+            </tbody>
+
+        </table>
+
+
+        <div class="ticket-totales">
+
+            <div class="ticket-total-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong>
+                    ${fmt(pedido.subtotal)}
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-total-row">
+
+                <span>
+                    IVA (19%)
+                </span>
+
+                <strong>
+                    ${fmt(pedido.igv)}
+                </strong>
+
+            </div>
+
+
+            ${
+                Number(pedido.descuento || 0) > 0
+                    ? `
+                        <div class="ticket-total-row">
+
+                            <span>
+                                Descuento
+                            </span>
+
+                            <strong>
+                                - ${fmt(pedido.descuento)}
+                            </strong>
+
+                        </div>
+                      `
+                    : ''
+            }
+
+
+            <div class="ticket-total-row ticket-total-final">
+
+                <span>
+                    TOTAL
+                </span>
+
+                <strong>
+                    ${fmt(pedido.total)}
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-total-row">
+
+                <span>
+                    Método de pago
+                </span>
+
+                <strong>
+                    ${
+                        res.metodo
+                            ? res.metodo.toUpperCase()
+                            : '-'
+                    }
+                </strong>
+
+            </div>
+
+
+            ${
+                res.vuelto > 0
+                    ? `
+                        <div class="ticket-total-row">
+
+                            <span>
+                                Vuelto
+                            </span>
+
+                            <strong>
+                                ${fmt(res.vuelto)}
+                            </strong>
+
+                        </div>
+                      `
+                    : ''
+            }
+
+        </div>
+
+
+        <div class="ticket-pie">
+
+            Gracias por su compra ❤️<br>
+
+            ${
+                negocio.mensaje_factura ||
+                'Gracias por preferirnos.'
+            }
+
+        </div>
+
+    `;
+
+    showModal('modal-ticket');
 }
+
+
+// ==========================================================
+// IMPRIMIR
+// ==========================================================
 
 function imprimirTicket() {
-  window.print();
+
+    window.print();
+
 }
+
+
+// ==========================================================
+// DELIVERY
+// ==========================================================
 
 async function nuevoPedidoDelivery() {
-  try {
-    const p = await API.post('/pedidos/', { canal: 'delivery' });
-    estadoPOS.mesaId = null;
-    estadoPOS.mesaNum = 'Delivery';
-    estadoPOS.pedidoId = p.id;
-    estadoPOS.carrito = [];
-    mostrarPOS();
-    document.getElementById('header-title').textContent = '🛵 Pedido Delivery';
-    document.getElementById('cart-mesa-badge').innerHTML = '<span class="badge badge-ocupada">📦 Delivery</span>';
-  } catch (e) {
-    toast(e.message, 'error');
-  }
+
+    try {
+
+        const p =
+            await API.post(
+                '/pedidos/',
+                {
+                    canal: 'delivery'
+                }
+            );
+
+        estadoPOS.mesaId = null;
+
+        estadoPOS.mesaNum =
+            'Delivery';
+
+        estadoPOS.pedidoId =
+            p.id;
+
+        estadoPOS.carrito = [];
+
+        mostrarPOS();
+
+        document.getElementById(
+            'header-title'
+        ).textContent =
+            '🛵 Pedido Delivery';
+
+        document.getElementById(
+            'cart-mesa-badge'
+        ).innerHTML = `
+
+            <span class="badge badge-ocupada">
+                📦 Delivery
+            </span>
+
+        `;
+
+    } catch (e) {
+
+        toast(
+            e.message,
+            'error'
+        );
+
+    }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  cargarMesas();
-  setInterval(cargarMesas, 30000);
-});
+
+// ==========================================================
+// INICIO
+// ==========================================================
+
+document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+
+        cargarMesas();
+
+        setInterval(
+            cargarMesas,
+            30000
+        );
+
+    }
+);
+
 </script>
+
 </body>
 </html>
