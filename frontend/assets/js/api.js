@@ -4,15 +4,17 @@ const API_BASE = window.location.origin + '/api';
 
 const API = {
   async get(path) {
-    const r = await fetch(API_BASE + path);
+    const token = localStorage.getItem('gourmetpos_cliente_token');
+    const r = await fetch(API_BASE + path, token ? { headers: { Authorization: `Bearer ${token}` } } : undefined);
     if (!r.ok) throw new Error(`Error ${r.status}: ${r.statusText}`);
     return r.json();
   },
 
   async post(path, body = {}) {
+    const token = localStorage.getItem('gourmetpos_cliente_token') || localStorage.getItem('gourmetpos_registro_token');
     const r = await fetch(API_BASE + path, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       body: JSON.stringify(body),
     });
     if (!r.ok) {

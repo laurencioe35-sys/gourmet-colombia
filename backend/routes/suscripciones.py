@@ -1,22 +1,83 @@
-import secrets
-from datetime import datetime
+import os
+import jwt
+from datetime import datetime, timedelta
 from uuid import uuid4
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import ConfigRestaurante, SolicitudPlan
+from ..models import ConfigRestaurante, SolicitudPlan, UsuarioGoogle
 from ..schemas import SolicitudPlanCreate
 
 router = APIRouter()
-cliente_tokens = {}
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
+JWT_SECRET = os.getenv("JWT_SECRET") or os.getenv("SECRET_KEY", "")
+JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+JWT_EXPIRE_DAYS = int(os.getenv("JWT_EXPIRE_DAYS", "30"))
 
 PLANES = {
     "esencial": {"nombre": "Esencial", "valor": 49000},
     "profesional": {"nombre": "Profesional", "valor": 20000},
     "empresa": {"nombre": "Empresa", "valor": 149000},
 }
+
+
+def crear_token_usuario(usuario: UsuarioGoogle, tipo="cliente"):
+    if not JWT_SECRET:
+        raise HTTPException(status_code=500, detail="JWT_SECRET no está configurado.")
+    ahora = datetime.utcnow()
+    payload = {
+        "sub": str(usuario.id),
+        "google_sub": usuario.google_sub,
+        "email": usuario.email,
+        "tipo": tipo,
+        "exp": ahora + timedelta(days=JWT_EXPIRE_DAYS),
+        "iat": ahora,
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+
+def verificar_google_credential(credential: str):
+    if not GOOGLE_CLIENT_ID:
+        raise HTTPException(status_code=500, detail="GOOGLE_CLIENT_ID no está configurado.")
+    try:
+        info = id_token.verify_oauth2_token(
+            credential, google_requests.Request(), GOOGLE_CLIENT_ID
+        )
+        if info.get("iss") not in ("accounts.google.com", "https://accounts.google.com"):
+            raise ValueError("Emisor de Google inválido")
+        email = (info.get("email") or "").strip().lower()
+        if not email or not info.get("email_verified", False) or not info.get("sub"):
+            raise ValueError("Identidad de Google incompleta")
+        return {
+            "google_sub": info["sub"],
+            "email": email,
+            "nombre": info.get("name", ""),
+            "foto_url": info.get("picture", ""),
+        }
+    except ValueError:
+        raise HTTPException(status_code=401, detail="La autenticación con Google no es válida o expiró.")
+
+
+def _usuario_desde_autorizacion(authorization, db: Session, permitir_registro=True):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Sesión no encontrada o formato inválido.")
+    try:
+        payload = jwt.decode(authorization[7:], JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        if not permitir_registro and payload.get("tipo") != "cliente":
+            raise ValueError("Tipo de token inválido")
+        usuario_id = int(payload["sub"])
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="La sesión expiró.")
+    except Exception:
+        raise HTTPException(status_code=401, detail="Sesión inválida.")
+    usuario = db.query(UsuarioGoogle).filter(UsuarioGoogle.id == usuario_id).first()
+    if usuario is None or not usuario.activo:
+        raise HTTPException(status_code=401, detail="Usuario no disponible.")
+    return usuario
 
 
 def _normalizar_referencia(valor: str) -> str:
@@ -66,44 +127,46 @@ def estado_solicitud(data: dict, db: Session = Depends(get_db)):
     return {"estado": solicitud.estado, "aprobado": False, "mensaje": "La solicitud sigue pendiente por validación del administrador."}
 
 
-@router.post("/estado-google")
-def estado_google(data: dict, db: Session = Depends(get_db)):
-    email = (data.get("email") or "").strip().lower()
-    if not email:
-        raise HTTPException(status_code=400, detail="Debes ingresar tu correo de Google/Gmail.")
+@router.post("/google")
+def autenticar_google(data: dict, db: Session = Depends(get_db)):
+    datos = verificar_google_credential(data.get("credential", ""))
+    usuario = db.query(UsuarioGoogle).filter(UsuarioGoogle.google_sub == datos["google_sub"]).first()
+    nuevo_usuario = usuario is None
+    if usuario is None:
+        usuario_por_email = db.query(UsuarioGoogle).filter(UsuarioGoogle.email == datos["email"]).first()
+        if usuario_por_email:
+            raise HTTPException(status_code=409, detail="El correo ya está vinculado a otra cuenta de Google.")
+        usuario = UsuarioGoogle(**datos)
+        db.add(usuario)
+        db.flush()
+    else:
+        usuario.email = datos["email"]
+        usuario.nombre = datos["nombre"]
+        usuario.foto_url = datos["foto_url"]
+        usuario.last_login_at = datetime.utcnow()
 
-    solicitud = db.query(SolicitudPlan).filter(
-        SolicitudPlan.email == email,
-        SolicitudPlan.estado == "aprobado",
-    ).order_by(SolicitudPlan.created_at.desc()).first()
-
+    solicitud = None
+    if usuario.solicitud_plan_id:
+        solicitud = db.query(SolicitudPlan).filter(SolicitudPlan.id == usuario.solicitud_plan_id).first()
     if solicitud is None:
-        return {"estado": "pendiente", "aprobado": False, "mensaje": "Esta cuenta de Gmail aún no está aprobada para acceder."}
+        solicitud = db.query(SolicitudPlan).filter(SolicitudPlan.email == usuario.email).order_by(SolicitudPlan.created_at.desc()).first()
+        if solicitud:
+            usuario.solicitud_plan_id = solicitud.id
+    db.commit()
 
-    return {"estado": "aprobado", "aprobado": True, "mensaje": "La cuenta de Gmail ya está activa."}
-
-
-@router.post("/validar-acceso-google")
-def validar_acceso_google(data: dict, db: Session = Depends(get_db)):
-    email = (data.get("email") or "").strip().lower()
-    if not email:
-        raise HTTPException(status_code=400, detail="Debes ingresar tu correo de Google/Gmail.")
-
-    solicitud = db.query(SolicitudPlan).filter(
-        SolicitudPlan.email == email,
-        SolicitudPlan.estado == "aprobado",
-    ).order_by(SolicitudPlan.created_at.desc()).first()
+    respuesta = {"ok": True, "nuevo_usuario": nuevo_usuario, "usuario": {
+        "id": usuario.id, "email": usuario.email, "nombre": usuario.nombre, "foto_url": usuario.foto_url,
+    }}
     if solicitud is None:
-        raise HTTPException(status_code=403, detail="Esta cuenta de Gmail aún no está aprobada por el administrador.")
-
-    token = secrets.token_urlsafe(32)
-    cliente_tokens[token] = {
-        "email": email,
-        "referencia": solicitud.referencia_pago,
-        "aprobado": True,
-        "metodo": "google",
-    }
-    return {"ok": True, "token": token, "mensaje": "Acceso habilitado con Google"}
+        respuesta.update({"aprobado": False, "sin_plan": True, "registro_token": crear_token_usuario(usuario, "registro")})
+        return respuesta
+    if solicitud.estado != "aprobado":
+        respuesta.update({"aprobado": False, "estado": solicitud.estado, "registro_token": crear_token_usuario(usuario, "registro")})
+        return respuesta
+    if not usuario.activo:
+        raise HTTPException(status_code=403, detail="Esta cuenta está desactivada.")
+    respuesta.update({"aprobado": True, "token": crear_token_usuario(usuario)})
+    return respuesta
 
 
 @router.post("/validar-acceso")
@@ -113,13 +176,19 @@ def validar_acceso(data: dict, db: Session = Depends(get_db)):
     estado = estado_solicitud({"email": email, "referencia": referencia}, db)
     if not estado.get("aprobado"):
         raise HTTPException(status_code=403, detail="La cuenta aún no está aprobada por el administrador")
-    token = secrets.token_urlsafe(32)
-    cliente_tokens[token] = {"email": email, "referencia": referencia, "aprobado": True}
-    return {"ok": True, "token": token, "mensaje": "Acceso habilitado"}
+    usuario = db.query(UsuarioGoogle).filter(UsuarioGoogle.email == email).first()
+    if usuario is None:
+        raise HTTPException(status_code=403, detail="Primero debes identificarte con tu cuenta de Google.")
+    return {"ok": True, "token": crear_token_usuario(usuario), "mensaje": "Acceso habilitado"}
 
 
 @router.post("/solicitudes")
-def crear_solicitud(data: SolicitudPlanCreate, db: Session = Depends(get_db)):
+def crear_solicitud(
+    data: SolicitudPlanCreate,
+    authorization: str | None = Header(default=None),
+    db: Session = Depends(get_db),
+):
+    usuario = _usuario_desde_autorizacion(authorization, db)
     if data.plan not in PLANES:
         raise HTTPException(status_code=400, detail="Selecciona un plan válido")
     if data.metodo_pago not in ("nequi", "daviplata"):
@@ -131,9 +200,13 @@ def crear_solicitud(data: SolicitudPlanCreate, db: Session = Depends(get_db)):
     if not referencia_pago:
         raise HTTPException(status_code=400, detail="Debes ingresar la referencia del pago de Nequi o Daviplata antes de continuar")
 
+    email = (data.email or "").strip().lower()
+    if email != usuario.email:
+        raise HTTPException(status_code=400, detail="El correo debe coincidir con la cuenta de Google.")
+
     referencia_existente = db.query(SolicitudPlan).filter(
         SolicitudPlan.referencia_pago == referencia_pago,
-        SolicitudPlan.email != (data.email or "").strip().lower(),
+        SolicitudPlan.email != email,
     ).first()
     if referencia_existente:
         raise HTTPException(
@@ -142,13 +215,18 @@ def crear_solicitud(data: SolicitudPlanCreate, db: Session = Depends(get_db)):
         )
 
     email_existente = db.query(SolicitudPlan).filter(
-        SolicitudPlan.email == (data.email or "").strip().lower(),
+        SolicitudPlan.email == email,
         SolicitudPlan.estado.in_(["pendiente", "reportado", "aprobado"]),
     ).first()
     if email_existente:
+        mensaje = (
+            "Esta cuenta ya está registrada y aprobada. Ingresa nuevamente usando Google."
+            if email_existente.estado == "aprobado"
+            else "Esta cuenta ya tiene una solicitud registrada y está pendiente de validación."
+        )
         raise HTTPException(
             status_code=400,
-            detail="Este correo ya tiene una solicitud de pago registrada y pendiente por validación.",
+            detail=mensaje,
         )
 
     info = PLANES[data.plan]
@@ -162,6 +240,8 @@ def crear_solicitud(data: SolicitudPlanCreate, db: Session = Depends(get_db)):
     )
     solicitud.referencia_pago = referencia_pago
     db.add(solicitud)
+    db.flush()
+    usuario.solicitud_plan_id = solicitud.id
 
     # Estos campos alimentan el encabezado de los tickets del POS.
     valores = {"nombre": data.nombre_negocio, "ruc": data.nit, "razon_social": data.razon_social,
@@ -177,3 +257,12 @@ def crear_solicitud(data: SolicitudPlanCreate, db: Session = Depends(get_db)):
     return {"ok": True, "referencia": referencia, "estado": solicitud.estado, "plan": info["nombre"],
             "valor": info["valor"], "cuenta_destino": cuenta,
             "mensaje": "Solicitud registrada. Te enviaremos la confirmación al correo indicado cuando validemos el pago."}
+
+
+@router.get("/me")
+def obtener_usuario_actual(
+    authorization: str | None = Header(default=None),
+    db: Session = Depends(get_db),
+):
+    usuario = _usuario_desde_autorizacion(authorization, db, permitir_registro=False)
+    return {"id": usuario.id, "email": usuario.email, "nombre": usuario.nombre, "foto_url": usuario.foto_url}

@@ -188,26 +188,8 @@
     let selected = 'profesional';
     const GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID || '';
 
-    async function redirectIfApprovedSession() {
-      const token = sessionStorage.getItem('gourmetpos_cliente_token');
-      if (token) {
-        window.location.href = 'index.html';
-        return;
-      }
-
-      const savedEmail = localStorage.getItem('gourmetpos_google_email');
-      if (!savedEmail) return;
-
-      try {
-        const estado = await API.post('/suscripciones/estado-google', { email: savedEmail });
-        if (!estado.aprobado) return;
-
-        const r = await API.post('/suscripciones/validar-acceso-google', { email: savedEmail });
-        sessionStorage.setItem('gourmetpos_cliente_token', r.token);
-        window.location.href = 'index.html';
-      } catch (error) {
-        console.warn('No se pudo restaurar la sesión del usuario:', error);
-      }
+    function redirectIfApprovedSession() {
+      if (localStorage.getItem('gourmetpos_cliente_token')) window.location.href = 'index.html';
     }
 
     function normalizeGoogleEmail(email) {
@@ -217,8 +199,6 @@
     function applyGoogleAccount(email, displayName = '') {
       const normalized = normalizeGoogleEmail(email);
       if (!normalized) return;
-      localStorage.setItem('gourmetpos_google_email', normalized);
-
       const correoInput = document.getElementById('correo');
       const responsableInput = document.getElementById('responsable');
       const nombreNegocio = document.getElementById('nombre');
@@ -256,25 +236,21 @@
           client_id: GOOGLE_CLIENT_ID,
           callback: async (response) => {
             try {
-              const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-              const email = normalizeGoogleEmail(payload.email);
-              localStorage.setItem('gourmetpos_google_email', email);
-
-              try {
-                const estado = await API.post('/suscripciones/estado-google', { email });
-                if (estado.aprobado) {
-                  const r = await API.post('/suscripciones/validar-acceso-google', { email });
-                  sessionStorage.setItem('gourmetpos_cliente_token', r.token);
-                  showApprovedGoogleAccess(email);
-                  setTimeout(() => window.location.href = 'index.html', 800);
-                  return;
-                }
-              } catch (error) {
-                // no-op: si no está aprobado, se sigue con el flujo de registro normal
+              const resultado = await API.post('/suscripciones/google', { credential: response.credential });
+              const usuario = resultado.usuario;
+              if (resultado.token) {
+                localStorage.setItem('gourmetpos_cliente_token', resultado.token);
+                localStorage.removeItem('gourmetpos_registro_token');
+                window.location.href = 'index.html';
+                return;
               }
-
-              applyGoogleAccount(email, payload.name || payload.given_name || 'Usuario de Google');
-              toast('Cuenta de Google conectada. Completa el registro si aún no estás activo.', 'info');
+              if (resultado.registro_token) localStorage.setItem('gourmetpos_registro_token', resultado.registro_token);
+              applyGoogleAccount(usuario.email, usuario.nombre || 'Usuario de Google');
+              if (resultado.estado) {
+                toast('Tu solicitud está en estado: ' + resultado.estado, 'warning');
+              } else {
+                toast('Completa el registro de tu negocio. Solo tendrás que hacerlo una vez.', 'info');
+              }
             } catch (error) {
               toast('No se pudo leer la cuenta de Google. Intenta nuevamente.', 'error');
             }
@@ -346,7 +322,7 @@
           referencia,
         });
 
-        sessionStorage.setItem('gourmetpos_cliente_token', r.token);
+        localStorage.setItem('gourmetpos_cliente_token', r.token);
         toast('Acceso habilitado. Bienvenido.', 'success');
         setTimeout(() => window.location.href = 'index.html', 500);
       } catch (e) {

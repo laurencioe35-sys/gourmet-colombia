@@ -1,13 +1,16 @@
 from fastapi.testclient import TestClient
 
 from backend.main import app
-from backend.database import SessionLocal
-from backend.models import SolicitudPlan
+from backend.database import Base, SessionLocal, engine
+from backend.models import SolicitudPlan, UsuarioGoogle
 
 
 def setup_approved_email(email: str = "cliente@test.com", referencia: str = "123456"):
+    Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     db.query(SolicitudPlan).filter(SolicitudPlan.email == email).delete()
+    db.query(UsuarioGoogle).filter(UsuarioGoogle.email == email).delete()
+    db.commit()
     db.add(
         SolicitudPlan(
             referencia="TEST-GOOGLE-1",
@@ -31,24 +34,48 @@ def setup_approved_email(email: str = "cliente@test.com", referencia: str = "123
     db.close()
 
 
-def test_google_access_is_allowed_for_approved_email():
+def test_google_access_is_allowed_for_approved_email(monkeypatch):
     setup_approved_email()
-    client = TestClient(app)
+    monkeypatch.setattr(
+        "backend.routes.suscripciones.verificar_google_credential",
+        lambda credential: {
+            "google_sub": "google-sub-cliente",
+            "email": "cliente@test.com",
+            "nombre": "Ana",
+            "foto_url": "https://example.com/ana.jpg",
+        },
+    )
+    with TestClient(app) as client:
+        response = client.post("/api/suscripciones/google", json={"credential": "credential-falsa"})
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["ok"] is True
+        assert payload["token"]
+        me = client.get("/api/suscripciones/me", headers={"Authorization": f"Bearer {payload['token']}"})
+        assert me.status_code == 200
+        assert me.json()["email"] == "cliente@test.com"
 
-    response = client.post("/api/suscripciones/validar-acceso-google", json={"email": "cliente@test.com"})
 
-    assert response.status_code == 200
-    payload = response.json()
-    assert payload["ok"] is True
-    assert payload["token"]
-
-
-def test_google_access_is_rejected_for_unapproved_email():
+def test_google_access_creates_registration_token_for_new_user(monkeypatch):
     db = SessionLocal()
     db.query(SolicitudPlan).filter(SolicitudPlan.email == "nueva@test.com").delete()
+    db.query(UsuarioGoogle).filter(UsuarioGoogle.email == "nueva@test.com").delete()
+    db.commit()
     db.close()
+    monkeypatch.setattr(
+        "backend.routes.suscripciones.verificar_google_credential",
+        lambda credential: {
+            "google_sub": "google-sub-nueva",
+            "email": "nueva@test.com",
+            "nombre": "Nueva",
+            "foto_url": "",
+        },
+    )
 
-    client = TestClient(app)
-    response = client.post("/api/suscripciones/validar-acceso-google", json={"email": "nueva@test.com"})
+    with TestClient(app) as client:
+        response = client.post("/api/suscripciones/google", json={"credential": "credential-falsa"})
 
-    assert response.status_code == 403
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["sin_plan"] is True
+        assert payload["registro_token"]

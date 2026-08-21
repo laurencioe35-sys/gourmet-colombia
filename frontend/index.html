@@ -29,6 +29,7 @@
   </ul>
   <div class="sidebar-footer">
     <div id="hora-actual"></div>
+    <button class="btn btn-outline" type="button" onclick="cerrarSesion()">Cerrar sesión</button>
   </div>
 </nav>
 
@@ -95,10 +96,26 @@
 </div>
 
 <script>
-  const clienteToken = sessionStorage.getItem('gourmetpos_cliente_token');
-  if (!clienteToken) {
+  function cerrarSesion() {
+    localStorage.removeItem('gourmetpos_cliente_token');
+    localStorage.removeItem('gourmetpos_registro_token');
     window.location.href = 'planes.html';
   }
+
+  (async function () {
+    const token = localStorage.getItem('gourmetpos_cliente_token');
+    if (!token) { window.location.href = 'planes.html'; return; }
+    try {
+      const response = await fetch('/api/suscripciones/me', { headers: { Authorization: `Bearer ${token}` } });
+      if (!response.ok) throw new Error('Sesión inválida');
+      window.GOURMETPOS_USER = await response.json();
+    } catch (error) {
+      console.warn('Sesión terminada:', error);
+      localStorage.removeItem('gourmetpos_cliente_token');
+      localStorage.removeItem('gourmetpos_registro_token');
+      window.location.href = 'planes.html';
+    }
+  })();
 </script>
 <script type="module" src="/src/main.js"></script>
 <script type="module" src="assets/js/api.js"></script>

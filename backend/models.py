@@ -220,6 +220,22 @@ class SolicitudPlan(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
+class UsuarioGoogle(Base):
+    __tablename__ = "usuarios_google"
+
+    id = Column(Integer, primary_key=True, index=True)
+    google_sub = Column(String(255), unique=True, nullable=False, index=True)
+    email = Column(String(150), unique=True, nullable=False, index=True)
+    nombre = Column(String(200), default="")
+    foto_url = Column(String(500), default="")
+    activo = Column(Boolean, default=True)
+    solicitud_plan_id = Column(Integer, ForeignKey("solicitudes_plan.id"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    last_login_at = Column(DateTime, nullable=True)
+
+    solicitud_plan = relationship("SolicitudPlan")
+
+
 class UsuarioAdmin(Base):
     __tablename__ = "usuarios_admin"
 
