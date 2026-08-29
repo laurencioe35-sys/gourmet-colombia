@@ -11,7 +11,10 @@ from typing import List
 import asyncio
 import json
 import os
+
 from dotenv import load_dotenv
+
+from .config import get_env
 
 load_dotenv()
 
@@ -56,8 +59,8 @@ async def _ejecutar_scheduler():
                     tk  = db.query(ConfigRestaurante).filter(ConfigRestaurante.clave == "whatsapp_token").first()
                     pid = db.query(ConfigRestaurante).filter(ConfigRestaurante.clave == "whatsapp_phone_id").first()
                     svc = WhatsAppService(
-                        token    = (tk.valor  if tk  else None) or os.getenv("WA_TOKEN",    ""),
-                        phone_id = (pid.valor if pid else None) or os.getenv("WA_PHONE_ID", ""),
+                        token    = (tk.valor  if tk  else None) or get_env("WA_TOKEN", ""),
+                        phone_id = (pid.valor if pid else None) or get_env("WA_PHONE_ID", ""),
                         db       = db,
                     )
                     botones = _json.loads(m.botones_json or "[]")
