@@ -84,6 +84,22 @@ def _normalizar_referencia(valor: str) -> str:
     return (valor or "").strip()
 
 
+def _solicitud_por_email_referencia(db: Session, email: str, referencia: str):
+    email_normal = (email or "").strip().lower()
+    referencia_normal = _normalizar_referencia(referencia)
+    if not email_normal or not referencia_normal:
+        return None
+    return db.query(SolicitudPlan).filter(
+        SolicitudPlan.email == email_normal,
+        SolicitudPlan.referencia_pago == referencia_normal,
+    ).order_by(SolicitudPlan.created_at.desc()).first()
+
+
+def _aprobacion_valida(db: Session, email: str, referencia: str):
+    solicitud = _solicitud_por_email_referencia(db, email, referencia)
+    return solicitud is not None and solicitud.estado == "aprobado"
+
+
 def _config(db, clave, defecto=""):
     item = db.query(ConfigRestaurante).filter(ConfigRestaurante.clave == clave).first()
     return item.valor if item and item.valor else defecto

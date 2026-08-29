@@ -79,3 +79,16 @@ def test_google_access_creates_registration_token_for_new_user(monkeypatch):
         payload = response.json()
         assert payload["sin_plan"] is True
         assert payload["registro_token"]
+
+
+def test_subscription_status_accepts_approved_email_and_reference():
+    setup_approved_email("cliente@test.com", "123456")
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/suscripciones/estado",
+            json={"email": "cliente@test.com", "referencia": "123456"},
+        )
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["aprobado"] is True
+        assert payload["estado"] == "aprobado"
