@@ -239,8 +239,8 @@
         client_id: GOOGLE_CLIENT_ID,
         callback: handleGoogleCredential,
         use_fedcm_for_prompt: true,
-        auto_select: true,
-        cancel_on_tap_outside: false
+        auto_select: false,
+        cancel_on_tap_outside: true
       });
       googleInitialized = true;
       return true;
@@ -264,11 +264,10 @@
     // Intenta iniciar sesión automáticamente con la cuenta de Google activa del navegador,
     // salvo que el usuario ya tenga una sesión aprobada guardada.
     function attemptAutoGoogleLogin() {
-      if (localStorage.getItem('gourmetpos_cliente_token')) return; // ya hay sesión, redirectIfApprovedSession se encarga
-      if (initGoogleIdentity()) {
-        launchGooglePrompt();
-      }
-    }
+      // No ejecutamos One Tap automáticamente en carga. Google puede bloquearlo
+      // por FedCM o por configuración del navegador; eso genera el error mostrado.
+      // La autenticación solo debe iniciarse por acción del usuario en el botón.
+      return;
  
     async function continueWithGoogle() {
       if (initGoogleIdentity()) {
@@ -286,7 +285,8 @@
  
     document.addEventListener('DOMContentLoaded', () => {
       redirectIfApprovedSession();
-      attemptAutoGoogleLogin(); // por si el script de Google ya estaba listo antes de este punto
+      // Evitamos el prompt automático porque Google lo bloquea en algunos navegadores
+      // y genera los errores de FedCM asociados a la carga del sitio.
     });
  
     function choose(p) {
