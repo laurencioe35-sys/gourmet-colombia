@@ -23,6 +23,8 @@
   }
   .google-btn:hover,.action-btn:hover,.btn:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 18px 34px rgba(59,130,246,0.22), inset 0 1px 0 rgba(255,255,255,0.2)}
   .google-btn{background:linear-gradient(135deg, rgba(255,255,255,0.96), rgba(240,245,255,0.78));color:#111827}
+  .google-button-wrap{display:flex;justify-content:center;margin:0 auto 10px;width:min(100%,420px)}
+  .google-button-wrap > div{width:100%!important;display:flex;justify-content:center}
   .google-mark{width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;border-radius:0;}
   .google-mark svg{display:block;width:100%;height:100%;}
   .action-btn.primary{background:linear-gradient(135deg, rgba(59,130,246,0.9), rgba(37,99,235,0.8));}
@@ -36,6 +38,8 @@
   @media (max-width: 480px){
     .subscription-shell{padding:12px}
     .welcome-card{padding:18px 14px}
+    .google-button-wrap{width:100%}
+    .google-button-wrap > div{width:100%!important}
     .google-btn{width:100%;min-height:52px;font-size:1rem;padding:14px 16px}
     .auth-row{grid-template-columns:1fr;width:100%}
     .auth-row .action-btn,.auth-row a.action-btn{min-height:48px;padding:12px 14px}
@@ -53,17 +57,7 @@
       <h1>Bienvenido a GourmetPOS Colombia</h1>
       <p>Gestión inteligente para restaurantes · Potenciado con IA</p>
  
-      <button id="google-auth-btn" class="google-btn" type="button" onclick="continueWithGoogle()">
-        <span class="google-mark" aria-label="Google" role="img">
-          <svg viewBox="0 0 48 48" aria-hidden="true">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.62l6.85-6.85C35.9 2.86 30.37 0 24 0 14.62 0 6.55 5.38 2.55 13.22l7.98 6.18C12.14 13.23 17.54 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.5 24.55c0-1.65-.15-3.23-.43-4.75H24v9.02h12.7c-.55 2.98-2.25 5.51-4.79 7.22l7.7 5.98C43.95 37.5 46.5 31.75 46.5 24.55z"/>
-            <path fill="#FBBC05" d="M24 46.5c6.48 0 11.93-2.13 15.92-5.77l-7.69-5.98c-2.13 1.43-4.86 2.27-8.23 2.27-6.47 0-11.94-4.37-13.9-10.25l-7.99 6.18C5.12 41.62 13.18 46.5 24 46.5z"/>
-            <path fill="#34A853" d="M10.1 30.72A14.41 14.41 0 0 1 9 24c0-1.6.27-3.16.75-4.64L1.77 13.18A23.31 23.31 0 0 0 0 24c0 3.77.9 7.34 2.55 10.5l7.55-6.28z"/>
-          </svg>
-        </span>
-        <span>Continuar con Google</span>
-      </button>
+      <div id="google-button-container" class="google-button-wrap" aria-label="Continuar con Google"></div>
  
       <div class="auth-row" style="margin-top:12px;">
         <a class="action-btn secondary" href="administrador.html" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Acceso admin</a>
@@ -218,6 +212,24 @@
     }
  
     let googleInitialized = false;
+    let googleButtonRendered = false;
+
+    function renderGoogleButton() {
+      const container = document.getElementById('google-button-container');
+      if (!container || !window.google || !google.accounts || !google.accounts.id || googleButtonRendered) return;
+
+      google.accounts.id.renderButton(container, {
+        type: 'standard',
+        theme: 'outline',
+        size: 'large',
+        text: 'continue_with',
+        shape: 'pill',
+        logo_alignment: 'left',
+        width: 360,
+        locale: 'es-419',
+      });
+      googleButtonRendered = true;
+    }
  
     async function handleGoogleCredential(response) {
       try {
@@ -242,62 +254,27 @@
     }
  
     function initGoogleIdentity() {
-      if (googleInitialized) return true;
+      if (googleInitialized) {
+        renderGoogleButton();
+        return true;
+      }
       if (!(window.google && google.accounts && google.accounts.id && GOOGLE_CLIENT_ID)) return false;
  
       google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
         callback: handleGoogleCredential,
-        use_fedcm_for_prompt: true,
         auto_select: false,
-        cancel_on_tap_outside: true
+        cancel_on_tap_outside: true,
+        use_fedcm_for_prompt: false
       });
       googleInitialized = true;
+      renderGoogleButton();
       return true;
     }
  
-    function launchGooglePrompt() {
-      try {
-        if (typeof google.accounts.id.prompt === 'function') {
-          // Nota: con FedCM activo (use_fedcm_for_prompt: true), los métodos de
-          // diagnóstico isNotDisplayed()/getNotDisplayedReason() están deprecados
-          // por Google y dejarán de funcionar, así que ya no los usamos aquí.
-          // Si el One Tap no se muestra (sin sesión de Google activa, modo
-          // incógnito, etc.), el usuario siempre tiene el botón manual disponible.
-          google.accounts.id.prompt();
-        }
-      } catch (error) {
-        console.warn('Google One Tap no está disponible en este navegador:', error);
-      }
-    }
- 
-    // Intenta iniciar sesión automáticamente con la cuenta de Google activa del navegador,
-    // salvo que el usuario ya tenga una sesión aprobada guardada.
-    function attemptAutoGoogleLogin() {
-      // No ejecutamos One Tap automáticamente en carga. Google puede bloquearlo
-      // por FedCM o por configuración del navegador; eso genera el error mostrado.
-      // La autenticación solo debe iniciarse por acción del usuario en el botón.
-      return;
-    }
-
-    async function continueWithGoogle() {
-      if (initGoogleIdentity()) {
-        launchGooglePrompt();
-        return;
-      }
-
-      toast('Configura el CLIENT_ID de Google para usar Gmail real.', 'error');
-    }
- 
-    // Google llama esta función automáticamente en cuanto accounts.google.com/gsi/client termina de cargar.
-    window.onGoogleLibraryLoad = () => {
-      attemptAutoGoogleLogin();
-    };
- 
     document.addEventListener('DOMContentLoaded', () => {
       redirectIfApprovedSession();
-      // Evitamos el prompt automático porque Google lo bloquea en algunos navegadores
-      // y genera los errores de FedCM asociados a la carga del sitio.
+      initGoogleIdentity();
     });
  
     function choose(p) {
