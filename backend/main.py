@@ -2,7 +2,7 @@
 GourmetPOS ERP - Backend FastAPI
 Versión 2.0 Profesional
 """
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
@@ -179,9 +179,22 @@ frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
 
 
 @app.get("/", include_in_schema=False)
-def inicio():
+async def inicio(response: Response):
     """La entrada pública empieza por la adquisición/configuración del plan."""
-    return FileResponse(os.path.join(frontend_path, "planes.html"))
+    planes_html = os.path.join(frontend_path, "planes.html")
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return FileResponse(planes_html)
+
+@app.get("/planes.html", include_in_schema=False)
+async def planes(response: Response):
+    """Sirve planes.html sin caché."""
+    planes_html = os.path.join(frontend_path, "planes.html")
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return FileResponse(planes_html)
 
 if os.path.exists(frontend_path):
     app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")

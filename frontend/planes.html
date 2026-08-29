@@ -1,73 +1,101 @@
-<!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GourmetPOS | Planes</title><link rel="stylesheet" href="assets/css/style.css">
-<style>
-  .plans,.checkout{display:grid;gap:16px}.plans{grid-template-columns:repeat(3,1fr)}.checkout{grid-template-columns:1.5fr 1fr;margin-top:24px}
-  .plan,.qr-card,.card,.inner-card,.summary,.welcome-card,.promo-box{
-    background: rgba(17, 24, 39, 0.42);
-    border: 1px solid rgba(255,255,255,0.12);
-    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.35), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -8px 18px rgba(59,130,246,0.06);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-  }
-  .plan{padding:20px;border-radius:16px;cursor:pointer;transition:transform .2s ease, box-shadow .2s ease,border-color .2s ease}
-  .plan:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 20px 45px rgba(59,130,246,0.18), inset 0 1px 0 rgba(255,255,255,0.16)}
-  .plan.selected{border:2px solid rgba(255,107,53,0.9);background:linear-gradient(180deg, rgba(28,35,54,0.8), rgba(21,27,43,0.68));box-shadow:0 24px 50px rgba(255,107,53,0.18), inset 0 1px 0 rgba(255,255,255,0.14)}
-  .price{font-size:28px;font-weight:800;margin:12px 0}.summary{height:max-content}
-  .google-btn,.action-btn,.btn{
-    border:1px solid rgba(255,255,255,0.12);
-    box-shadow:0 14px 28px rgba(15, 23, 42, 0.28), inset 0 1px 0 rgba(255,255,255,0.18);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
-  }
-  .google-btn:hover,.action-btn:hover,.btn:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 18px 34px rgba(59,130,246,0.22), inset 0 1px 0 rgba(255,255,255,0.2)}
-  .google-btn{background:linear-gradient(135deg, rgba(255,255,255,0.96), rgba(240,245,255,0.78));color:#111827}
-  .google-button-wrap{display:flex;justify-content:center;margin:0 auto 10px;width:min(100%,420px)}
-  .google-button-wrap > div{width:100%!important;display:flex;justify-content:center}
-  .google-mark{width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;border-radius:0;}
-  .google-mark svg{display:block;width:100%;height:100%;}
-  .action-btn.primary{background:linear-gradient(135deg, rgba(59,130,246,0.9), rgba(37,99,235,0.8));}
-  .action-btn.secondary{background:rgba(255,255,255,0.08)}
-  .qr-card{padding:12px;text-align:center;border-radius:16px;}
-  .qr-grid{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:14px;margin-top:18px}
-  .promo-box{background:rgba(15,118,110,0.15);border:1px solid rgba(45,212,191,0.3);color:#dffef3;}
-  .subscription-card{background:rgba(15,23,42,0.35)}
-  button,a.action-btn,.google-btn,.btn{touch-action:manipulation}
-  @media (max-width: 800px){.plans,.checkout{grid-template-columns:1fr}}
-  @media (max-width: 480px){
-    .subscription-shell{padding:12px}
-    .welcome-card{padding:18px 14px}
-    .google-button-wrap{width:100%}
-    .google-button-wrap > div{width:100%!important}
-    .google-btn{width:100%;min-height:52px;font-size:1rem;padding:14px 16px}
-    .auth-row{grid-template-columns:1fr;width:100%}
-    .auth-row .action-btn,.auth-row a.action-btn{min-height:48px;padding:12px 14px}
-    .promo-box{width:100%;padding:12px 14px}
-    .qr-grid{grid-template-columns:1fr;gap:12px}
-    .plans{grid-template-columns:1fr}
-    .checkout{grid-template-columns:1fr}
-    .plan{padding:16px}
-    .btn,.action-btn,.google-btn{min-height:46px}
-  }
-</style></head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GourmetPOS | Planes</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .plans,.checkout{display:grid;gap:16px}.plans{grid-template-columns:repeat(3,1fr)}.checkout{grid-template-columns:1.5fr 1fr;margin-top:24px}
+    .plan,.qr-card,.card,.inner-card,.summary,.welcome-card,.promo-box{
+      background: rgba(17, 24, 39, 0.42);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 18px 40px rgba(2, 6, 23, 0.35), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -8px 18px rgba(59,130,246,0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .plan{padding:20px;border-radius:16px;cursor:pointer;transition:transform .2s ease, box-shadow .2s ease,border-color .2s ease}
+    .plan:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 20px 45px rgba(59,130,246,0.18), inset 0 1px 0 rgba(255,255,255,0.16)}
+    .plan.selected{border:2px solid rgba(255,107,53,0.9);background:linear-gradient(180deg, rgba(28,35,54,0.8), rgba(21,27,43,0.68));box-shadow:0 24px 50px rgba(255,107,53,0.18), inset 0 1px 0 rgba(255,255,255,0.14)}
+    .price{font-size:28px;font-weight:800;margin:12px 0}.summary{height:max-content}
+    .google-btn,.action-btn,.btn{
+      border:1px solid rgba(255,255,255,0.12);
+      box-shadow:0 14px 28px rgba(15, 23, 42, 0.28), inset 0 1px 0 rgba(255,255,255,0.18);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+    .google-btn:hover,.action-btn:hover,.btn:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 18px 34px rgba(59,130,246,0.22), inset 0 1px 0 rgba(255,255,255,0.2)}
+    .google-btn{background:linear-gradient(135deg, rgba(255,255,255,0.96), rgba(240,245,255,0.78));color:#111827}
+    .google-button-wrap{display:flex;justify-content:center;margin:0 auto 10px;width:min(100%,420px)}
+    .google-button-wrap > div{width:100%!important;display:flex;justify-content:center}
+    .google-button-error {display:flex;justify-content:center;padding:10px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.5);border-radius:8px;color:#fca5a5;margin:10px auto;width:min(100%,420px)}
+    .google-mark{width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;border-radius:0;}
+    .google-mark svg{display:block;width:100%;height:100%;}
+    .action-btn.primary{background:linear-gradient(135deg, rgba(59,130,246,0.9), rgba(37,99,235,0.8));}
+    .action-btn.secondary{background:rgba(255,255,255,0.08)}
+    .qr-card{padding:12px;text-align:center;border-radius:16px;}
+    .qr-grid{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:14px;margin-top:18px}
+    .promo-box{background:rgba(15,118,110,0.15);border:1px solid rgba(45,212,191,0.3);color:#dffef3;}
+    .subscription-card{background:rgba(15,23,42,0.35)}
+    button,a.action-btn,.google-btn,.btn{touch-action:manipulation}
+    @media (max-width: 800px){.plans,.checkout{grid-template-columns:1fr}}
+    @media (max-width: 480px){
+      .subscription-shell{padding:12px}
+      .welcome-card{padding:18px 14px}
+      .google-button-wrap{width:100%}
+      .google-button-wrap > div{width:100%!important}
+      .google-btn{width:100%;min-height:52px;font-size:1rem;padding:14px 16px}
+      .auth-row{grid-template-columns:1fr;width:100%}
+      .auth-row .action-btn,.auth-row a.action-btn{min-height:48px;padding:12px 14px}
+      .promo-box{width:100%;padding:12px 14px}
+      .qr-grid{grid-template-columns:1fr;gap:12px}
+      .plans{grid-template-columns:1fr}
+      .checkout{grid-template-columns:1fr}
+      .plan{padding:16px}
+      .btn,.action-btn,.google-btn{min-height:46px}
+    }
+  </style>
+</head>
 <body>
   <div class="subscription-shell">
     <div class="welcome-card">
       <h1>Bienvenido a GourmetPOS Colombia</h1>
       <p>Gestión inteligente para restaurantes · Potenciado con IA</p>
- 
-      <div id="google-button-container" class="google-button-wrap" aria-label="Continuar con Google"></div>
- 
+      
+      <!-- Google Sign-In Button - Custom HTML Button -->
+      <div class="google-button-wrap">
+        <button 
+          id="google-signin-btn" 
+          class="google-btn" 
+          onclick="handleGoogleSignInClick()"
+          style="width:100%;max-width:360px;height:48px;padding:0 16px;display:flex;align-items:center;justify-content:center;gap:12px;border-radius:4px;font-size:16px;font-weight:500;cursor:pointer;border:1px solid #dadce0;background:#fff;color:#3c4043;transition:all 0.2s;"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          <span>Continuar con Google</span>
+        </button>
+      </div>
+      
+      <!-- Error message container for Google SSO issues -->
+      <div id="google-error-msg" class="google-button-error" style="display:none;"></div>
+      
+      <!-- Hidden container for Google GSI renderer (fallback) -->
+      <div id="google-button-container" class="google-button-wrap" style="display:none;" aria-label="Continuar con Google"></div>
+      
       <div class="auth-row" style="margin-top:12px;">
         <a class="action-btn secondary" href="administrador.html" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Acceso admin</a>
       </div>
- 
+      
       <div class="promo-box">
         <span class="promo-icon">✓</span>
         <span>Hasta 3 sedes · Sin tarjeta de crédito</span>
       </div>
- 
+      
       <div class="qr-grid">
         <div class="card qr-card" style="padding:12px;text-align:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
           <div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--text-muted);">QR ingreso</div>
@@ -94,7 +122,7 @@
         </div>
       </div>
     </div>
- 
+    
     <div class="card subscription-card">
       <div class="card-title">Planes y facturación</div>
       <div class="plans">
@@ -111,10 +139,10 @@
         <div class="plan" data-p="empresa" onclick="choose('empresa')">
           <b>Empresa</b>
           <div class="price">$149.000 <small>/mes</small></div>
-          <small>Sedes ilimitadas · soporte dedicado</small>
+          <small>Sedes ilimitados · soporte dedicado</small>
         </div>
       </div>
- 
+      
       <div class="checkout">
         <section class="card inner-card">
           <div class="card-title">Datos de facturación y negocio</div>
@@ -129,25 +157,25 @@
               <div class="form-group"><label>Dirección</label><input id="direccion"></div>
               <div class="form-group"><label>Ciudad</label><input id="ciudad"></div>
             </div>
- 
+            
             <div class="form-group payment-group">
               <label>Método de pago *</label>
               <label class="radio-option"><input type="radio" name="metodo" value="nequi" checked> Nequi</label>
               <label class="radio-option"><input type="radio" name="metodo" value="daviplata"> Daviplata</label>
             </div>
- 
+            
             <div class="form-group">
               <label>Referencia de pago *</label>
               <input id="referencia" required placeholder="Ej: NEQUI 123456 o Daviplata 123456">
             </div>
- 
+            
             <label class="terms" style="text-transform:none;color:var(--text-muted);font-size:13px">
               <input id="acepta" type="checkbox" required>
               Autorizo el uso de mis datos para crear la cuenta, facturar y confirmar el pago.
             </label>
           </form>
         </section>
- 
+        
         <aside class="card summary">
           <div class="card-title">Resumen</div>
           <h2 id="plan-name">Profesional</h2>
@@ -158,32 +186,58 @@
       </div>
     </div>
   </div>
- 
-  <script>
-    window.GOOGLE_CLIENT_ID = '956223061656-keifivrhjkk97nfdhogg1mvgcr0vi5qi.apps.googleusercontent.com';
-  </script>
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Load Google SSO first, before other scripts -->
+  <script src="https://accounts.google.com/gsi/client" async defer onload="onGoogleScriptLoad()"></script>
   <script src="assets/js/api.js"></script>
+  
   <script>
-    const plans = { esencial: ['Esencial', 49000], profesional: ['Profesional', 20000], empresa: ['Empresa', 149000] };
+    // Set Google Client ID globally
+    window.GOOGLE_CLIENT_ID = '956223061656-keifivrhjkk97nfdhogg1mvgcr0vi5qi.apps.googleusercontent.com';
+    
+    // Debug: Log that script has loaded
+    console.log('[GourmetPOS] planes.html loaded');
+    console.log('[GourmetPOS] GOOGLE_CLIENT_ID:', window.GOOGLE_CLIENT_ID);
+    
+    // Plans configuration
+    const plans = {
+      esencial: ['Esencial', 49000],
+      profesional: ['Profesional', 20000],
+      empresa: ['Empresa', 149000]
+    };
+    
     let selected = 'profesional';
     const GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID || '';
- 
-    function redirectIfApprovedSession() {
-      if (localStorage.getItem('gourmetpos_cliente_token')) window.location.href = 'index.html';
+    let googleInitialized = false;
+    let googleButtonRendered = false;
+
+    // Callback when Google script loads
+    function onGoogleScriptLoad() {
+      console.log('[GourmetPOS] Google GSI script loaded');
+      console.log('[GourmetPOS] window.google:', !!window.google);
+      redirectIfApprovedSession();
+      setTimeout(() => {
+        initGoogleIdentity();
+      }, 100);
     }
- 
+
+    function redirectIfApprovedSession() {
+      if (localStorage.getItem('gourmetpos_cliente_token')) {
+        window.location.href = 'index.html';
+      }
+    }
+
     function normalizeGoogleEmail(email) {
       return (email || '').trim().toLowerCase();
     }
- 
+
     function applyGoogleAccount(email, displayName = '') {
       const normalized = normalizeGoogleEmail(email);
       if (!normalized) return;
       const correoInput = document.getElementById('correo');
       const responsableInput = document.getElementById('responsable');
       const nombreNegocio = document.getElementById('nombre');
- 
+
       correoInput.value = normalized;
       if (!responsableInput.value) {
         responsableInput.value = displayName || normalized.split('@')[0].replace(/[._-]+/g, ' ');
@@ -191,12 +245,12 @@
       if (!nombreNegocio.value) {
         nombreNegocio.value = (displayName || normalized.split('@')[0]).replace(/[._-]+/g, ' ').trim() || 'Mi negocio';
       }
- 
+
       correoInput.focus();
       document.getElementById('form').scrollIntoView({ behavior: 'smooth', block: 'start' });
       toast('Cuenta de Google conectada', 'success');
     }
- 
+
     function showApprovedGoogleAccess(email) {
       document.querySelector('.subscription-shell').innerHTML = `
         <div class="card success-card">
@@ -210,80 +264,174 @@
         </div>
       `;
     }
- 
-    let googleInitialized = false;
-    let googleButtonRendered = false;
 
     function renderGoogleButton() {
       const container = document.getElementById('google-button-container');
-      if (!container || !window.google || !google.accounts || !google.accounts.id || googleButtonRendered) return;
+      if (!container) {
+        console.error('[GourmetPOS] Google button container not found');
+        return false;
+      }
 
-      google.accounts.id.renderButton(container, {
-        type: 'standard',
-        theme: 'outline',
-        size: 'large',
-        text: 'continue_with',
-        shape: 'pill',
-        logo_alignment: 'left',
-        width: 360,
-        locale: 'es-419',
-      });
-      googleButtonRendered = true;
+      if (!window.google || !google.accounts || !google.accounts.id) {
+        console.error('[GourmetPOS] Google GSI not available');
+        return false;
+      }
+
+      try {
+        console.log('[GourmetPOS] Attempting GSI fallback render...');
+        google.accounts.id.renderButton(container, {
+          type: 'standard',
+          theme: 'outline',
+          size: 'large',
+          text: 'continue_with',
+          shape: 'pill',
+          logo_alignment: 'left',
+          width: 360,
+          locale: 'es-419',
+        });
+        console.log('[GourmetPOS] GSI fallback rendered successfully');
+        return true;
+      } catch (error) {
+        console.error('[GourmetPOS] Error rendering GSI fallback:', error);
+        return false;
+      }
     }
- 
+
+    function handleGoogleSignInClick() {
+      console.log('[GourmetPOS] Google Sign-In button clicked');
+      
+      if (!window.google || !google.accounts || !google.accounts.id) {
+        console.error('[GourmetPOS] Google GSI not loaded yet');
+        showGoogleError('Google Sign-In no está disponible. Intenta nuevamente.');
+        return;
+      }
+
+      try {
+        // Trigger Google One Tap or credentials picker
+        google.accounts.id.prompt((notification) => {
+          console.log('[GourmetPOS] Google prompt notification:', notification);
+          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+            // Fallback to credentials display
+            google.accounts.id.renderButton(
+              document.getElementById('google-button-container'),
+              {
+                type: 'standard',
+                size: 'large',
+                theme: 'outline'
+              }
+            );
+          }
+        });
+      } catch (error) {
+        console.error('[GourmetPOS] Error triggering Google prompt:', error);
+        showGoogleError('Error al abrir Google Sign-In: ' + error.message);
+      }
+    }
+
+    function showGoogleError(msg) {
+      const errorDiv = document.getElementById('google-error-msg');
+      if (errorDiv) {
+        errorDiv.textContent = msg;
+        errorDiv.style.display = 'flex';
+      }
+    }
+
     async function handleGoogleCredential(response) {
       try {
+        console.log('[GourmetPOS] Google credential received');
         const resultado = await API.post('/suscripciones/google', { credential: response.credential });
         const usuario = resultado.usuario;
+        
         if (resultado.token) {
           localStorage.setItem('gourmetpos_cliente_token', resultado.token);
           localStorage.removeItem('gourmetpos_registro_token');
           window.location.href = 'index.html';
           return;
         }
-        if (resultado.registro_token) localStorage.setItem('gourmetpos_registro_token', resultado.registro_token);
+        
+        if (resultado.registro_token) {
+          localStorage.setItem('gourmetpos_registro_token', resultado.registro_token);
+        }
+        
         applyGoogleAccount(usuario.email, usuario.nombre || 'Usuario de Google');
+        
         if (resultado.estado) {
           toast('Tu solicitud está en estado: ' + resultado.estado, 'warning');
         } else {
           toast('Completa el registro de tu negocio. Solo tendrás que hacerlo una vez.', 'info');
         }
       } catch (error) {
+        console.error('[GourmetPOS] Error handling Google credential:', error);
         toast('No se pudo leer la cuenta de Google. Intenta nuevamente.', 'error');
       }
     }
- 
+
     function initGoogleIdentity() {
+      console.log('[GourmetPOS] Initializing Google Identity...');
+      
       if (googleInitialized) {
-        renderGoogleButton();
+        console.log('[GourmetPOS] Google already initialized');
         return true;
       }
-      if (!(window.google && google.accounts && google.accounts.id && GOOGLE_CLIENT_ID)) return false;
- 
-      google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: handleGoogleCredential,
-        auto_select: false,
-        cancel_on_tap_outside: true,
-        use_fedcm_for_prompt: false
-      });
-      googleInitialized = true;
-      renderGoogleButton();
-      return true;
+
+      if (!GOOGLE_CLIENT_ID) {
+        console.error('[GourmetPOS] GOOGLE_CLIENT_ID is not set');
+        showGoogleError('Google Client ID no configurado');
+        return false;
+      }
+
+      if (!(window.google && google.accounts && google.accounts.id)) {
+        console.error('[GourmetPOS] Google GSI API not available');
+        console.error('[GourmetPOS] Retrying in 500ms...');
+        setTimeout(() => {
+          initGoogleIdentity();
+        }, 500);
+        return false;
+      }
+
+      try {
+        console.log('[GourmetPOS] Initializing Google with client_id:', GOOGLE_CLIENT_ID);
+        google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleCredential,
+          auto_select: false,
+          cancel_on_tap_outside: true,
+          use_fedcm_for_prompt: false
+        });
+        googleInitialized = true;
+        console.log('[GourmetPOS] Google initialized successfully');
+        
+        // Try to render fallback button
+        renderGoogleButton();
+        
+        // Don't auto-show One Tap - let users click the custom button instead
+        // This ensures better UX on mobile
+        
+        return true;
+      } catch (error) {
+        console.error('[GourmetPOS] Error initializing Google:', error);
+        showGoogleError('Error al inicializar Google: ' + error.message);
+        return false;
+      }
     }
- 
+
     document.addEventListener('DOMContentLoaded', () => {
+      console.log('[GourmetPOS] DOM Content Loaded');
       redirectIfApprovedSession();
       initGoogleIdentity();
     });
- 
+
     function choose(p) {
       selected = p;
       document.querySelectorAll('.plan').forEach(x => x.classList.toggle('selected', x.dataset.p === p));
       document.getElementById('plan-name').textContent = plans[p][0];
       document.getElementById('plan-price').textContent = fmt(plans[p][1]) + ' /mes';
     }
- 
+
+    function fmt(n) {
+      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(n);
+    }
+
     function syncReferenciaRequirement() {
       const metodo = document.querySelector('[name=metodo]:checked').value;
       const referenciaInput = document.getElementById('referencia');
@@ -294,13 +442,13 @@
         referenciaInput.value = '';
       }
     }
- 
+
     document.querySelectorAll('input[name=metodo]').forEach(r => r.addEventListener('change', syncReferenciaRequirement));
     syncReferenciaRequirement();
- 
+
     async function send() {
       if (!document.getElementById('form').reportValidity()) return;
- 
+
       const metodo = document.querySelector('[name=metodo]:checked').value;
       const referencia = document.getElementById('referencia').value.trim();
       if ((metodo === 'nequi' || metodo === 'daviplata') && !referencia) {
@@ -308,7 +456,7 @@
         document.getElementById('referencia').focus();
         return;
       }
- 
+
       try {
         const id = x => document.getElementById(x).value;
         const registroToken = localStorage.getItem('gourmetpos_registro_token') || '';
@@ -327,9 +475,9 @@
           acepta_terminos: document.getElementById('acepta').checked,
           registro_token: registroToken,
         });
- 
+
         localStorage.removeItem('gourmetpos_registro_token');
- 
+
         document.querySelector('.subscription-shell').innerHTML = `
           <div class="card success-card">
             <h2>Solicitud enviada</h2>
@@ -348,5 +496,12 @@
         toast(e.message, 'error');
       }
     }
+
+    function toast(msg, type = 'info') {
+      console.log('[GourmetPOS] Toast:', type, msg);
+      // Simple toast implementation - you can improve this
+      alert(msg);
+    }
   </script>
-</body></html>
+</body>
+</html>
