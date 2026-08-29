@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 
 from backend.main import app
 from backend.database import Base, SessionLocal, engine
+from backend.config import get_env
 from backend.models import SolicitudPlan, UsuarioGoogle
 
 
@@ -79,3 +80,27 @@ def test_google_access_creates_registration_token_for_new_user(monkeypatch):
         payload = response.json()
         assert payload["sin_plan"] is True
         assert payload["registro_token"]
+
+
+def test_subscription_status_accepts_approved_email_and_reference():
+    setup_approved_email("cliente@test.com", "123456")
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/suscripciones/estado",
+            json={"email": "cliente@test.com", "referencia": "123456"},
+        )
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["aprobado"] is True
+        assert payload["estado"] == "aprobado"
+
+
+def test_get_env_uses_railway_aliases(monkeypatch):
+    monkeypatch.delenv("GOOGLE_CLIENT_ID", raising=False)
+    monkeypatch.setenv("GOOGLE_CLIENT_ID_WEB", "client-web.apps.googleusercontent.com")
+    monkeypatch.delenv("JWT_SECRET", raising=False)
+    monkeypatch.delenv("SECRET_KEY", raising=False)
+    monkeypatch.setenv("APP_SECRET", "super-secret")
+
+    assert get_env("GOOGLE_CLIENT_ID", "", ("GOOGLE_CLIENT_ID_WEB",)) == "client-web.apps.googleusercontent.com"
+    assert get_env("JWT_SECRET", "", ("SECRET_KEY", "APP_SECRET")) == "super-secret"

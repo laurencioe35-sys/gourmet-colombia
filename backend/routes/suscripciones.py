@@ -1,4 +1,3 @@
-import os
 import jwt
 from datetime import datetime, timedelta
 from uuid import uuid4
@@ -8,15 +7,25 @@ from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 from sqlalchemy.orm import Session
 
+from ..config import get_env
 from ..database import get_db
 from ..models import ConfigRestaurante, SolicitudPlan, UsuarioGoogle
 from ..schemas import SolicitudPlanCreate
 
 router = APIRouter()
-GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
-JWT_SECRET = os.getenv("JWT_SECRET") or os.getenv("SECRET_KEY", "")
-JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
-JWT_EXPIRE_DAYS = int(os.getenv("JWT_EXPIRE_DAYS", "30"))
+GOOGLE_CLIENT_ID = get_env(
+    "GOOGLE_CLIENT_ID",
+    "",
+    (
+        "GOOGLE_CLIENT_ID_WEB",
+        "GOOGLE_CLIENT_ID_ANDROID",
+        "GOOGLE_CLIENT_ID_IOS",
+        "GOOGLE_CLIENT_ID_SERVER",
+    ),
+)
+JWT_SECRET = get_env("JWT_SECRET", get_env("SECRET_KEY", ""), ("APP_SECRET", "JWT_SIGNING_SECRET"))
+JWT_ALGORITHM = get_env("JWT_ALGORITHM", "HS256")
+JWT_EXPIRE_DAYS = int(get_env("JWT_EXPIRE_DAYS", "30"))
 
 PLANES = {
     "esencial": {"nombre": "Esencial", "valor": 49000},

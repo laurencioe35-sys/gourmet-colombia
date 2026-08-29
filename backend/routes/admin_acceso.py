@@ -1,5 +1,4 @@
 import hashlib
-import os
 import secrets
 from datetime import datetime
 
@@ -7,6 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, Header
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+from ..config import get_env
 from ..database import get_db, engine, Base
 from ..models import SolicitudPlan, UsuarioAdmin
 
@@ -27,8 +27,8 @@ def verify_password(password: str, encoded: str):
 
 def bootstrap_admin(db):
     Base.metadata.create_all(bind=engine)
-    email = (os.getenv("ADMIN_EMAIL") or "edwinsumara3@gmail.com").lower().strip()
-    password = os.getenv("ADMIN_PASSWORD") or "GourmetPOS2026!"
+    email = (get_env("ADMIN_EMAIL", "edwinsumara3@gmail.com").lower().strip())
+    password = get_env("ADMIN_PASSWORD", "GourmetPOS2026!")
     user = db.query(UsuarioAdmin).filter_by(email=email).first()
 
     if not user:

@@ -1,4 +1,3 @@
-Planes · HTML
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>GourmetPOS | Planes</title><link rel="stylesheet" href="assets/css/style.css">
@@ -24,11 +23,14 @@ Planes · HTML
   }
   .google-btn:hover,.action-btn:hover,.btn:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 18px 34px rgba(59,130,246,0.22), inset 0 1px 0 rgba(255,255,255,0.2)}
   .google-btn{background:linear-gradient(135deg, rgba(255,255,255,0.96), rgba(240,245,255,0.78));color:#111827}
+  .google-button-wrap{display:flex;justify-content:center;margin:0 auto 10px;width:min(100%,420px)}
+  .google-button-wrap > div{width:100%!important;display:flex;justify-content:center}
   .google-mark{width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;border-radius:0;}
   .google-mark svg{display:block;width:100%;height:100%;}
   .action-btn.primary{background:linear-gradient(135deg, rgba(59,130,246,0.9), rgba(37,99,235,0.8));}
   .action-btn.secondary{background:rgba(255,255,255,0.08)}
   .qr-card{padding:12px;text-align:center;border-radius:16px;}
+  .qr-grid{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:14px;margin-top:18px}
   .promo-box{background:rgba(15,118,110,0.15);border:1px solid rgba(45,212,191,0.3);color:#dffef3;}
   .subscription-card{background:rgba(15,23,42,0.35)}
   button,a.action-btn,.google-btn,.btn{touch-action:manipulation}
@@ -36,6 +38,8 @@ Planes · HTML
   @media (max-width: 480px){
     .subscription-shell{padding:12px}
     .welcome-card{padding:18px 14px}
+    .google-button-wrap{width:100%}
+    .google-button-wrap > div{width:100%!important}
     .google-btn{width:100%;min-height:52px;font-size:1rem;padding:14px 16px}
     .auth-row{grid-template-columns:1fr;width:100%}
     .auth-row .action-btn,.auth-row a.action-btn{min-height:48px;padding:12px 14px}
@@ -48,45 +52,12 @@ Planes · HTML
   }
 </style></head>
 <body>
-  <div id="custom-prompt" class="modal-overlay" style="display:none;">
-    <div class="modal" style="max-width:420px;">
-      <div class="modal-header">
-        <div class="modal-title">Acceso autorizado</div>
-        <button class="modal-close" type="button" onclick="closeAccessModal()" aria-label="Cerrar">×</button>
-      </div>
-      <div class="form-group">
-        <label>Correo aprobado</label>
-        <input id="prompt-email" type="email" placeholder="correo@ejemplo.com">
-      </div>
-      <div class="form-group">
-        <label>Referencia aprobada</label>
-        <input id="prompt-referencia" type="text" placeholder="Ej: NEQUI 123456">
-      </div>
-      <button class="btn btn-primary btn-full" type="button" onclick="submitAccessModal()">Ingresar</button>
-    </div>
-  </div>
- 
   <div class="subscription-shell">
     <div class="welcome-card">
       <h1>Bienvenido a GourmetPOS Colombia</h1>
       <p>Gestión inteligente para restaurantes · Potenciado con IA</p>
  
-      <button id="google-auth-btn" class="google-btn" type="button" onclick="continueWithGoogle()">
-        <span class="google-mark" aria-label="Google" role="img">
-          <svg viewBox="0 0 48 48" aria-hidden="true">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.62l6.85-6.85C35.9 2.86 30.37 0 24 0 14.62 0 6.55 5.38 2.55 13.22l7.98 6.18C12.14 13.23 17.54 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.5 24.55c0-1.65-.15-3.23-.43-4.75H24v9.02h12.7c-.55 2.98-2.25 5.51-4.79 7.22l7.7 5.98C43.95 37.5 46.5 31.75 46.5 24.55z"/>
-            <path fill="#FBBC05" d="M24 46.5c6.48 0 11.93-2.13 15.92-5.77l-7.69-5.98c-2.13 1.43-4.86 2.27-8.23 2.27-6.47 0-11.94-4.37-13.9-10.25l-7.99 6.18C5.12 41.62 13.18 46.5 24 46.5z"/>
-            <path fill="#34A853" d="M10.1 30.72A14.41 14.41 0 0 1 9 24c0-1.6.27-3.16.75-4.64L1.77 13.18A23.31 23.31 0 0 0 0 24c0 3.77.9 7.34 2.55 10.5l7.55-6.28z"/>
-          </svg>
-        </span>
-        <span>Continuar con Google</span>
-      </button>
- 
-      <div class="auth-row">
-        <button class="action-btn secondary" type="button" onclick="validarAccesoCliente()">Ingresar</button>
-        <button class="action-btn primary" type="button" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'});">Crear cuenta</button>
-      </div>
+      <div id="google-button-container" class="google-button-wrap" aria-label="Continuar con Google"></div>
  
       <div class="auth-row" style="margin-top:12px;">
         <a class="action-btn secondary" href="administrador.html" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Acceso admin</a>
@@ -97,11 +68,11 @@ Planes · HTML
         <span>Hasta 3 sedes · Sin tarjeta de crédito</span>
       </div>
  
-      <div class="qr-grid" style="display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:14px;margin-top:18px;">
+      <div class="qr-grid">
         <div class="card qr-card" style="padding:12px;text-align:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
           <div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--text-muted);">QR ingreso</div>
-          <img alt="QR ingreso GourmetPOS" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fgourmetpos.up.railway.app%2F" style="width:120px;height:120px;border-radius:10px;background:white;padding:6px;" />
-          <div style="margin-top:10px;">
+          <img alt="QR ingreso GourmetPOS" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fgourmetpos.up.railway.app%2F" style="width:120px;height:120px;border-radius:10px;background:white;padding:6px;display:block;margin:0 auto 14px;" />
+          <div style="margin-top:0;">
             <a class="action-btn primary" href="https://gourmetpos.up.railway.app/" target="_blank" rel="noopener">Abrir sitio</a>
           </div>
         </div>
@@ -241,6 +212,24 @@ Planes · HTML
     }
  
     let googleInitialized = false;
+    let googleButtonRendered = false;
+
+    function renderGoogleButton() {
+      const container = document.getElementById('google-button-container');
+      if (!container || !window.google || !google.accounts || !google.accounts.id || googleButtonRendered) return;
+
+      google.accounts.id.renderButton(container, {
+        type: 'standard',
+        theme: 'outline',
+        size: 'large',
+        text: 'continue_with',
+        shape: 'pill',
+        logo_alignment: 'left',
+        width: 360,
+        locale: 'es-419',
+      });
+      googleButtonRendered = true;
+    }
  
     async function handleGoogleCredential(response) {
       try {
@@ -265,61 +254,27 @@ Planes · HTML
     }
  
     function initGoogleIdentity() {
-      if (googleInitialized) return true;
+      if (googleInitialized) {
+        renderGoogleButton();
+        return true;
+      }
       if (!(window.google && google.accounts && google.accounts.id && GOOGLE_CLIENT_ID)) return false;
  
       google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
         callback: handleGoogleCredential,
-        use_fedcm_for_prompt: true,
-        auto_select: true,
-        cancel_on_tap_outside: false
+        auto_select: false,
+        cancel_on_tap_outside: true,
+        use_fedcm_for_prompt: false
       });
       googleInitialized = true;
+      renderGoogleButton();
       return true;
     }
  
-    function launchGooglePrompt() {
-      try {
-        if (typeof google.accounts.id.prompt === 'function') {
-          // Nota: con FedCM activo (use_fedcm_for_prompt: true), los métodos de
-          // diagnóstico isNotDisplayed()/getNotDisplayedReason() están deprecados
-          // por Google y dejarán de funcionar, así que ya no los usamos aquí.
-          // Si el One Tap no se muestra (sin sesión de Google activa, modo
-          // incógnito, etc.), el usuario siempre tiene el botón manual disponible.
-          google.accounts.id.prompt();
-        }
-      } catch (error) {
-        console.warn('Google One Tap no está disponible en este navegador:', error);
-      }
-    }
- 
-    // Intenta iniciar sesión automáticamente con la cuenta de Google activa del navegador,
-    // salvo que el usuario ya tenga una sesión aprobada guardada.
-    function attemptAutoGoogleLogin() {
-      if (localStorage.getItem('gourmetpos_cliente_token')) return; // ya hay sesión, redirectIfApprovedSession se encarga
-      if (initGoogleIdentity()) {
-        launchGooglePrompt();
-      }
-    }
- 
-    async function continueWithGoogle() {
-      if (initGoogleIdentity()) {
-        launchGooglePrompt();
-        return;
-      }
- 
-      toast('Configura el CLIENT_ID de Google para usar Gmail real.', 'error');
-    }
- 
-    // Google llama esta función automáticamente en cuanto accounts.google.com/gsi/client termina de cargar.
-    window.onGoogleLibraryLoad = () => {
-      attemptAutoGoogleLogin();
-    };
- 
     document.addEventListener('DOMContentLoaded', () => {
       redirectIfApprovedSession();
-      attemptAutoGoogleLogin(); // por si el script de Google ya estaba listo antes de este punto
+      initGoogleIdentity();
     });
  
     function choose(p) {
@@ -327,58 +282,6 @@ Planes · HTML
       document.querySelectorAll('.plan').forEach(x => x.classList.toggle('selected', x.dataset.p === p));
       document.getElementById('plan-name').textContent = plans[p][0];
       document.getElementById('plan-price').textContent = fmt(plans[p][1]) + ' /mes';
-    }
- 
-    function openAccessModal() {
-      const overlay = document.getElementById('custom-prompt');
-      const emailInput = document.getElementById('prompt-email');
-      const refInput = document.getElementById('prompt-referencia');
-      if (overlay) overlay.style.display = 'flex';
-      if (emailInput) { emailInput.value = ''; emailInput.focus(); }
-      if (refInput) refInput.value = '';
-    }
- 
-    function closeAccessModal() {
-      const overlay = document.getElementById('custom-prompt');
-      if (overlay) overlay.style.display = 'none';
-    }
- 
-    async function submitAccessModal() {
-      const email = document.getElementById('prompt-email')?.value.trim() || '';
-      const referencia = document.getElementById('prompt-referencia')?.value.trim() || '';
-      if (!email || !referencia) {
-        toast('Debes ingresar el correo y la referencia aprobada.', 'error');
-        return;
-      }
- 
-      closeAccessModal();
- 
-      try {
-        const estado = await API.post('/suscripciones/estado', {
-          email,
-          referencia,
-        });
- 
-        if (!estado.aprobado) {
-          toast(estado.mensaje || 'La cuenta aún no está aprobada por el administrador.', 'error');
-          return;
-        }
- 
-        const r = await API.post('/suscripciones/validar-acceso', {
-          email,
-          referencia,
-        });
- 
-        localStorage.setItem('gourmetpos_cliente_token', r.token);
-        toast('Acceso habilitado. Bienvenido.', 'success');
-        setTimeout(() => window.location.href = 'index.html', 500);
-      } catch (e) {
-        toast(e.message || 'La cuenta aún no está aprobada por el administrador.', 'error');
-      }
-    }
- 
-    function validarAccesoCliente() {
-      openAccessModal();
     }
  
     function syncReferenciaRequirement() {
@@ -447,4 +350,3 @@ Planes · HTML
     }
   </script>
 </body></html>
- 
