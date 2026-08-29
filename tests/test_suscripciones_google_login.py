@@ -95,6 +95,17 @@ def test_subscription_status_accepts_approved_email_and_reference():
         assert payload["estado"] == "aprobado"
 
 
+def test_google_auth_returns_401_on_unexpected_google_errors(monkeypatch):
+    monkeypatch.setattr(
+        "backend.routes.suscripciones.verificar_google_credential",
+        lambda credential: (_ for _ in ()).throw(RuntimeError("FedCM aborted")),
+    )
+    with TestClient(app) as client:
+        response = client.post("/api/suscripciones/google", json={"credential": "bad-credential"})
+        assert response.status_code == 401
+        assert "Google" in response.json()["detail"]
+
+
 def test_get_env_uses_railway_aliases(monkeypatch):
     monkeypatch.delenv("GOOGLE_CLIENT_ID", raising=False)
     monkeypatch.setenv("GOOGLE_CLIENT_ID_WEB", "client-web.apps.googleusercontent.com")

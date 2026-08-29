@@ -50,6 +50,8 @@ def crear_token_usuario(usuario: UsuarioGoogle, tipo="cliente"):
 
 
 def verificar_google_credential(credential: str):
+    if not credential:
+        raise HTTPException(status_code=400, detail="Falta la credencial de Google.")
     if not GOOGLE_CLIENT_ID:
         raise HTTPException(status_code=500, detail="GOOGLE_CLIENT_ID no está configurado.")
     try:
@@ -67,7 +69,9 @@ def verificar_google_credential(credential: str):
             "nombre": info.get("name", ""),
             "foto_url": info.get("picture", ""),
         }
-    except ValueError:
+    except (ValueError, TypeError, AttributeError):
+        raise HTTPException(status_code=401, detail="La autenticación con Google no es válida o expiró.")
+    except Exception:
         raise HTTPException(status_code=401, detail="La autenticación con Google no es válida o expiró.")
 
 
@@ -138,7 +142,12 @@ def estado_solicitud(data: dict, db: Session = Depends(get_db)):
 
 @router.post("/google")
 def autenticar_google(data: dict, db: Session = Depends(get_db)):
-    datos = verificar_google_credential(data.get("credential", ""))
+    try:
+        datos = verificar_google_credential(data.get("credential", ""))
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(status_code=401, detail="La autenticación con Google no es válida o expiró.")
     usuario = db.query(UsuarioGoogle).filter(UsuarioGoogle.google_sub == datos["google_sub"]).first()
     nuevo_usuario = usuario is None
     if usuario is None:
