@@ -1,0 +1,78 @@
+﻿=== GOURMET COLOMBIA - RUTAS GOOGLE ===
+
+=== API SUSCRIPCIONES GOOGLE ===
+C:\Users\LasPa\Downloads\GORMET POS\frontend\planes.html
+C:\Users\LasPa\Downloads\GORMET POS\tests\test_suscripciones_google_login.py
+
+=== GOOGLE AUTH ===
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\google\api_core\operations_v1\transports\rest_asyncio.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\google\auth\_cloud_sdk.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\google\auth\_oauth2client.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\google\auth\transport\_custom_tls_signer.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\google\auth\transport\_mtls_helper.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\google\oauth2\challenges.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\google\oauth2\credentials.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\googleapiclient\_auth.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\googleapiclient\discovery.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\googleapiclient\discovery_cache\file_cache.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\pandas\core\frame.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv\Lib\site-packages\pandas\io\gbq.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\api_core\operations_v1\transports\rest_asyncio.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\auth\_agent_identity_utils.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\auth\_cloud_sdk.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\auth\_helpers.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\auth\_oauth2client.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\auth\aio\_helpers.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\auth\aio\transport\sessions.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\auth\transport\_custom_tls_signer.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\auth\transport\_mtls_helper.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\auth\transport\urllib3.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\oauth2\challenges.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\google\oauth2\credentials.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\googleapiclient\_auth.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\googleapiclient\discovery.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\googleapiclient\discovery_cache\file_cache.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\pandas\core\frame.py
+C:\Users\LasPa\Downloads\GORMET POS\.venv311\Lib\site-packages\pandas\io\gbq.py
+C:\Users\LasPa\Downloads\GORMET POS\backend\routes\suscripciones.py
+C:\Users\LasPa\Downloads\GORMET POS\frontend\planes.html
+
+=== ARCHIVOS PRINCIPALES ===
+
+Name                       Mode   Length
+----                       ----   ------
+.agents                    d-----       
+.git                       d--h--       
+.github                    d-----       
+.pytest_cache              d-----       
+.venv                      d-----       
+.venv311                   d-----       
+.vscode                    d-----       
+backend                    d-----       
+frontend                   d-----       
+node_modules               d-----       
+presentacion_gourmetpos_ai d-----       
+tests                      d-----       
+whatsapp_bot               d-----       
+.env                       -a---- 99    
+.env.example               -a---- 2180  
+.gitignore                 -a---- 577   
+.nvmrc                     -a---- 4     
+almuerzo1.1.py             -a---- 82469 
+GITHUB_PUSH.md             -a---- 941   
+gormet_pos.db              -a---- 163840
+instalar_dependencias.bat  -a---- 1739  
+nixpacks.toml              -a---- 308   
+package-lock.json          -a---- 62606 
+package.json               -a---- 517   
+PATH_GOURMET_GOOGLE.txt    -a---- 3156  
+postcss.config.cjs         -a---- 100   
+Procfile                   -a---- 58    
+railway.toml               -a---- 217   
+README.md                  -a---- 8883  
+requirements.txt           -a---- 653   
+runtime.txt                -a---- 12    
+start.bat                  -a---- 1880  
+tailwind.config.cjs        -a---- 183   
+
+

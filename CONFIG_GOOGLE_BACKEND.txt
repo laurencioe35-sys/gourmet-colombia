@@ -1,0 +1,30 @@
+﻿============================================================
+ GOURMET COLOMBIA - CONFIGURACION GOOGLE BACKEND
+============================================================
+
+========== 1. .ENV (SOLO NOMBRES, SIN VALORES) ==========
+JWT_SECRET=OCULTO
+
+========== 2. .ENV.EXAMPLE (NOMBRES DE VARIABLES) ==========
+DATABASE_URL=sqlite:///./gormet_pos.db
+# DATABASE_URL=postgresql://usuario:password@localhost/gormet_pos
+# â”€â”€ GOOGLE GEMINI IA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ObtÃ©n tu API key en: https://aistudio.google.com/
+SECRET_KEY=gormetpos-secret-key-cambiar-en-produccion
+GOOGLE_CLIENT_ID=956223061656-keifivrhjkk97nfdhogg1mvgcr0vi5qi.apps.googleusercontent.com
+JWT_SECRET=cambia_esto_por_una_clave_larga_y_secreta
+JWT_ALGORITHM=HS256
+JWT_EXPIRE_DAYS=30
+
+========== 3. ARCHIVOS DE ARRANQUE BACKEND ==========
+C:\Users\LasPa\Downloads\GORMET POS\backend\database.py
+C:\Users\LasPa\Downloads\GORMET POS\backend\main.py
+C:\Users\LasPa\Downloads\GORMET POS\backend\routes\config.py
+C:\Users\LasPa\Downloads\GORMET POS\backend\routes\whatsapp_webhook.py
+C:\Users\LasPa\Downloads\GORMET POS\backend\services\whatsapp_service.py
+
+========== 4. GOOGLE/JWT EN BACKEND ==========
+C:\Users\LasPa\Downloads\GORMET POS\backend\main.py
+C:\Users\LasPa\Downloads\GORMET POS\backend\routes\suscripciones.py
+
+========== FIN ==========

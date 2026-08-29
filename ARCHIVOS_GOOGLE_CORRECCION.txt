@@ -1,0 +1,728 @@
+﻿============================================================
+ GOURMET COLOMBIA - ARCHIVOS PARA CORREGIR GOOGLE
+============================================================
+
+
+############################################################
+ARCHIVO: C:\Users\LasPa\Downloads\GORMET POS\backend\routes\suscripciones.py
+############################################################
+
+import os
+import jwt
+from datetime import datetime, timedelta
+from uuid import uuid4
+
+from fastapi import APIRouter, Depends, Header, HTTPException
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+from sqlalchemy.orm import Session
+
+from ..database import get_db
+from ..models import ConfigRestaurante, SolicitudPlan, UsuarioGoogle
+from ..schemas import SolicitudPlanCreate
+
+router = APIRouter()
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
+JWT_SECRET = os.getenv("JWT_SECRET") or os.getenv("SECRET_KEY", "")
+JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+JWT_EXPIRE_DAYS = int(os.getenv("JWT_EXPIRE_DAYS", "30"))
+
+PLANES = {
+    "esencial": {"nombre": "Esencial", "valor": 49000},
+    "profesional": {"nombre": "Profesional", "valor": 20000},
+    "empresa": {"nombre": "Empresa", "valor": 149000},
+}
+
+
+def crear_token_usuario(usuario: UsuarioGoogle, tipo="cliente"):
+    if not JWT_SECRET:
+        raise HTTPException(status_code=500, detail="JWT_SECRET no estÃ¡ configurado.")
+    ahora = datetime.utcnow()
+    payload = {
+        "sub": str(usuario.id),
+        "google_sub": usuario.google_sub,
+        "email": usuario.email,
+        "tipo": tipo,
+        "exp": ahora + timedelta(days=JWT_EXPIRE_DAYS),
+        "iat": ahora,
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+
+def verificar_google_credential(credential: str):
+    if not GOOGLE_CLIENT_ID:
+        raise HTTPException(status_code=500, detail="GOOGLE_CLIENT_ID no estÃ¡ configurado.")
+    try:
+        info = id_token.verify_oauth2_token(
+            credential, google_requests.Request(), GOOGLE_CLIENT_ID
+        )
+        if info.get("iss") not in ("accounts.google.com", "https://accounts.google.com"):
+            raise ValueError("Emisor de Google invÃ¡lido")
+        email = (info.get("email") or "").strip().lower()
+        if not email or not info.get("email_verified", False) or not info.get("sub"):
+            raise ValueError("Identidad de Google incompleta")
+        return {
+            "google_sub": info["sub"],
+            "email": email,
+            "nombre": info.get("name", ""),
+            "foto_url": info.get("picture", ""),
+        }
+    except ValueError:
+        raise HTTPException(status_code=401, detail="La autenticaciÃ³n con Google no es vÃ¡lida o expirÃ³.")
+
+
+def _usuario_desde_autorizacion(authorization, db: Session, permitir_registro=True):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="SesiÃ³n no encontrada o formato invÃ¡lido.")
+    try:
+        payload = jwt.decode(authorization[7:], JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        if not permitir_registro and payload.get("tipo") != "cliente":
+            raise ValueError("Tipo de token invÃ¡lido")
+        usuario_id = int(payload["sub"])
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="La sesiÃ³n expirÃ³.")
+    except Exception:
+        raise HTTPException(status_code=401, detail="SesiÃ³n invÃ¡lida.")
+    usuario = db.query(UsuarioGoogle).filter(UsuarioGoogle.id == usuario_id).first()
+    if usuario is None or not usuario.activo:
+        raise HTTPException(status_code=401, detail="Usuario no disponible.")
+    return usuario
+
+
+def _normalizar_referencia(valor: str) -> str:
+    return (valor or "").strip()
+
+
+def _solicitud_por_email_referencia(db: Session, email: str, referencia: str):
+    email_normal = (email or "").strip().lower()
+    referencia_normal = _normalizar_referencia(referencia)
+    if not email_normal or not referencia_normal:
+        return None
+    return db.query(SolicitudPlan).filter(
+        SolicitudPlan.email == email_normal,
+        SolicitudPlan.referencia_pago == referencia_normal,
+    ).order_by(SolicitudPlan.created_at.desc()).first()
+
+
+def _aprobacion_valida(db: Session, email: str, referencia: str):
+    solicitud = _solicitud_por_email_referencia(db, email, referencia)
+    return solicitud is not None and solicitud.estado == "aprobado"
+
+
+def _config(db, clave, defecto=""):
+    item = db.query(ConfigRestaurante).filter(ConfigRestaurante.clave == clave).first()
+    return item.valor if item and item.valor else defecto
+
+
+@router.get("/planes")
+def listar_planes():
+    return PLANES
+
+
+@router.post("/estado")
+def estado_solicitud(data: dict, db: Session = Depends(get_db)):
+    email = (data.get("email") or "").strip().lower()
+    referencia = _normalizar_referencia(data.get("referencia"))
+    if not email or not referencia:
+        raise HTTPException(status_code=400, detail="Debes ingresar el correo y la referencia para consultar el estado.")
+
+    solicitud = _solicitud_por_email_referencia(db, email, referencia)
+    if solicitud is None:
+        return {"estado": "pendiente", "aprobado": False, "mensaje": "No existe una solicitud registrada para este correo y referencia."}
+
+    if solicitud.estado == "aprobado":
+        return {"estado": "aprobado", "aprobado": True, "mensaje": "La solicitud ya fue aprobada por el administrador."}
+
+    return {"estado": solicitud.estado, "aprobado": False, "mensaje": "La solicitud sigue pendiente por validaciÃ³n del administrador."}
+
+
+@router.post("/google")
+def autenticar_google(data: dict, db: Session = Depends(get_db)):
+    datos = verificar_google_credential(data.get("credential", ""))
+    usuario = db.query(UsuarioGoogle).filter(UsuarioGoogle.google_sub == datos["google_sub"]).first()
+    nuevo_usuario = usuario is None
+    if usuario is None:
+        usuario_por_email = db.query(UsuarioGoogle).filter(UsuarioGoogle.email == datos["email"]).first()
+        if usuario_por_email:
+            raise HTTPException(status_code=409, detail="El correo ya estÃ¡ vinculado a otra cuenta de Google.")
+        usuario = UsuarioGoogle(**datos)
+        db.add(usuario)
+        db.flush()
+    else:
+        usuario.email = datos["email"]
+        usuario.nombre = datos["nombre"]
+        usuario.foto_url = datos["foto_url"]
+        usuario.last_login_at = datetime.utcnow()
+
+    solicitud = None
+    if usuario.solicitud_plan_id:
+        solicitud = db.query(SolicitudPlan).filter(SolicitudPlan.id == usuario.solicitud_plan_id).first()
+    if solicitud is None:
+        solicitud = db.query(SolicitudPlan).filter(SolicitudPlan.email == usuario.email).order_by(SolicitudPlan.created_at.desc()).first()
+        if solicitud:
+            usuario.solicitud_plan_id = solicitud.id
+    db.commit()
+
+    respuesta = {"ok": True, "nuevo_usuario": nuevo_usuario, "usuario": {
+        "id": usuario.id, "email": usuario.email, "nombre": usuario.nombre, "foto_url": usuario.foto_url,
+    }}
+    if solicitud is None:
+        respuesta.update({"aprobado": False, "sin_plan": True, "registro_token": crear_token_usuario(usuario, "registro")})
+        return respuesta
+    if solicitud.estado != "aprobado":
+        respuesta.update({"aprobado": False, "estado": solicitud.estado, "registro_token": crear_token_usuario(usuario, "registro")})
+        return respuesta
+    if not usuario.activo:
+        raise HTTPException(status_code=403, detail="Esta cuenta estÃ¡ desactivada.")
+    respuesta.update({"aprobado": True, "token": crear_token_usuario(usuario)})
+    return respuesta
+
+
+@router.post("/validar-acceso")
+def validar_acceso(data: dict, db: Session = Depends(get_db)):
+    email = (data.get("email") or "").strip().lower()
+    referencia = _normalizar_referencia(data.get("referencia"))
+    estado = estado_solicitud({"email": email, "referencia": referencia}, db)
+    if not estado.get("aprobado"):
+        raise HTTPException(status_code=403, detail="La cuenta aÃºn no estÃ¡ aprobada por el administrador")
+    usuario = db.query(UsuarioGoogle).filter(UsuarioGoogle.email == email).first()
+    if usuario is None:
+        raise HTTPException(status_code=403, detail="Primero debes identificarte con tu cuenta de Google.")
+    return {"ok": True, "token": crear_token_usuario(usuario), "mensaje": "Acceso habilitado"}
+
+
+@router.post("/solicitudes")
+def crear_solicitud(
+    data: SolicitudPlanCreate,
+    authorization: str | None = Header(default=None),
+    db: Session = Depends(get_db),
+):
+    usuario = _usuario_desde_autorizacion(authorization, db)
+    if data.plan not in PLANES:
+        raise HTTPException(status_code=400, detail="Selecciona un plan vÃ¡lido")
+    if data.metodo_pago not in ("nequi", "daviplata"):
+        raise HTTPException(status_code=400, detail="Selecciona Nequi o Daviplata")
+    if not data.acepta_terminos:
+        raise HTTPException(status_code=400, detail="Debes aceptar el tratamiento de datos")
+
+    referencia_pago = _normalizar_referencia(data.referencia_pago)
+    if not referencia_pago:
+        raise HTTPException(status_code=400, detail="Debes ingresar la referencia del pago de Nequi o Daviplata antes de continuar")
+
+    email = (data.email or "").strip().lower()
+    if email != usuario.email:
+        raise HTTPException(status_code=400, detail="El correo debe coincidir con la cuenta de Google.")
+
+    referencia_existente = db.query(SolicitudPlan).filter(
+        SolicitudPlan.referencia_pago == referencia_pago,
+        SolicitudPlan.email != email,
+    ).first()
+    if referencia_existente:
+        raise HTTPException(
+            status_code=400,
+            detail="La referencia de pago ya estÃ¡ asociada a otro usuario o correo y no puede reutilizarse.",
+        )
+
+    email_existente = db.query(SolicitudPlan).filter(
+        SolicitudPlan.email == email,
+        SolicitudPlan.estado.in_(["pendiente", "reportado", "aprobado"]),
+    ).first()
+    if email_existente:
+        mensaje = (
+            "Esta cuenta ya estÃ¡ registrada y aprobada. Ingresa nuevamente usando Google."
+            if email_existente.estado == "aprobado"
+            else "Esta cuenta ya tiene una solicitud registrada y estÃ¡ pendiente de validaciÃ³n."
+        )
+        raise HTTPException(
+            status_code=400,
+            detail=mensaje,
+        )
+
+    info = PLANES[data.plan]
+    referencia = f"GP-{datetime.now():%Y%m%d}-{uuid4().hex[:6].upper()}"
+    solicitud = SolicitudPlan(
+        referencia=referencia,
+        plan=data.plan,
+        valor=info["valor"],
+        estado="reportado" if referencia_pago else "pendiente",
+        **data.model_dump(exclude={"plan", "referencia_pago"}),
+    )
+    solicitud.referencia_pago = referencia_pago
+    db.add(solicitud)
+    db.flush()
+    usuario.solicitud_plan_id = solicitud.id
+
+    # Estos campos alimentan el encabezado de los tickets del POS.
+    valores = {"nombre": data.nombre_negocio, "ruc": data.nit, "razon_social": data.razon_social,
+               "direccion": data.direccion, "telefono": data.telefono, "ciudad": data.ciudad,
+               "email_facturacion": data.email, "plan_activo": info["nombre"]}
+    for clave, valor in valores.items():
+        item = db.query(ConfigRestaurante).filter(ConfigRestaurante.clave == clave).first()
+        if item: item.valor = valor
+        else: db.add(ConfigRestaurante(clave=clave, valor=valor))
+    db.commit()
+
+    cuenta = _config(db, data.metodo_pago, "Por configurar")
+    return {"ok": True, "referencia": referencia, "estado": solicitud.estado, "plan": info["nombre"],
+            "valor": info["valor"], "cuenta_destino": cuenta,
+            "mensaje": "Solicitud registrada. Te enviaremos la confirmaciÃ³n al correo indicado cuando validemos el pago."}
+
+
+@router.get("/me")
+def obtener_usuario_actual(
+    authorization: str | None = Header(default=None),
+    db: Session = Depends(get_db),
+):
+    usuario = _usuario_desde_autorizacion(authorization, db, permitir_registro=False)
+    return {"id": usuario.id, "email": usuario.email, "nombre": usuario.nombre, "foto_url": usuario.foto_url}
+
+
+
+############################################################
+ARCHIVO: C:\Users\LasPa\Downloads\GORMET POS\frontend\planes.html
+############################################################
+
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GourmetPOS | Planes</title><link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .plans,.checkout{display:grid;gap:16px}.plans{grid-template-columns:repeat(3,1fr)}.checkout{grid-template-columns:1.5fr 1fr;margin-top:24px}
+  .plan,.qr-card,.card,.inner-card,.summary,.welcome-card,.promo-box{
+    background: rgba(17, 24, 39, 0.42);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.35), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -8px 18px rgba(59,130,246,0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .plan{padding:20px;border-radius:16px;cursor:pointer;transition:transform .2s ease, box-shadow .2s ease,border-color .2s ease}
+  .plan:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 20px 45px rgba(59,130,246,0.18), inset 0 1px 0 rgba(255,255,255,0.16)}
+  .plan.selected{border:2px solid rgba(255,107,53,0.9);background:linear-gradient(180deg, rgba(28,35,54,0.8), rgba(21,27,43,0.68));box-shadow:0 24px 50px rgba(255,107,53,0.18), inset 0 1px 0 rgba(255,255,255,0.14)}
+  .price{font-size:28px;font-weight:800;margin:12px 0}.summary{height:max-content}
+  .google-btn,.action-btn,.btn{
+    border:1px solid rgba(255,255,255,0.12);
+    box-shadow:0 14px 28px rgba(15, 23, 42, 0.28), inset 0 1px 0 rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  }
+  .google-btn:hover,.action-btn:hover,.btn:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 18px 34px rgba(59,130,246,0.22), inset 0 1px 0 rgba(255,255,255,0.2)}
+  .google-btn{background:linear-gradient(135deg, rgba(255,255,255,0.96), rgba(240,245,255,0.78));color:#111827}
+  .action-btn.primary{background:linear-gradient(135deg, rgba(59,130,246,0.9), rgba(37,99,235,0.8));}
+  .action-btn.secondary{background:rgba(255,255,255,0.08)}
+  .qr-card{padding:12px;text-align:center;border-radius:16px;}
+  .promo-box{background:rgba(15,118,110,0.15);border:1px solid rgba(45,212,191,0.3);color:#dffef3;}
+  .subscription-card{background:rgba(15,23,42,0.35)}
+  button,a.action-btn,.google-btn,.btn{touch-action:manipulation}
+  @media (max-width: 800px){.plans,.checkout{grid-template-columns:1fr}}
+  @media (max-width: 480px){
+    .subscription-shell{padding:12px}
+    .welcome-card{padding:18px 14px}
+    .google-btn{width:100%;min-height:52px;font-size:1rem;padding:14px 16px}
+    .auth-row{grid-template-columns:1fr;width:100%}
+    .auth-row .action-btn,.auth-row a.action-btn{min-height:48px;padding:12px 14px}
+    .promo-box{width:100%;padding:12px 14px}
+    .qr-grid{grid-template-columns:1fr;gap:12px}
+    .plans{grid-template-columns:1fr}
+    .checkout{grid-template-columns:1fr}
+    .plan{padding:16px}
+    .btn,.action-btn,.google-btn{min-height:46px}
+  }
+</style></head>
+<body>
+  <div id="custom-prompt" class="modal-overlay" style="display:none;">
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-header">
+        <div class="modal-title">Acceso autorizado</div>
+        <button class="modal-close" type="button" onclick="closeAccessModal()" aria-label="Cerrar">Ã—</button>
+      </div>
+      <div class="form-group">
+        <label>Correo aprobado</label>
+        <input id="prompt-email" type="email" placeholder="correo@ejemplo.com">
+      </div>
+      <div class="form-group">
+        <label>Referencia aprobada</label>
+        <input id="prompt-referencia" type="text" placeholder="Ej: NEQUI 123456">
+      </div>
+      <button class="btn btn-primary btn-full" type="button" onclick="submitAccessModal()">Ingresar</button>
+    </div>
+  </div>
+ 
+  <div class="subscription-shell">
+    <div class="welcome-card">
+      <h1>Bienvenido a GourmetPOS Colombia</h1>
+      <p>GestiÃ³n inteligente para restaurantes Â· Potenciado con IA</p>
+ 
+      <button id="google-auth-btn" class="google-btn" type="button" onclick="continueWithGoogle()">
+        <span class="google-mark">G</span>
+        <span>Continuar con Google</span>
+      </button>
+ 
+      <div class="auth-row">
+        <button class="action-btn secondary" type="button" onclick="validarAccesoCliente()">Ingresar</button>
+        <button class="action-btn primary" type="button" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'});">Crear cuenta</button>
+      </div>
+ 
+      <div class="auth-row" style="margin-top:12px;">
+        <a class="action-btn secondary" href="administrador.html" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Acceso admin</a>
+      </div>
+ 
+      <div class="promo-box">
+        <span class="promo-icon">âœ“</span>
+        <span>Hasta 3 sedes Â· Sin tarjeta de crÃ©dito</span>
+      </div>
+ 
+      <div class="qr-grid" style="display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:14px;margin-top:18px;">
+        <div class="card qr-card" style="padding:12px;text-align:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
+          <div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--text-muted);">QR ingreso</div>
+          <img alt="QR ingreso GourmetPOS" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fgourmetpos.up.railway.app%2F" style="width:120px;height:120px;border-radius:10px;background:white;padding:6px;display:block;margin:0 auto 14px;" />
+          <div style="margin-top:0;">
+            <a class="action-btn primary" href="https://gourmetpos.up.railway.app/" target="_blank" rel="noopener">Abrir sitio</a>
+          </div>
+        </div>
+        <div class="card qr-card" style="padding:12px;text-align:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
+          <div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--text-muted);">QR Nequi</div>
+          <img alt="QR pagar Nequi" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fwa.me%2F573118635766%3Ftext%3DHola%252C%2520quiero%2520pagar%2520mi%2520suscripci%25C3%25B3n%2520de%2520GourmetPOS%2520al%2520n%25C3%25BAmero%25203118635766" style="width:120px;height:120px;border-radius:10px;background:white;padding:6px;" />
+          <div style="margin-top:10px;font-size:12px;color:var(--text-muted);">Nequi: 3118635766</div>
+          <div style="margin-top:8px;">
+            <a class="action-btn primary" href="https://wa.me/573118635766?text=Hola%2C%20quiero%20pagar%20mi%20suscripci%C3%B3n%20de%20GourmetPOS%20al%20n%C3%BAmero%203118635766" target="_blank" rel="noopener">Pagar por WhatsApp</a>
+          </div>
+        </div>
+        <div class="card qr-card" style="padding:12px;text-align:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
+          <div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--text-muted);">QR video</div>
+          <img alt="QR video YouTube" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fwww.youtube.com%2F%40edusumape" style="width:120px;height:120px;border-radius:10px;background:white;padding:6px;" />
+          <div style="margin-top:10px;font-size:12px;color:var(--text-muted);">Canal: @edusumape</div>
+          <div style="margin-top:8px;">
+            <a class="action-btn primary" href="https://www.youtube.com/@edusumape" target="_blank" rel="noopener">Ver video</a>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="card subscription-card">
+      <div class="card-title">Planes y facturaciÃ³n</div>
+      <div class="plans">
+        <div class="plan" data-p="esencial" onclick="choose('esencial')">
+          <b>Esencial</b>
+          <div class="price">$49.000 <small>/mes</small></div>
+          <small>1 sede Â· POS Â· reportes bÃ¡sicos</small>
+        </div>
+        <div class="plan selected" data-p="profesional" onclick="choose('profesional')">
+          <b>Profesional</b>
+          <div class="price">$20.000 <small>/mes</small></div>
+          <small>3 sedes Â· WhatsApp Â· reportes avanzados</small>
+        </div>
+        <div class="plan" data-p="empresa" onclick="choose('empresa')">
+          <b>Empresa</b>
+          <div class="price">$149.000 <small>/mes</small></div>
+          <small>Sedes ilimitadas Â· soporte dedicado</small>
+        </div>
+      </div>
+ 
+      <div class="checkout">
+        <section class="card inner-card">
+          <div class="card-title">Datos de facturaciÃ³n y negocio</div>
+          <form id="form">
+            <div class="grid-2">
+              <div class="form-group"><label>Nombre del negocio *</label><input id="nombre" required></div>
+              <div class="form-group"><label>NIT *</label><input id="nit" required placeholder="900.123.456-7"></div>
+              <div class="form-group"><label>RazÃ³n social</label><input id="razon"></div>
+              <div class="form-group"><label>Responsable *</label><input id="responsable" required></div>
+              <div class="form-group"><label>Correo de confirmaciÃ³n *</label><input id="correo" type="email" required></div>
+              <div class="form-group"><label>Celular / WhatsApp *</label><input id="telefono" required></div>
+              <div class="form-group"><label>DirecciÃ³n</label><input id="direccion"></div>
+              <div class="form-group"><label>Ciudad</label><input id="ciudad"></div>
+            </div>
+ 
+            <div class="form-group payment-group">
+              <label>MÃ©todo de pago *</label>
+              <label class="radio-option"><input type="radio" name="metodo" value="nequi" checked> Nequi</label>
+              <label class="radio-option"><input type="radio" name="metodo" value="daviplata"> Daviplata</label>
+            </div>
+ 
+            <div class="form-group">
+              <label>Referencia de pago *</label>
+              <input id="referencia" required placeholder="Ej: NEQUI 123456 o Daviplata 123456">
+            </div>
+ 
+            <label class="terms" style="text-transform:none;color:var(--text-muted);font-size:13px">
+              <input id="acepta" type="checkbox" required>
+              Autorizo el uso de mis datos para crear la cuenta, facturar y confirmar el pago.
+            </label>
+          </form>
+        </section>
+ 
+        <aside class="card summary">
+          <div class="card-title">Resumen</div>
+          <h2 id="plan-name">Profesional</h2>
+          <div id="plan-price" class="price">$20.000 /mes</div>
+          <p>Al enviar recibirÃ¡s una referencia y la cuenta de pago.</p>
+          <button class="btn btn-primary btn-full" onclick="send()">Registrar y continuar</button>
+        </aside>
+      </div>
+    </div>
+  </div>
+ 
+  <script>
+    window.GOOGLE_CLIENT_ID = '956223061656-keifivrhjkk97nfdhogg1mvgcr0vi5qi.apps.googleusercontent.com';
+  </script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="assets/js/api.js"></script>
+  <script>
+    const plans = { esencial: ['Esencial', 49000], profesional: ['Profesional', 20000], empresa: ['Empresa', 149000] };
+    let selected = 'profesional';
+    const GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID || '';
+ 
+    function redirectIfApprovedSession() {
+      if (localStorage.getItem('gourmetpos_cliente_token')) window.location.href = 'index.html';
+    }
+ 
+    function normalizeGoogleEmail(email) {
+      return (email || '').trim().toLowerCase();
+    }
+ 
+    function applyGoogleAccount(email, displayName = '') {
+      const normalized = normalizeGoogleEmail(email);
+      if (!normalized) return;
+      const correoInput = document.getElementById('correo');
+      const responsableInput = document.getElementById('responsable');
+      const nombreNegocio = document.getElementById('nombre');
+ 
+      correoInput.value = normalized;
+      if (!responsableInput.value) {
+        responsableInput.value = displayName || normalized.split('@')[0].replace(/[._-]+/g, ' ');
+      }
+      if (!nombreNegocio.value) {
+        nombreNegocio.value = (displayName || normalized.split('@')[0]).replace(/[._-]+/g, ' ').trim() || 'Mi negocio';
+      }
+ 
+      correoInput.focus();
+      document.getElementById('form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      toast('Cuenta de Google conectada', 'success');
+    }
+ 
+    function showApprovedGoogleAccess(email) {
+      document.querySelector('.subscription-shell').innerHTML = `
+        <div class="card success-card">
+          <h2>Cuenta aprobada</h2>
+          <p>Tu correo ${email} ya estÃ¡ activo en GourmetPOS.</p>
+          <div class="success-box">
+            <b>Correo:</b> ${email}<br>
+            <b>Estado:</b> Acceso habilitado
+          </div>
+          <button class="btn btn-primary" type="button" onclick="window.location.href='index.html'">Entrar al ERP</button>
+        </div>
+      `;
+    }
+ 
+    let googleInitialized = false;
+ 
+    async function handleGoogleCredential(response) {
+      try {
+        const resultado = await API.post('/suscripciones/google', { credential: response.credential });
+        const usuario = resultado.usuario;
+        if (resultado.token) {
+          localStorage.setItem('gourmetpos_cliente_token', resultado.token);
+          localStorage.removeItem('gourmetpos_registro_token');
+          window.location.href = 'index.html';
+          return;
+        }
+        if (resultado.registro_token) localStorage.setItem('gourmetpos_registro_token', resultado.registro_token);
+        applyGoogleAccount(usuario.email, usuario.nombre || 'Usuario de Google');
+        if (resultado.estado) {
+          toast('Tu solicitud estÃ¡ en estado: ' + resultado.estado, 'warning');
+        } else {
+          toast('Completa el registro de tu negocio. Solo tendrÃ¡s que hacerlo una vez.', 'info');
+        }
+      } catch (error) {
+        toast('No se pudo leer la cuenta de Google. Intenta nuevamente.', 'error');
+      }
+    }
+ 
+    function initGoogleIdentity() {
+      if (googleInitialized) return true;
+      if (!(window.google && google.accounts && google.accounts.id && GOOGLE_CLIENT_ID)) return false;
+ 
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleCredential,
+        use_fedcm_for_prompt: true,
+        auto_select: true,
+        cancel_on_tap_outside: false
+      });
+      googleInitialized = true;
+      return true;
+    }
+ 
+    function launchGooglePrompt() {
+      try {
+        if (typeof google.accounts.id.prompt === 'function') {
+          // Nota: con FedCM activo (use_fedcm_for_prompt: true), los mÃ©todos de
+          // diagnÃ³stico isNotDisplayed()/getNotDisplayedReason() estÃ¡n deprecados
+          // por Google y dejarÃ¡n de funcionar, asÃ­ que ya no los usamos aquÃ­.
+          // Si el One Tap no se muestra (sin sesiÃ³n de Google activa, modo
+          // incÃ³gnito, etc.), el usuario siempre tiene el botÃ³n manual disponible.
+          google.accounts.id.prompt();
+        }
+      } catch (error) {
+        console.warn('Google One Tap no estÃ¡ disponible en este navegador:', error);
+      }
+    }
+ 
+    // Intenta iniciar sesiÃ³n automÃ¡ticamente con la cuenta de Google activa del navegador,
+    // salvo que el usuario ya tenga una sesiÃ³n aprobada guardada.
+    function attemptAutoGoogleLogin() {
+      if (localStorage.getItem('gourmetpos_cliente_token')) return; // ya hay sesiÃ³n, redirectIfApprovedSession se encarga
+      if (initGoogleIdentity()) {
+        launchGooglePrompt();
+      }
+    }
+ 
+    async function continueWithGoogle() {
+      if (initGoogleIdentity()) {
+        launchGooglePrompt();
+        return;
+      }
+ 
+      toast('Configura el CLIENT_ID de Google para usar Gmail real.', 'error');
+    }
+ 
+    // Google llama esta funciÃ³n automÃ¡ticamente en cuanto accounts.google.com/gsi/client termina de cargar.
+    window.onGoogleLibraryLoad = () => {
+      attemptAutoGoogleLogin();
+    };
+ 
+    document.addEventListener('DOMContentLoaded', () => {
+      redirectIfApprovedSession();
+      attemptAutoGoogleLogin(); // por si el script de Google ya estaba listo antes de este punto
+    });
+ 
+    function choose(p) {
+      selected = p;
+      document.querySelectorAll('.plan').forEach(x => x.classList.toggle('selected', x.dataset.p === p));
+      document.getElementById('plan-name').textContent = plans[p][0];
+      document.getElementById('plan-price').textContent = fmt(plans[p][1]) + ' /mes';
+    }
+ 
+    function openAccessModal() {
+      const overlay = document.getElementById('custom-prompt');
+      const emailInput = document.getElementById('prompt-email');
+      const refInput = document.getElementById('prompt-referencia');
+      if (overlay) overlay.style.display = 'flex';
+      if (emailInput) { emailInput.value = ''; emailInput.focus(); }
+      if (refInput) refInput.value = '';
+    }
+ 
+    function closeAccessModal() {
+      const overlay = document.getElementById('custom-prompt');
+      if (overlay) overlay.style.display = 'none';
+    }
+ 
+    async function submitAccessModal() {
+      const email = document.getElementById('prompt-email')?.value.trim() || '';
+      const referencia = document.getElementById('prompt-referencia')?.value.trim() || '';
+      if (!email || !referencia) {
+        toast('Debes ingresar el correo y la referencia aprobada.', 'error');
+        return;
+      }
+ 
+      closeAccessModal();
+ 
+      try {
+        const estado = await API.post('/suscripciones/estado', {
+          email,
+          referencia,
+        });
+ 
+        if (!estado.aprobado) {
+          toast(estado.mensaje || 'La cuenta aÃºn no estÃ¡ aprobada por el administrador.', 'error');
+          return;
+        }
+ 
+        const r = await API.post('/suscripciones/validar-acceso', {
+          email,
+          referencia,
+        });
+ 
+        localStorage.setItem('gourmetpos_cliente_token', r.token);
+        toast('Acceso habilitado. Bienvenido.', 'success');
+        setTimeout(() => window.location.href = 'index.html', 500);
+      } catch (e) {
+        toast(e.message || 'La cuenta aÃºn no estÃ¡ aprobada por el administrador.', 'error');
+      }
+    }
+ 
+    function validarAccesoCliente() {
+      openAccessModal();
+    }
+ 
+    function syncReferenciaRequirement() {
+      const metodo = document.querySelector('[name=metodo]:checked').value;
+      const referenciaInput = document.getElementById('referencia');
+      const required = metodo === 'nequi' || metodo === 'daviplata';
+      referenciaInput.required = required;
+      referenciaInput.placeholder = required ? 'Ej: NEQUI 123456 o Daviplata 123456' : 'Opcional para pago en efectivo';
+      if (!required) {
+        referenciaInput.value = '';
+      }
+    }
+ 
+    document.querySelectorAll('input[name=metodo]').forEach(r => r.addEventListener('change', syncReferenciaRequirement));
+    syncReferenciaRequirement();
+ 
+    async function send() {
+      if (!document.getElementById('form').reportValidity()) return;
+ 
+      const metodo = document.querySelector('[name=metodo]:checked').value;
+      const referencia = document.getElementById('referencia').value.trim();
+      if ((metodo === 'nequi' || metodo === 'daviplata') && !referencia) {
+        toast('Debes ingresar la referencia del pago de ' + (metodo === 'nequi' ? 'Nequi' : 'Daviplata') + ' antes de continuar.', 'error');
+        document.getElementById('referencia').focus();
+        return;
+      }
+ 
+      try {
+        const id = x => document.getElementById(x).value;
+        const registroToken = localStorage.getItem('gourmetpos_registro_token') || '';
+        const r = await API.post('/suscripciones/solicitudes', {
+          plan: selected,
+          nombre_negocio: id('nombre'),
+          nit: id('nit'),
+          razon_social: id('razon'),
+          responsable: id('responsable'),
+          email: id('correo'),
+          telefono: id('telefono'),
+          direccion: id('direccion'),
+          ciudad: id('ciudad'),
+          metodo_pago: metodo,
+          referencia_pago: referencia,
+          acepta_terminos: document.getElementById('acepta').checked,
+          registro_token: registroToken,
+        });
+ 
+        localStorage.removeItem('gourmetpos_registro_token');
+ 
+        document.querySelector('.subscription-shell').innerHTML = `
+          <div class="card success-card">
+            <h2>Solicitud enviada</h2>
+            <p>Tu solicitud quedÃ³ registrada y pendiente por validaciÃ³n del administrador.</p>
+            <div class="success-box">
+              <b>Referencia enviada:</b> ${referencia}<br>
+              <b>Plan:</b> ${selected}<br>
+              <b>Estado:</b> Pendiente de aprobaciÃ³n<br>
+              <b>Correo:</b> ${document.getElementById('correo').value}
+            </div>
+            <p>Una vez aprobada tu referencia de pago, podrÃ¡s ingresar automÃ¡ticamente con esta misma cuenta de Google.</p>
+            <button class="btn btn-primary" type="button" onclick="location.reload()">Volver</button>
+          </div>
+        `;
+      } catch (e) {
+        toast(e.message, 'error');
+      }
+    }
+  </script>
+</body></html>
+
+
+============================================================
+ FIN DEL ARCHIVO
+============================================================

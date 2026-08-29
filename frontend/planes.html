@@ -192,8 +192,13 @@
   <script src="assets/js/api.js"></script>
   
   <script>
+    // Global initialization flag - define FIRST before any function uses it
+    let googleInitialized = false;
+    let googleButtonRendered = false;
+    
     // Set Google Client ID globally
     window.GOOGLE_CLIENT_ID = '956223061656-keifivrhjkk97nfdhogg1mvgcr0vi5qi.apps.googleusercontent.com';
+    const GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID || '';
     
     // Debug: Log that script has loaded
     console.log('[GourmetPOS] planes.html loaded');
@@ -207,9 +212,6 @@
     };
     
     let selected = 'profesional';
-    const GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID || '';
-    let googleInitialized = false;
-    let googleButtonRendered = false;
 
     // Callback when Google script loads
     function onGoogleScriptLoad() {
