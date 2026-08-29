@@ -268,13 +268,14 @@
       // por FedCM o por configuración del navegador; eso genera el error mostrado.
       // La autenticación solo debe iniciarse por acción del usuario en el botón.
       return;
- 
+    }
+
     async function continueWithGoogle() {
       if (initGoogleIdentity()) {
         launchGooglePrompt();
         return;
       }
- 
+
       toast('Configura el CLIENT_ID de Google para usar Gmail real.', 'error');
     }
  
