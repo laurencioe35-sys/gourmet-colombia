@@ -1047,11 +1047,12 @@ function renderAgenteVoz() {
     }
     const carrusel = document.getElementById('voz-carrusel');
     carrusel.classList.toggle('vista-pc', vistaVoz === 'pc');
+    const esCorriente = agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente');
     carrusel.innerHTML = agenteVoz.categoria.productos.map(p => `
         <button class="voz-producto" onclick="seleccionarProductoVoz(${p.id})" aria-label="Agregar ${p.nombre}">
             <span class="voz-producto-emoji">${p.emoji}</span>
             <span class="voz-producto-nombre">${p.nombre}</span>
-            <span class="voz-producto-precio">${fmt(p.precio)}</span>
+            <span class="voz-producto-precio">${esCorriente ? 'Proteína disponible' : fmt(p.precio)}</span>
         </button>
     `).join('');
     actualizarBotonVistaVoz();
@@ -1252,6 +1253,7 @@ async function confirmarProductoVoz() {
     if (item && esCorriente) {
         const ensaladaNombre = document.getElementById('voz-ensalada')?.value || 'ensalada del día';
         const notas = `${cantidad} almuerzo(s), proteína: ${producto.nombre}; sopa: ${agenteVoz.sopaNombre}, ${cantidad - agenteVoz.quitarSopa} con sopa y ${agenteVoz.quitarSopa} sin sopa; arroz: ${cantidad - agenteVoz.quitarArroz} con arroz y ${agenteVoz.quitarArroz} sin arroz; ensalada: ${ensaladaNombre}, ${cantidad - agenteVoz.quitarEnsalada} con ensalada y ${agenteVoz.quitarEnsalada} sin ensalada. Precio unitario fijo: ${fmtCOP(producto.precio)}.`;
+        item.notas = notas;
         await API.put(`/pedidos/${estadoPOS.pedidoId}/items/${item.id}`, { notas });
     }
     const mensaje = esCorriente
@@ -1281,7 +1283,9 @@ function leerTexto(texto) {
 function leerOfertaVoz() {
     const categoria = agenteVoz.categoria || categoriasAgente()[0];
     if (!categoria) return;
-    leerTexto(`${categoria.nombre}. ${categoria.productos.slice(0, 5).map(p => `${p.nombre}, ${fmtCOP(p.precio)}`).join('. ')}.`);
+    const esCorriente = categoria.nombre.toLowerCase().includes('almuerzo corriente');
+    const productos = categoria.productos.slice(0, 5).map(p => esCorriente ? p.nombre : `${p.nombre}, ${fmtCOP(p.precio)}`).join('. ');
+    leerTexto(`${categoria.nombre}. ${productos}.`);
 }
 
 function alternarEscucha() {
@@ -1665,9 +1669,9 @@ function renderProductos(catId) {
                 ${p.nombre}
             </div>
 
-            <div class="prod-precio">
-                ${fmt(p.precio)}
-            </div>
+            ${cat.nombre.toLowerCase().includes('almuerzo corriente')
+                ? '<div class="prod-precio">Proteína disponible</div>'
+                : `<div class="prod-precio">${fmt(p.precio)}</div>`}
 
             ${
                 p.destacado
@@ -1872,6 +1876,8 @@ function renderCarrito() {
                 <div class="cart-item-price">
                     ${fmt(item.precio)} c/u
                 </div>
+
+                ${item.notas ? `<div class="cart-item-price">${item.notas}</div>` : ''}
 
             </div>
 

@@ -398,7 +398,7 @@ function renderBiblioteca() {
               </div>
               <div class="plato-price" onclick="event.stopPropagation()">
                 ${esCorriente
-                  ? `<span style="color:#00D4A1;font-size:11px">Precio fijo: $ ${PRECIO_ALMUERZO_CORRIENTE.toLocaleString('es-CO')}</span>`
+                  ? `<span style="color:#00D4A1;font-size:11px">Precio fijo del almuerzo corriente</span>`
                   : `<span>$</span>
                      <input type="number" class="price-inp" value="${precio}" min="0" step="0.5"
                        ${sel?'':'disabled'}
