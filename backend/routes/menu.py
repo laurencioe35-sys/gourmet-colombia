@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlalchemy.orm import Session, joinedload
 from typing import List, Optional
+import unicodedata
 from ..database import get_db
 from ..models import Categoria, Producto
 from ..schemas import (
@@ -9,6 +10,14 @@ from ..schemas import (
 )
 
 router = APIRouter()
+
+
+def _normalizar_categoria(nombre: str) -> str:
+    texto = unicodedata.normalize("NFKD", (nombre or "")).encode("ascii", "ignore").decode().lower()
+    texto = " ".join(texto.replace("menus", "menu").split())
+    if "corriente" in texto or "almuerzo general" in texto or texto == "almuerzo":
+        return "almuerzos corrientes"
+    return texto
 
 
 # ── CATEGORÍAS ────────────────────────────────────────────────────────────────
@@ -122,21 +131,28 @@ def activar_menu_dia(items: List[dict] = Body(...), db: Session = Depends(get_db
     db.flush()
 
     activados = 0
+    vistos = set()
+    precio_corriente = next((float(item.get("precio", 0)) for item in items if _normalizar_categoria(item.get("categoria")) == "almuerzos corrientes"), None)
     for item in items:
-        cat_nombre = item.get("categoria", "")
+        categoria_normalizada = _normalizar_categoria(item.get("categoria"))
+        nombre = (item.get("nombre") or "").strip()
+        clave = (categoria_normalizada, nombre.casefold())
+        if not nombre or clave in vistos:
+            continue
+        vistos.add(clave)
         cat = db.query(Categoria).filter(
-            Categoria.nombre.ilike(f"%{cat_nombre.split('&')[0].strip()}%")
+            Categoria.nombre.ilike("%Almuerzos Corrientes%" if categoria_normalizada == "almuerzos corrientes" else f"%{item.get('categoria', '').split('&')[0].strip()}%")
         ).first()
         if not cat:
             continue
 
         prod = db.query(Producto).filter(
             Producto.categoria_id == cat.id,
-            Producto.nombre       == item["nombre"]
+            Producto.nombre       == nombre
         ).first()
 
         if prod:
-            prod.precio      = float(item.get("precio", prod.precio))
+            prod.precio      = precio_corriente if categoria_normalizada == "almuerzos corrientes" and precio_corriente is not None else float(item.get("precio", prod.precio))
             prod.disponible  = True
             prod.descripcion = item.get("descripcion", prod.descripcion) or prod.descripcion
             prod.emoji       = item.get("emoji", prod.emoji) or prod.emoji
@@ -144,9 +160,9 @@ def activar_menu_dia(items: List[dict] = Body(...), db: Session = Depends(get_db
         else:
             prod = Producto(
                 categoria_id = cat.id,
-                nombre       = item["nombre"],
+                nombre       = nombre,
                 descripcion  = item.get("descripcion", ""),
-                precio       = float(item.get("precio", 0)),
+                precio       = precio_corriente if categoria_normalizada == "almuerzos corrientes" and precio_corriente is not None else float(item.get("precio", 0)),
                 emoji        = item.get("emoji", "🍽️"),
                 tiempo_prep  = int(item.get("tiempo_prep", 15)),
                 disponible   = True,

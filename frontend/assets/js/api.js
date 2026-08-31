@@ -62,6 +62,7 @@ function toast(msg, tipo = 'info', duracion = 3000) {
 
 /* ── FORMATO ── */
 const fmt = (n, sym = '$') => `${sym} ${Math.round(+n || 0).toLocaleString('es-CO')}`;
+const fmtCOP = (n) => `${Math.round(+n || 0).toLocaleString('es-CO')} pesos colombianos`;
 const fmtFecha = (iso) => new Date(iso).toLocaleString('es-CO', { dateStyle: 'short', timeStyle: 'short' });
 
 /* ── BADGES ── */

@@ -941,6 +941,8 @@ let estadoPOS = {
 let agenteVoz = {
     categoria: null,
     pendiente: null,
+    paso: null,
+    cantidad: 1,
     sopa: true,
     arroz: true,
     reconocimiento: null
@@ -1005,15 +1007,16 @@ function seleccionarProductoVoz(prodId) {
         agenteVoz.arroz = true;
     }
     document.getElementById('voz-personalizacion').innerHTML = `
-        <div class="voz-estado">${producto.nombre}: elige tus complementos. El precio no cambia.</div>
+        <div class="voz-estado">¿Cuántos almuerzos corrientes de ${producto.nombre}?</div>
+        <input id="voz-cantidad" type="number" min="1" value="${agenteVoz.cantidad}" onchange="agenteVoz.cantidad=Math.max(1,Number(this.value)||1)" style="width:100%;padding:10px;margin-bottom:10px">
+        <div class="voz-estado">¿Todos desean sopa?</div>
         <div class="voz-opciones">
-            <button class="voz-opcion seleccionada" id="voz-sopa" onclick="alternarComplementoVoz('sopa')">🍲 Con sopa</button>
-            <button class="voz-opcion seleccionada" id="voz-arroz" onclick="alternarComplementoVoz('arroz')">🍚 Con arroz</button>
+            <button class="voz-opcion" onclick="definirComplementoVoz('sopa', true)">Sí, todos con sopa</button>
+            <button class="voz-opcion" onclick="definirComplementoVoz('sopa', false)">No, todos sin sopa</button>
         </div>
-        <small>Sin sopa o sin arroz se cobra el valor completo del almuerzo.</small>
-        <button class="btn btn-primary btn-full" onclick="confirmarProductoVoz()">Agregar ${fmt(producto.precio)}</button>
+        <small>Sin sopa o sin arroz se cobra el valor completo. Precio: ${fmtCOP(producto.precio)} por almuerzo.</small>
     `;
-    const mensaje = `${producto.nombre}. ¿Deseas sopa y arroz? Aunque elijas sin alguno, se cobra el valor completo.`;
+    const mensaje = `${producto.nombre}. ¿Cuántos almuerzos deseas? Luego te preguntaré si todos llevan sopa y después si todos llevan arroz. El valor es ${fmtCOP(producto.precio)} por almuerzo.`;
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
 }
@@ -1025,16 +1028,43 @@ function alternarComplementoVoz(tipo) {
     boton.textContent = `${tipo === 'sopa' ? '🍲' : '🍚'} ${agenteVoz[tipo] ? 'Con' : 'Sin'} ${tipo}`;
 }
 
+function definirComplementoVoz(tipo, valor) {
+    agenteVoz[tipo] = valor;
+    if (tipo === 'sopa') {
+        agenteVoz.paso = 'arroz';
+        document.getElementById('voz-personalizacion').innerHTML = `
+            <div class="voz-estado">¿Todos desean arroz?</div>
+            <div class="voz-opciones">
+                <button class="voz-opcion" onclick="definirComplementoVoz('arroz', true)">Sí, todos con arroz</button>
+                <button class="voz-opcion" onclick="definirComplementoVoz('arroz', false)">No, todos sin arroz</button>
+            </div>
+            <small>El almuerzo corriente conserva su precio completo.</small>
+        `;
+        leerTexto(`Entendido, ${valor ? 'todos con' : 'todos sin'} sopa. ¿Todos desean arroz?`);
+        return;
+    }
+    agenteVoz.paso = 'confirmar';
+    document.getElementById('voz-personalizacion').innerHTML += `
+        <button class="btn btn-primary btn-full" onclick="confirmarProductoVoz()">Agregar ${agenteVoz.cantidad} porciones</button>
+    `;
+    leerTexto(`${valor ? 'Todos con' : 'todos sin'} arroz. ¿Confirmamos ${agenteVoz.cantidad} almuerzos?`);
+}
+
 async function confirmarProductoVoz() {
     const producto = agenteVoz.pendiente;
     if (!producto) return;
-    await agregarAlCarrito(producto.id, producto.nombre, producto.precio, producto.emoji);
+    const cantidad = Math.max(1, Number(document.getElementById('voz-cantidad')?.value || agenteVoz.cantidad || 1));
+    for (let indice = 0; indice < cantidad; indice += 1) {
+        await agregarAlCarrito(producto.id, producto.nombre, producto.precio, producto.emoji);
+    }
     const item = estadoPOS.carrito.find(i => i.prod_id === producto.id);
     if (item && agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente')) {
-        const notas = `${agenteVoz.sopa ? 'Con' : 'Sin'} sopa, ${agenteVoz.arroz ? 'con' : 'sin'} arroz. Precio completo.`;
+        const notas = `${cantidad} almuerzo(s): ${agenteVoz.sopa ? 'todos con' : 'todos sin'} sopa; ${agenteVoz.arroz ? 'todos con' : 'todos sin'} arroz. Precio unitario completo: ${fmtCOP(producto.precio)}.`;
         await API.put(`/pedidos/${estadoPOS.pedidoId}/items/${item.id}`, { notas });
     }
-    const mensaje = `${producto.nombre} agregado por ${fmt(producto.precio)}. Puedes elegir otro producto.`;
+    const mensaje = agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente')
+        ? `${cantidad} ${producto.nombre} agregado(s). ${agenteVoz.sopa ? 'Todos con' : 'Todos sin'} sopa y ${agenteVoz.arroz ? 'todos con' : 'todos sin'} arroz. Total: ${fmtCOP(producto.precio * cantidad)}.`
+        : `${producto.nombre} agregado por ${fmtCOP(producto.precio)}.`;
     agenteVoz.pendiente = null;
     document.getElementById('voz-personalizacion').innerHTML = '';
     document.getElementById('voz-estado').textContent = mensaje;
@@ -1058,7 +1088,7 @@ function leerTexto(texto) {
 function leerOfertaVoz() {
     const categoria = agenteVoz.categoria || categoriasAgente()[0];
     if (!categoria) return;
-    leerTexto(`${categoria.nombre}. ${categoria.productos.slice(0, 5).map(p => `${p.nombre}, ${fmt(p.precio)}`).join('. ')}.`);
+    leerTexto(`${categoria.nombre}. ${categoria.productos.slice(0, 5).map(p => `${p.nombre}, ${fmtCOP(p.precio)}`).join('. ')}.`);
 }
 
 function alternarEscucha() {
@@ -1088,6 +1118,21 @@ function detenerEscucha() {
 }
 
 function procesarComandoVoz(comando) {
+    const numero = comando.match(/\d+/)?.[0];
+    if (agenteVoz.pendiente && numero && agenteVoz.paso !== 'arroz') {
+        agenteVoz.cantidad = Math.max(1, Number(numero));
+        document.getElementById('voz-cantidad').value = agenteVoz.cantidad;
+        leerTexto(`Anotado, ${agenteVoz.cantidad} almuerzos. ¿Todos desean sopa?`);
+        return;
+    }
+    if (agenteVoz.pendiente && agenteVoz.paso === 'arroz' && (comando.includes('sí') || comando.includes('si') || comando.includes('no'))) {
+        definirComplementoVoz('arroz', !comando.includes('no'));
+        return;
+    }
+    if (agenteVoz.pendiente && (comando.includes('sin sopa') || comando.includes('con sopa') || comando === 'sí' || comando === 'si' || comando === 'no')) {
+        definirComplementoVoz('sopa', !comando.includes('no') && !comando.includes('sin sopa'));
+        return;
+    }
     if (agenteVoz.pendiente && (comando.includes('sin sopa') || comando.includes('sin arroz') || comando.includes('con sopa') || comando.includes('con arroz'))) {
         if (comando.includes('sin sopa')) agenteVoz.sopa = false;
         if (comando.includes('con sopa')) agenteVoz.sopa = true;
