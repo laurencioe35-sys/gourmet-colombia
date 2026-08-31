@@ -96,6 +96,7 @@ class Cliente(Base):
 
     pedidos = relationship("Pedido", back_populates="cliente")
     conversaciones = relationship("ConversacionWhatsApp", back_populates="cliente")
+    saludo_voz = relationship("ClienteSaludoVoz", back_populates="cliente", uselist=False, cascade="all, delete-orphan")
 
 
 class Pedido(Base):
@@ -195,6 +196,29 @@ class ConfigRestaurante(Base):
     clave = Column(String(100), unique=True, nullable=False)
     valor = Column(Text, default="")
     descripcion = Column(String(300), default="")
+
+
+class SaludoVoz(Base):
+    __tablename__ = "saludos_voz"
+
+    id = Column(Integer, primary_key=True, index=True)
+    texto = Column(String(300), nullable=False, unique=True)
+    activo = Column(Boolean, default=True)
+    orden = Column(Integer, default=0)
+
+    clientes = relationship("ClienteSaludoVoz", back_populates="saludo")
+
+
+class ClienteSaludoVoz(Base):
+    __tablename__ = "clientes_saludos_voz"
+
+    id = Column(Integer, primary_key=True, index=True)
+    cliente_id = Column(Integer, ForeignKey("clientes.id"), nullable=False, unique=True)
+    saludo_id = Column(Integer, ForeignKey("saludos_voz.id"), nullable=False)
+    asignado_at = Column(DateTime, default=datetime.utcnow)
+
+    cliente = relationship("Cliente", back_populates="saludo_voz")
+    saludo = relationship("SaludoVoz", back_populates="clientes")
 
 
 class SolicitudPlan(Base):

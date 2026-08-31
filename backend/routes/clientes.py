@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from ..database import get_db
-from ..models import Cliente
+from ..models import Cliente, ClienteSaludoVoz, SaludoVoz
 from ..schemas import ClienteCreate, ClienteUpdate, ClienteOut
 
 router = APIRouter()
@@ -28,6 +28,36 @@ def buscar_por_telefono(telefono: str, db: Session = Depends(get_db)):
     if not cliente:
         raise HTTPException(status_code=404, detail="Cliente no encontrado")
     return cliente
+
+
+@router.get("/{cliente_id}/saludo-voz")
+def saludo_voz_cliente(cliente_id: int, db: Session = Depends(get_db)):
+    cliente = db.query(Cliente).filter(Cliente.id == cliente_id).first()
+    if not cliente:
+        raise HTTPException(status_code=404, detail="Cliente no encontrado")
+
+    asignacion = db.query(ClienteSaludoVoz).filter(
+        ClienteSaludoVoz.cliente_id == cliente_id
+    ).first()
+    if not asignacion:
+        usados = {fila.saludo_id for fila in db.query(ClienteSaludoVoz).all()}
+        saludo = db.query(SaludoVoz).filter(
+            SaludoVoz.activo == True,
+            ~SaludoVoz.id.in_(usados or {-1})
+        ).order_by(SaludoVoz.orden).first()
+        if not saludo:
+            saludos = db.query(SaludoVoz).filter(SaludoVoz.activo == True).order_by(SaludoVoz.orden).all()
+            if not saludos:
+                raise HTTPException(status_code=503, detail="No hay saludos de voz configurados")
+            saludo = saludos[(cliente_id - 1) % len(saludos)]
+        asignacion = ClienteSaludoVoz(cliente_id=cliente_id, saludo_id=saludo.id)
+        db.add(asignacion)
+        db.commit()
+        db.refresh(asignacion)
+    else:
+        saludo = db.query(SaludoVoz).filter(SaludoVoz.id == asignacion.saludo_id).first()
+
+    return {"cliente_id": cliente_id, "saludo_id": saludo.id, "texto": saludo.texto}
 
 
 @router.get("/{cliente_id}", response_model=ClienteOut)

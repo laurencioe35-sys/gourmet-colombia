@@ -1046,7 +1046,12 @@ function leerTexto(texto) {
     window.speechSynthesis.cancel();
     const voz = new SpeechSynthesisUtterance(texto);
     voz.lang = 'es-CO';
-    voz.rate = 1;
+    voz.rate = 1.15;
+    const voces = window.speechSynthesis.getVoices();
+    const vozColombiana = voces.find(v => /^es-CO/i.test(v.lang) && /female|mujer|woman|paola|sofia|monica/i.test(v.name))
+        || voces.find(v => /^es-CO/i.test(v.lang))
+        || voces.find(v => /^es/i.test(v.lang) && /female|mujer|woman/i.test(v.name));
+    if (vozColombiana) voz.voice = vozColombiana;
     window.speechSynthesis.speak(voz);
 }
 
@@ -1096,6 +1101,15 @@ function procesarComandoVoz(comando) {
     const producto = agenteVoz.categoria?.productos.find(p => comando.includes(p.nombre.toLowerCase()));
     if (producto) return seleccionarProductoVoz(producto.id);
     leerTexto('No encontré esa opción. Puedes elegir una tarjeta del carrusel.');
+}
+
+async function leerSaludoCliente(clienteId) {
+    try {
+        const saludo = await API.get(`/clientes/${clienteId}/saludo-voz`);
+        leerTexto(saludo.texto);
+    } catch (error) {
+        console.warn('No se pudo cargar el saludo personalizado:', error);
+    }
 }
 
 
@@ -1743,6 +1757,38 @@ async function limpiarCarrito() {
 
 function abrirPago() {
 
+    mostrarRevisionPedido();
+    return;
+}
+
+function mostrarRevisionPedido() {
+    abrirAgenteVoz();
+    const resumen = estadoPOS.carrito.map(item => `
+        <div class="cart-item">
+            <div class="cart-item-emoji">${item.emoji}</div>
+            <div class="cart-item-info">
+                <div class="cart-item-name">${item.cantidad} x ${item.nombre}</div>
+                <div class="cart-item-price">${fmt(item.subtotal)}</div>
+            </div>
+        </div>
+    `).join('');
+    document.getElementById('voz-personalizacion').innerHTML = `
+        <div class="voz-estado">Antes de cerrar, revisemos tu pedido.</div>
+        <div class="cart-items">${resumen || '<p>El pedido está vacío.</p>'}</div>
+        <div class="voz-acciones">
+            <button class="btn btn-ghost btn-sm" onclick="abrirAgenteVoz(); leerTexto('Puedes agregar o corregir cualquier producto.')">➕ Agregar o corregir</button>
+            <button class="btn btn-primary btn-sm" onclick="continuarAPago()">✅ Todo correcto</button>
+        </div>
+    `;
+    document.getElementById('voz-estado').textContent = '¿Deseas agregar o corregir algo antes de cerrar?';
+    leerTexto('Antes de cerrar, ¿deseas agregar o corregir algo?');
+}
+
+function continuarAPago() {
+    document.getElementById('voz-personalizacion').innerHTML = '';
+    document.getElementById('voz-estado').textContent = 'Pedido revisado. Continuemos con el pago.';
+    cerrarAgenteVoz();
+
     const total =
         calcularTotalActual();
 
@@ -1956,6 +2002,7 @@ async function confirmarPago() {
                 if (cliente && cliente.id) {
 
                     estadoPOS.cliente = cliente;
+                    await leerSaludoCliente(cliente.id);
 
                     await API.put(
                         `/pedidos/${estadoPOS.pedidoId}/estado`,

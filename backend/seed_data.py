@@ -3,7 +3,7 @@ Inicialización mínima de la base de datos.
 Crea la configuración base, las categorías y una carta inicial útil para que
 el POS y el menú del día funcionen desde el primer uso.
 """
-from .models import Categoria, Producto, Mesa, ConfigRestaurante
+from .models import Categoria, Producto, Mesa, ConfigRestaurante, SaludoVoz, ClienteSaludoVoz
 
 DEFAULT_PRODUCTS = {
     "Entradas": [
@@ -49,6 +49,59 @@ DEFAULT_PRODUCTS = {
     ],
 }
 
+SALUDOS_VOZ = [
+    "Hola, qué alegría atenderte hoy. ¿Qué se te ofrece?",
+    "Muy buenos días, bienvenida tu visita. ¿Qué vamos preparando?",
+    "Hola, con mucho gusto te ayudo a pedir tu almuerzo.",
+    "Qué gusto escucharte. Vamos a armar tu pedido con calma.",
+    "Bienvenido, aquí estoy para atenderte. ¿Qué deseas disfrutar?",
+    "Hola, será un placer servirte algo delicioso hoy.",
+    "Muy buenos días, cuéntame qué se te antoja.",
+    "Hola, vamos a escoger juntos una opción bien sabrosa.",
+    "Qué bueno tenerte por aquí. ¿Comenzamos con el almuerzo?",
+    "Bienvenido, te atiendo con mucho gusto y paciencia.",
+    "Hola, dime qué deseas y yo te voy guiando paso a paso.",
+    "Un saludo muy especial. ¿Te provoca un almuerzo corriente?",
+    "Hola, qué gusto atenderte. Tenemos opciones deliciosas para ti.",
+    "Bienvenido, revisemos primero nuestros almuerzos del día.",
+    "Hola, aquí estoy lista para ayudarte a elegir.",
+    "Muy buenos días, tomémonos el tiempo para preparar tu pedido.",
+    "Qué alegría recibir tu pedido. ¿Qué te gustaría comer?",
+    "Hola, con cariño vamos a preparar algo a tu gusto.",
+    "Bienvenido a la casa. ¿Quieres que te ofrezca el almuerzo corriente?",
+    "Hola, no hay afán. Te cuento nuestras opciones una por una.",
+    "Qué gusto saludarte. Empecemos por lo más pedido de hoy.",
+    "Bienvenido, estoy pendiente de cada detalle de tu pedido.",
+    "Hola, vamos a encontrar una opción perfecta para ti.",
+    "Muy buenos días, gracias por visitarnos. ¿Qué deseas ordenar?",
+    "Hola, será un placer atenderte. Escoge con toda tranquilidad.",
+    "Qué bueno escucharte. Primero tenemos almuerzos corrientes con complementos.",
+    "Bienvenido, dime si prefieres algo casero, ejecutivo o especial.",
+    "Hola, te acompaño con gusto mientras eliges tu comida.",
+    "Un gusto atenderte. ¿Empezamos con sopa y plato fuerte?",
+    "Hola, tenemos opciones para todos los gustos. ¿Qué deseas?",
+    "Bienvenido, tu pedido merece toda nuestra atención.",
+    "Qué alegría atenderte. Voy a leerte las opciones disponibles.",
+    "Hola, aquí tienes una atención cercana y sin afanes.",
+    "Muy buenos días, ¿te ofrezco primero nuestro almuerzo corriente?",
+    "Bienvenido, puedes decirme o tocar la opción que prefieras.",
+    "Hola, gracias por elegirnos. Vamos a preparar tu pedido.",
+    "Qué gusto tenerte aquí. ¿Deseas algo ligero o un plato completo?",
+    "Hola, estoy lista para ayudarte a escoger algo delicioso.",
+    "Bienvenido, revisemos el menú en el orden que más te convenga.",
+    "Un saludo con mucho cariño. ¿Qué te gustaría agregar?",
+    "Hola, primero te presento nuestros almuerzos corrientes de hoy.",
+    "Qué bueno verte por aquí. Puedes elegir con tranquilidad.",
+    "Bienvenido, te escucho y ajustamos el pedido a tu gusto.",
+    "Hola, vamos a preparar una comida rica y completa para ti.",
+    "Muy buenos días, dime si deseas sopa, arroz y tus complementos.",
+    "Hola, será un gusto tomar tu pedido de principio a fin.",
+    "Bienvenido, yo te voy contando el precio de cada elección.",
+    "Qué alegría saludarte. ¿Listo para escoger algo delicioso?",
+    "Hola, gracias por venir. Comenzamos por los almuerzos corrientes.",
+    "Bienvenido, no te preocupes, vamos paso a paso con tu pedido.",
+]
+
 
 CONFIG_INICIAL = [
     ("nombre",               "Mi Restaurante",     "Nombre del restaurante"),
@@ -92,6 +145,9 @@ CATEGORIAS = [
 def seed_database(db):
     """Crea la estructura base y un menú inicial funcional si aún no hay productos."""
 
+    SaludoVoz.__table__.create(bind=db.bind, checkfirst=True)
+    ClienteSaludoVoz.__table__.create(bind=db.bind, checkfirst=True)
+
     if db.query(ConfigRestaurante).count() == 0:
         for clave, valor, desc in CONFIG_INICIAL:
             db.add(ConfigRestaurante(clave=clave, valor=valor, descripcion=desc))
@@ -106,6 +162,11 @@ def seed_database(db):
         for num in range(1, 17):
             capacidad = 8 if num == 15 else (10 if num == 16 else 4)
             db.add(Mesa(numero=num, capacidad=capacidad))
+
+    saludos_existentes = {saludo.texto for saludo in db.query(SaludoVoz).all()}
+    for orden, texto in enumerate(SALUDOS_VOZ, start=1):
+        if texto not in saludos_existentes:
+            db.add(SaludoVoz(texto=texto, orden=orden, activo=True))
 
     if db.query(Producto).count() == 0:
         categorias = {cat.nombre: cat for cat in db.query(Categoria).all()}
