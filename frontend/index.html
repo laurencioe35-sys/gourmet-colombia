@@ -177,7 +177,7 @@ async function actualizarDashboard() {
     chartPagos.update();
 
     // Tabla últimos pedidos
-    const pedidos = await API.get('/pedidos?estado=entregado');
+    const pedidos = await API.get('/pedidos/?estado=entregado');
     const tbody = document.getElementById('tabla-pedidos');
     tbody.innerHTML = pedidos.slice(0, 10).map(p => `
       <tr>
