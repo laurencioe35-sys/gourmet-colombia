@@ -44,6 +44,16 @@ DEFAULT_PRODUCTS = {
     "Almuerzos Corrientes": [
         ("Almuerzo Corriente", "Plato corriente de la casa", 18000, "🍛", 18),
     ],
+    "Proteínas": [
+        ("Pollo del Día", "Proteína de pollo disponible para el almuerzo corriente", 0, "🍗", 18),
+        ("Carne del Día", "Proteína de carne disponible para el almuerzo corriente", 0, "🥩", 20),
+        ("Cerdo del Día", "Proteína de cerdo disponible para el almuerzo corriente", 0, "🐷", 20),
+    ],
+    "Principios": [
+        ("Frijoles", "Principio del día", 0, "🫘", 12),
+        ("Lentejas", "Principio del día", 0, "🥣", 12),
+        ("Garbanzos", "Principio del día", 0, "🫘", 12),
+    ],
     "Cenas Colombianas": [
         ("Cena Colombiana", "Cena típica del día con guarnición", 22000, "🌙", 18),
     ],
@@ -138,6 +148,8 @@ CATEGORIAS = [
     ("Bebidas",                  "🥤",   "#03A9F4",  8),
     ("Desayunos Colombianos",    "🍳",   "#F4B400",  9),
     ("Almuerzos Corrientes",     "🍛",   "#8E44AD", 10),
+    ("Proteínas",                "🍗",   "#E67E22", 11),
+    ("Principios",               "🫘",   "#795548", 12),
     ("Cenas Colombianas",        "🌙",   "#34495E", 11),
 ]
 
@@ -185,5 +197,32 @@ def seed_database(db):
                     destacado=False,
                     tiempo_prep=tiempo,
                 ))
+
+    categorias = {cat.nombre: cat for cat in db.query(Categoria).all()}
+    for nombre, emoji, color, orden in CATEGORIAS:
+        if nombre not in categorias:
+            categoria = Categoria(nombre=nombre, emoji=emoji, color=color, orden=orden, activo=True)
+            db.add(categoria)
+            categorias[nombre] = categoria
+    db.flush()
+    for cat_name, products in DEFAULT_PRODUCTS.items():
+        cat = categorias.get(cat_name)
+        if not cat:
+            continue
+        nombres = {p.nombre.casefold() for p in db.query(Producto).filter(Producto.categoria_id == cat.id).all()}
+        for nombre, descripcion, precio, emoji, tiempo in products:
+            if nombre.casefold() in nombres:
+                continue
+            db.add(Producto(
+                categoria_id=cat.id,
+                nombre=nombre,
+                descripcion=descripcion,
+                precio=float(precio),
+                emoji=emoji,
+                disponible=True,
+                destacado=False,
+                tiempo_prep=tiempo,
+            ))
+            nombres.add(nombre.casefold())
 
     db.commit()

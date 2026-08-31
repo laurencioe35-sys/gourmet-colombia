@@ -967,6 +967,8 @@ let agenteVoz = {
     arroz: true,
     ensalada: true,
     sopaNombre: 'sopa del día',
+    principioNombre: 'principio del día',
+    ensaladaNombre: 'ensalada del día',
     quitarSopa: 0,
     quitarArroz: 0,
     quitarEnsalada: 0,
@@ -1016,7 +1018,7 @@ function cerrarAgenteVoz() {
 function categoriasAgente() {
     const categorias = estadoPOS.menu || [];
     const buscar = texto => categorias.find(c => c.nombre.toLowerCase().includes(texto));
-    const ordenadas = [buscar('almuerzo corriente'), buscar('sopa'), buscar('ejecutivo'), buscar('otro'), buscar('postre'), buscar('bebida')].filter(Boolean);
+    const ordenadas = [buscar('almuerzo corriente'), buscar('prote'), buscar('sopa'), buscar('princip'), buscar('ejecutivo'), buscar('otro'), buscar('postre'), buscar('bebida')].filter(Boolean);
     return [...new Set([...ordenadas, ...categorias])];
 }
 
@@ -1096,9 +1098,11 @@ function cambiarCantidadVoz(delta) {
 function iniciarCantidadVoz() {
     agenteVoz.iniciado = true;
     agenteVoz.paso = 'producto';
+    const proteinas = categoriasAgente().find(c => c.nombre.toLowerCase().includes('prote'));
+    if (proteinas) agenteVoz.categoria = proteinas;
     renderAgenteVoz();
     const categoria = agenteVoz.categoria;
-    const mensaje = `Perfecto, son ${agenteVoz.cantidad} almuerzo(s). Te ofrezco primero ${categoria.nombre}. Elige la proteína disponible en el carrusel.`;
+    const mensaje = `Perfecto, son ${agenteVoz.cantidad} almuerzo(s). Te ofrezco las proteínas disponibles en tiempo real. Elige la proteína para todos o avanza con la flecha.`;
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
 }
@@ -1121,7 +1125,12 @@ function seleccionarProductoVoz(prodId) {
     const mismoProducto = agenteVoz.pendiente?.id === prodId;
     const esCorriente = agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente');
     const esSopa = agenteVoz.categoria.nombre.toLowerCase().includes('sopa');
+    const esProteina = agenteVoz.categoria.nombre.toLowerCase().includes('prote');
     if (esSopa) return seleccionarSopaVoz(producto);
+    if (esProteina) {
+        agenteVoz.corrienteProducto = producto;
+        return irASopasVoz();
+    }
     agenteVoz.pendiente = producto;
     if (esCorriente) agenteVoz.corrienteProducto = producto;
     if (!esCorriente) return confirmarProductoVoz();
@@ -1129,6 +1138,9 @@ function seleccionarProductoVoz(prodId) {
         agenteVoz.sopa = true;
         agenteVoz.arroz = true;
         agenteVoz.ensalada = true;
+        agenteVoz.sopaNombre = 'sopa del día';
+        agenteVoz.principioNombre = 'principio del día';
+        agenteVoz.ensaladaNombre = 'ensalada del día';
         agenteVoz.quitarSopa = 0;
         agenteVoz.quitarArroz = 0;
         agenteVoz.quitarEnsalada = 0;
@@ -1179,7 +1191,7 @@ function mostrarPasoArrozVoz() {
         <div class="voz-estado">Arroz para ${agenteVoz.cantidad} almuerzo(s)</div>
         <label for="voz-quitar-arroz">¿Cuántos almuerzos van sin arroz?</label>
         <input id="voz-quitar-arroz" type="number" min="0" max="${agenteVoz.cantidad}" value="0" style="width:100%;padding:10px;margin:8px 0">
-        <button class="btn btn-primary btn-full" onclick="confirmarArrozVoz()">Continuar con ensalada</button>
+        <button class="btn btn-primary btn-full" onclick="confirmarArrozVoz()">Continuar con principios</button>
     `;
     leerTexto(`Tienes ${agenteVoz.cantidad} arroces incluidos. ¿Cuántos almuerzos van sin arroz?`);
 }
@@ -1187,14 +1199,39 @@ function mostrarPasoArrozVoz() {
 function confirmarArrozVoz() {
     agenteVoz.quitarArroz = Math.min(agenteVoz.cantidad, Math.max(0, Number(document.getElementById('voz-quitar-arroz').value) || 0));
     agenteVoz.arroz = agenteVoz.quitarArroz < agenteVoz.cantidad;
+    mostrarPasoPrincipiosVoz();
+}
+
+function mostrarPasoPrincipiosVoz() {
+    const categoria = categoriasAgente().find(c => c.nombre.toLowerCase().includes('princip'));
+    const opciones = categoria?.productos || [];
+    if (!opciones.length) return mostrarPasoEnsaladaVoz();
+    agenteVoz.categoria = categoria;
+    document.getElementById('voz-carrusel').classList.toggle('vista-pc', vistaVoz === 'pc');
+    document.getElementById('voz-carrusel').innerHTML = opciones.map(p => `
+        <button class="voz-producto" onclick="seleccionarPrincipioVoz('${p.nombre.replace(/'/g, "\\'")}')">
+            <span class="voz-producto-emoji">${p.emoji}</span>
+            <span class="voz-producto-nombre">${p.nombre}</span>
+            <span class="voz-producto-precio">Principio incluido</span>
+        </button>
+    `).join('');
+    document.getElementById('voz-estado').textContent = `Tienes ${agenteVoz.cantidad} principio(s) incluido(s). Elige el principio para los almuerzos.`;
+    leerTexto(`Tienes ${agenteVoz.cantidad} principios incluidos. Elige el principio para los almuerzos.`);
+}
+
+function seleccionarPrincipioVoz(nombre) {
+    agenteVoz.principioNombre = nombre;
     mostrarPasoEnsaladaVoz();
+    const mensaje = `${nombre} seleccionado para los ${agenteVoz.cantidad} almuerzos. Ahora elige la ensalada.`;
+    document.getElementById('voz-estado').textContent = mensaje;
+    leerTexto(mensaje);
 }
 
 function mostrarPasoEnsaladaVoz() {
     const categoriaEnsalada = categoriasAgente().find(c => /ensalada/i.test(c.nombre));
     const opciones = categoriaEnsalada?.productos || [];
     const seleccion = opciones.length
-        ? `<label for="voz-ensalada">Ensalada disponible</label><select id="voz-ensalada" style="width:100%;padding:10px;margin:8px 0">${opciones.map(p => `<option value="${p.nombre}">${p.nombre}</option>`).join('')}</select>`
+        ? `<label for="voz-ensalada">Ensalada disponible</label><select id="voz-ensalada" onchange="agenteVoz.ensaladaNombre=this.value" style="width:100%;padding:10px;margin:8px 0">${opciones.map(p => `<option value="${p.nombre}">${p.nombre}</option>`).join('')}</select>`
         : '<div class="voz-estado">Ensalada del día disponible para cada almuerzo.</div>';
     document.getElementById('voz-personalizacion').innerHTML = `
         <div class="voz-estado">Tienes ${agenteVoz.cantidad} ensalada(s) incluidas.</div>
@@ -1203,6 +1240,7 @@ function mostrarPasoEnsaladaVoz() {
         <input id="voz-quitar-ensalada" type="number" min="0" max="${agenteVoz.cantidad}" value="0" style="width:100%;padding:10px;margin:8px 0">
         <button class="btn btn-primary btn-full" onclick="confirmarEnsaladaVoz()">Agregar almuerzos</button>
     `;
+    if (opciones.length) agenteVoz.ensaladaNombre = opciones[0].nombre;
     leerTexto(`Tienes ${agenteVoz.cantidad} ensaladas incluidas. ¿Cuántas deseas quitar?`);
 }
 
@@ -1251,8 +1289,8 @@ async function confirmarProductoVoz() {
     }
     const item = estadoPOS.carrito.find(i => i.prod_id === producto.id);
     if (item && esCorriente) {
-        const ensaladaNombre = document.getElementById('voz-ensalada')?.value || 'ensalada del día';
-        const notas = `${cantidad} almuerzo(s), proteína: ${producto.nombre}; sopa: ${agenteVoz.sopaNombre}, ${cantidad - agenteVoz.quitarSopa} con sopa y ${agenteVoz.quitarSopa} sin sopa; arroz: ${cantidad - agenteVoz.quitarArroz} con arroz y ${agenteVoz.quitarArroz} sin arroz; ensalada: ${ensaladaNombre}, ${cantidad - agenteVoz.quitarEnsalada} con ensalada y ${agenteVoz.quitarEnsalada} sin ensalada. Precio unitario fijo: ${fmtCOP(producto.precio)}.`;
+        const ensaladaNombre = agenteVoz.ensaladaNombre || document.getElementById('voz-ensalada')?.value || 'ensalada del día';
+        const notas = `${cantidad} almuerzo(s), proteína: ${producto.nombre}; principio: ${agenteVoz.principioNombre}; sopa: ${agenteVoz.sopaNombre}, ${cantidad - agenteVoz.quitarSopa} con sopa y ${agenteVoz.quitarSopa} sin sopa; arroz: ${cantidad - agenteVoz.quitarArroz} con arroz y ${agenteVoz.quitarArroz} sin arroz; ensalada: ${ensaladaNombre}, ${cantidad - agenteVoz.quitarEnsalada} con ensalada y ${agenteVoz.quitarEnsalada} sin ensalada. Precio unitario fijo: ${fmtCOP(producto.precio)}.`;
         item.notas = notas;
         await API.put(`/pedidos/${estadoPOS.pedidoId}/items/${item.id}`, { notas });
     }
