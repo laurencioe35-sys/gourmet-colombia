@@ -52,6 +52,80 @@
             margin: 16px 0 10px;
         }
 
+        .voz-agente {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            width: min(390px, calc(100vw - 32px));
+            max-height: min(620px, calc(100vh - 44px));
+            overflow: hidden;
+            z-index: 120;
+            background: var(--surface);
+            border: 1px solid var(--accent2);
+            border-radius: 16px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, .48);
+            transform: translateY(calc(100% + 28px));
+            opacity: 0;
+            pointer-events: none;
+            transition: transform .25s ease, opacity .25s ease;
+        }
+
+        .voz-agente.abierto {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .voz-agente-cabeza {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #163e3b, #1a1d27);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .voz-agente-cabeza strong { display: block; font-size: 14px; }
+        .voz-agente-cabeza small { color: var(--text-muted); }
+        .voz-agente-cerrar { background: transparent; border: 0; color: var(--text-muted); font-size: 22px; }
+
+        .voz-agente-contenido { padding: 14px; overflow-y: auto; max-height: 510px; }
+        .voz-estado { color: var(--accent2); font-size: 12px; min-height: 18px; margin-bottom: 10px; }
+        .voz-carrusel { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 2px 10px; }
+        .voz-producto {
+            flex: 0 0 148px;
+            min-height: 132px;
+            scroll-snap-align: start;
+            text-align: left;
+            color: var(--text);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+        }
+        .voz-producto:hover, .voz-producto:focus-visible { border-color: var(--accent2); outline: 0; }
+        .voz-producto-emoji { font-size: 28px; display: block; margin-bottom: 8px; }
+        .voz-producto-nombre { display: block; font-weight: 700; font-size: 12px; line-height: 1.25; }
+        .voz-producto-precio { display: block; color: var(--accent3); font-size: 12px; margin-top: 8px; }
+        .voz-categorias { display: flex; gap: 7px; overflow-x: auto; margin-bottom: 12px; }
+        .voz-categoria { white-space: nowrap; border: 1px solid var(--border); background: transparent; color: var(--text-muted); border-radius: 18px; padding: 8px 10px; font-size: 12px; }
+        .voz-categoria.activa { color: #061a17; background: var(--accent2); border-color: var(--accent2); }
+        .voz-opciones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+        .voz-opcion { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 10px; text-align: left; font-size: 12px; }
+        .voz-opcion.seleccionada { border-color: var(--accent3); color: var(--accent3); }
+        .voz-acciones { display: flex; gap: 8px; margin-top: 12px; }
+        .voz-microfono { width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--accent2); color: #061a17; font-size: 21px; box-shadow: 0 5px 18px rgba(0, 212, 161, .25); }
+        .voz-microfono.escuchando { background: var(--danger); color: #fff; animation: pulse 1s infinite; }
+        .voz-abrir { position: fixed; right: 22px; bottom: 22px; z-index: 119; width: 54px; height: 54px; border: 0; border-radius: 50%; background: var(--accent2); color: #061a17; font-size: 24px; box-shadow: 0 8px 26px rgba(0, 212, 161, .3); }
+
+        @media (max-width: 768px) {
+            .voz-agente { right: 8px; bottom: 8px; width: calc(100vw - 16px); max-height: min(590px, calc(100vh - 16px)); border-radius: 14px; }
+            .voz-agente-contenido { max-height: calc(100vh - 104px); }
+            .voz-abrir { right: 14px; bottom: 14px; }
+            .voz-producto { flex-basis: 142px; }
+        }
+
         /* ==========================================================
            FACTURA / TICKET PARA IMPRESIÓN
         ========================================================== */
@@ -572,6 +646,30 @@
 </div>
 
 <!-- ==========================================================
+     AGENTE DE VOZ Y CARRUSEL DE PEDIDO
+========================================================== -->
+<button class="voz-abrir" id="voz-abrir" onclick="abrirAgenteVoz()" aria-label="Abrir asistente de pedido">🎙️</button>
+<section class="voz-agente" id="voz-agente" aria-label="Asistente de pedido por voz">
+    <div class="voz-agente-cabeza">
+        <div>
+            <strong>Asistente de pedido</strong>
+            <small>Elige o dime lo que deseas</small>
+        </div>
+        <button class="voz-agente-cerrar" onclick="cerrarAgenteVoz()" aria-label="Cerrar asistente">×</button>
+    </div>
+    <div class="voz-agente-contenido">
+        <div class="voz-estado" id="voz-estado">Primero te ofrezco almuerzos corrientes.</div>
+        <div class="voz-categorias" id="voz-categorias"></div>
+        <div class="voz-carrusel" id="voz-carrusel"></div>
+        <div id="voz-personalizacion"></div>
+        <div class="voz-acciones">
+            <button class="voz-microfono" id="voz-microfono" onclick="alternarEscucha()" aria-label="Hablar con el asistente">🎙️</button>
+            <button class="btn btn-ghost btn-sm" onclick="leerOfertaVoz()">🔊 Leer oferta</button>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================
      MODAL PAGO
 ========================================================== -->
 
@@ -840,6 +938,166 @@ let estadoPOS = {
     cliente: null
 };
 
+let agenteVoz = {
+    categoria: null,
+    pendiente: null,
+    sopa: true,
+    arroz: true,
+    reconocimiento: null
+};
+
+function abrirAgenteVoz() {
+    document.getElementById('voz-agente').classList.add('abierto');
+    document.getElementById('voz-abrir').style.display = 'none';
+    renderAgenteVoz();
+    leerOfertaVoz();
+}
+
+function cerrarAgenteVoz() {
+    detenerEscucha();
+    document.getElementById('voz-agente').classList.remove('abierto');
+    document.getElementById('voz-abrir').style.display = 'block';
+}
+
+function categoriasAgente() {
+    const categorias = estadoPOS.menu || [];
+    const buscar = texto => categorias.find(c => c.nombre.toLowerCase().includes(texto));
+    const ordenadas = [buscar('almuerzo corriente'), buscar('ejecutivo'), buscar('otro'), buscar('postre'), buscar('bebida')].filter(Boolean);
+    return [...new Set([...ordenadas, ...categorias])];
+}
+
+function renderAgenteVoz() {
+    const categorias = categoriasAgente();
+    if (!categorias.length) return;
+    if (!agenteVoz.categoria || !categorias.includes(agenteVoz.categoria)) agenteVoz.categoria = categorias[0];
+    document.getElementById('voz-categorias').innerHTML = categorias.map(c => `
+        <button class="voz-categoria ${c.id === agenteVoz.categoria.id ? 'activa' : ''}" onclick="seleccionarCategoriaVoz(${c.id})">
+            ${c.emoji} ${c.nombre}
+        </button>
+    `).join('');
+    document.getElementById('voz-carrusel').innerHTML = agenteVoz.categoria.productos.map(p => `
+        <button class="voz-producto" onclick="seleccionarProductoVoz(${p.id})" aria-label="Agregar ${p.nombre}">
+            <span class="voz-producto-emoji">${p.emoji}</span>
+            <span class="voz-producto-nombre">${p.nombre}</span>
+            <span class="voz-producto-precio">${fmt(p.precio)}</span>
+        </button>
+    `).join('');
+    document.getElementById('voz-personalizacion').innerHTML = '';
+}
+
+function seleccionarCategoriaVoz(catId) {
+    agenteVoz.categoria = categoriasAgente().find(c => c.id === catId);
+    agenteVoz.pendiente = null;
+    renderAgenteVoz();
+    document.getElementById('voz-estado').textContent = `Ahora puedes elegir de ${agenteVoz.categoria.nombre}.`;
+    leerTexto(`Ahora puedes elegir de ${agenteVoz.categoria.nombre}.`);
+}
+
+function seleccionarProductoVoz(prodId) {
+    const producto = agenteVoz.categoria.productos.find(p => p.id === prodId);
+    if (!producto) return;
+    const mismoProducto = agenteVoz.pendiente?.id === prodId;
+    agenteVoz.pendiente = producto;
+    const esCorriente = agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente');
+    if (!esCorriente) return confirmarProductoVoz();
+    if (!mismoProducto) {
+        agenteVoz.sopa = true;
+        agenteVoz.arroz = true;
+    }
+    document.getElementById('voz-personalizacion').innerHTML = `
+        <div class="voz-estado">${producto.nombre}: elige tus complementos. El precio no cambia.</div>
+        <div class="voz-opciones">
+            <button class="voz-opcion seleccionada" id="voz-sopa" onclick="alternarComplementoVoz('sopa')">🍲 Con sopa</button>
+            <button class="voz-opcion seleccionada" id="voz-arroz" onclick="alternarComplementoVoz('arroz')">🍚 Con arroz</button>
+        </div>
+        <small>Sin sopa o sin arroz se cobra el valor completo del almuerzo.</small>
+        <button class="btn btn-primary btn-full" onclick="confirmarProductoVoz()">Agregar ${fmt(producto.precio)}</button>
+    `;
+    const mensaje = `${producto.nombre}. ¿Deseas sopa y arroz? Aunque elijas sin alguno, se cobra el valor completo.`;
+    document.getElementById('voz-estado').textContent = mensaje;
+    leerTexto(mensaje);
+}
+
+function alternarComplementoVoz(tipo) {
+    agenteVoz[tipo] = !agenteVoz[tipo];
+    const boton = document.getElementById(`voz-${tipo}`);
+    boton.classList.toggle('seleccionada', agenteVoz[tipo]);
+    boton.textContent = `${tipo === 'sopa' ? '🍲' : '🍚'} ${agenteVoz[tipo] ? 'Con' : 'Sin'} ${tipo}`;
+}
+
+async function confirmarProductoVoz() {
+    const producto = agenteVoz.pendiente;
+    if (!producto) return;
+    await agregarAlCarrito(producto.id, producto.nombre, producto.precio, producto.emoji);
+    const item = estadoPOS.carrito.find(i => i.prod_id === producto.id);
+    if (item && agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente')) {
+        const notas = `${agenteVoz.sopa ? 'Con' : 'Sin'} sopa, ${agenteVoz.arroz ? 'con' : 'sin'} arroz. Precio completo.`;
+        await API.put(`/pedidos/${estadoPOS.pedidoId}/items/${item.id}`, { notas });
+    }
+    const mensaje = `${producto.nombre} agregado por ${fmt(producto.precio)}. Puedes elegir otro producto.`;
+    agenteVoz.pendiente = null;
+    document.getElementById('voz-personalizacion').innerHTML = '';
+    document.getElementById('voz-estado').textContent = mensaje;
+    leerTexto(mensaje);
+}
+
+function leerTexto(texto) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const voz = new SpeechSynthesisUtterance(texto);
+    voz.lang = 'es-CO';
+    voz.rate = 1;
+    window.speechSynthesis.speak(voz);
+}
+
+function leerOfertaVoz() {
+    const categoria = agenteVoz.categoria || categoriasAgente()[0];
+    if (!categoria) return;
+    leerTexto(`${categoria.nombre}. ${categoria.productos.slice(0, 5).map(p => `${p.nombre}, ${fmt(p.precio)}`).join('. ')}.`);
+}
+
+function alternarEscucha() {
+    if (agenteVoz.reconocimiento) return detenerEscucha();
+    const Reconocimiento = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!Reconocimiento) {
+        document.getElementById('voz-estado').textContent = 'Tu navegador no permite dictado; usa los botones del carrusel.';
+        return leerTexto('Tu navegador no permite dictado. Puedes usar los botones del carrusel.');
+    }
+    const reconocimiento = new Reconocimiento();
+    reconocimiento.lang = 'es-CO';
+    reconocimiento.onstart = () => {
+        agenteVoz.reconocimiento = reconocimiento;
+        document.getElementById('voz-microfono').classList.add('escuchando');
+        document.getElementById('voz-estado').textContent = 'Te escucho...';
+    };
+    reconocimiento.onresult = evento => procesarComandoVoz(evento.results[0][0].transcript.toLowerCase());
+    reconocimiento.onend = detenerEscucha;
+    reconocimiento.onerror = () => detenerEscucha();
+    reconocimiento.start();
+}
+
+function detenerEscucha() {
+    if (agenteVoz.reconocimiento) agenteVoz.reconocimiento.stop();
+    agenteVoz.reconocimiento = null;
+    document.getElementById('voz-microfono')?.classList.remove('escuchando');
+}
+
+function procesarComandoVoz(comando) {
+    if (agenteVoz.pendiente && (comando.includes('sin sopa') || comando.includes('sin arroz') || comando.includes('con sopa') || comando.includes('con arroz'))) {
+        if (comando.includes('sin sopa')) agenteVoz.sopa = false;
+        if (comando.includes('con sopa')) agenteVoz.sopa = true;
+        if (comando.includes('sin arroz')) agenteVoz.arroz = false;
+        if (comando.includes('con arroz')) agenteVoz.arroz = true;
+        seleccionarProductoVoz(agenteVoz.pendiente.id);
+        return;
+    }
+    const categoria = categoriasAgente().find(c => comando.includes(c.nombre.toLowerCase()));
+    if (categoria) return seleccionarCategoriaVoz(categoria.id);
+    const producto = agenteVoz.categoria?.productos.find(p => comando.includes(p.nombre.toLowerCase()));
+    if (producto) return seleccionarProductoVoz(producto.id);
+    leerTexto('No encontré esa opción. Puedes elegir una tarjeta del carrusel.');
+}
+
 
 // ==========================================================
 // MESAS
@@ -1052,6 +1310,7 @@ async function cargarMenu() {
             renderCatTabs();
 
             renderProductos(estadoPOS.catActual);
+                renderAgenteVoz();
         }
 
     } catch (e) {
