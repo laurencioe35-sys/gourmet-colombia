@@ -94,6 +94,9 @@
         .voz-estado { color: var(--accent2); font-size: 12px; min-height: 18px; margin-bottom: 10px; }
         .voz-carrusel { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 2px 10px; }
         .voz-carrusel-titulo { font-size: 12px; color: var(--text-muted); margin: 2px 0 8px; }
+        .voz-navegacion { display: flex; justify-content: space-between; gap: 8px; margin-top: 4px; }
+        .voz-navegacion button { flex: 1; min-height: 34px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface2); color: var(--text); font-size: 12px; }
+        .voz-navegacion button:disabled { opacity: .35; cursor: not-allowed; }
         .voz-cantidad { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--surface2); border: 1px solid var(--accent2); border-radius: 10px; padding: 12px; margin-bottom: 12px; }
         .voz-cantidad strong { display: block; font-size: 14px; }
         .voz-cantidad small { color: var(--text-muted); }
@@ -963,6 +966,8 @@ let agenteVoz = {
 function abrirAgenteVoz() {
     document.getElementById('voz-agente').classList.add('abierto');
     document.getElementById('voz-abrir').style.display = 'none';
+    const categorias = categoriasAgente();
+    agenteVoz.categoria = categorias.find(c => c.nombre.toLowerCase().includes('almuerzo corriente')) || categorias[0] || null;
     renderAgenteVoz();
     if (!agenteVoz.iniciado) {
         document.getElementById('voz-estado').textContent = 'Primero dime cuántos almuerzos van a pedir.';
@@ -981,7 +986,7 @@ function cerrarAgenteVoz() {
 function categoriasAgente() {
     const categorias = estadoPOS.menu || [];
     const buscar = texto => categorias.find(c => c.nombre.toLowerCase().includes(texto));
-    const ordenadas = [buscar('almuerzo corriente'), buscar('ejecutivo'), buscar('otro'), buscar('postre'), buscar('bebida')].filter(Boolean);
+    const ordenadas = [buscar('almuerzo corriente'), buscar('sopa'), buscar('ejecutivo'), buscar('otro'), buscar('postre'), buscar('bebida')].filter(Boolean);
     return [...new Set([...ordenadas, ...categorias])];
 }
 
@@ -1017,7 +1022,22 @@ function renderAgenteVoz() {
             <span class="voz-producto-precio">${fmt(p.precio)}</span>
         </button>
     `).join('');
+    const indiceCategoria = categorias.indexOf(agenteVoz.categoria);
+    document.getElementById('voz-carrusel').insertAdjacentHTML('afterend', `
+        <div class="voz-navegacion">
+            <button onclick="navegarCategoriaVoz(-1)" ${indiceCategoria <= 0 ? 'disabled' : ''}>← Anterior</button>
+            <button onclick="navegarCategoriaVoz(1)" ${indiceCategoria >= categorias.length - 1 ? 'disabled' : ''}>Siguiente →</button>
+        </div>
+    `);
     document.getElementById('voz-personalizacion').innerHTML = '';
+}
+
+function navegarCategoriaVoz(direccion) {
+    const categorias = categoriasAgente();
+    const indice = categorias.indexOf(agenteVoz.categoria);
+    const siguiente = categorias[indice + direccion];
+    if (!siguiente) return;
+    seleccionarCategoriaVoz(siguiente.id);
 }
 
 function cambiarCantidadVoz(delta) {
@@ -1054,6 +1074,8 @@ function seleccionarProductoVoz(prodId) {
     const mismoProducto = agenteVoz.pendiente?.id === prodId;
     agenteVoz.pendiente = producto;
     const esCorriente = agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente');
+    const esSopa = agenteVoz.categoria.nombre.toLowerCase().includes('sopa');
+    if (esSopa) return agregarSopaVoz(producto);
     if (!esCorriente) return confirmarProductoVoz();
     if (!mismoProducto) {
         agenteVoz.sopa = true;
@@ -1069,6 +1091,13 @@ function seleccionarProductoVoz(prodId) {
         <small>Sin sopa o sin arroz se cobra el valor completo. Precio: ${fmtCOP(producto.precio)} por almuerzo.</small>
     `;
     const mensaje = `${producto.nombre}. ¿Cuántos almuerzos deseas? Luego te preguntaré si todos llevan sopa y después si todos llevan arroz. El valor es ${fmtCOP(producto.precio)} por almuerzo.`;
+    document.getElementById('voz-estado').textContent = mensaje;
+    leerTexto(mensaje);
+}
+
+async function agregarSopaVoz(producto) {
+    await agregarAlCarrito(producto.id, producto.nombre, producto.precio, producto.emoji);
+    const mensaje = `${producto.nombre} agregado. Puedes seleccionar otra sopa o avanzar con la flecha Siguiente.`;
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
 }
@@ -1105,16 +1134,29 @@ function definirComplementoVoz(tipo, valor) {
 async function confirmarProductoVoz() {
     const producto = agenteVoz.pendiente;
     if (!producto) return;
+    const esCorriente = agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente');
     const cantidad = Math.max(1, Number(document.getElementById('voz-cantidad')?.value || agenteVoz.cantidad || 1));
     for (let indice = 0; indice < cantidad; indice += 1) {
         await agregarAlCarrito(producto.id, producto.nombre, producto.precio, producto.emoji);
     }
     const item = estadoPOS.carrito.find(i => i.prod_id === producto.id);
-    if (item && agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente')) {
+    if (item && esCorriente) {
         const notas = `${cantidad} almuerzo(s): ${agenteVoz.sopa ? 'todos con' : 'todos sin'} sopa; ${agenteVoz.arroz ? 'todos con' : 'todos sin'} arroz. Precio unitario completo: ${fmtCOP(producto.precio)}.`;
         await API.put(`/pedidos/${estadoPOS.pedidoId}/items/${item.id}`, { notas });
     }
-    const mensaje = agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente')
+    if (esCorriente) {
+        const sopa = categoriasAgente().find(c => c.nombre.toLowerCase().includes('sopa'));
+        if (sopa) {
+            agenteVoz.categoria = sopa;
+            agenteVoz.pendiente = null;
+            renderAgenteVoz();
+            const mensajeSopa = `${cantidad} almuerzo(s) anotado(s). Ahora te ofrezco las sopas disponibles en tiempo real. Puedes elegir una o varias y luego pulsar Siguiente.`;
+            document.getElementById('voz-estado').textContent = mensajeSopa;
+            leerTexto(mensajeSopa);
+            return;
+        }
+    }
+    const mensaje = esCorriente
         ? `${cantidad} ${producto.nombre} agregado(s). ${agenteVoz.sopa ? 'Todos con' : 'Todos sin'} sopa y ${agenteVoz.arroz ? 'todos con' : 'todos sin'} arroz. Total: ${fmtCOP(producto.precio * cantidad)}.`
         : `${producto.nombre} agregado por ${fmtCOP(producto.precio)}.`;
     agenteVoz.pendiente = null;
