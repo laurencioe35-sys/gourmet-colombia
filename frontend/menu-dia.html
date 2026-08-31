@@ -361,6 +361,7 @@ const BIBLIOTECA = window.BIBLIOTECA_COLOMBIA || [
     ]
   },
 ];
+const PRECIO_ALMUERZO_CORRIENTE = 18000;
 
 // ════════════════════════════════════════════════════════════════
 //  ESTADO
@@ -382,7 +383,8 @@ function renderBiblioteca() {
         .map((p, i) => {
           const key    = `${sec.cat}|${p.n}`;
           const sel    = !!seleccionados[key];
-          const precio = seleccionados[key]?.precio ?? p.p;
+            const esCorriente = sec.cat.toLowerCase().includes('corriente');
+            const precio = esCorriente ? PRECIO_ALMUERZO_CORRIENTE : (seleccionados[key]?.precio ?? p.p);
           const oculto = q && !p.n.toLowerCase().includes(q) && !p.d.toLowerCase().includes(q) && !sec.cat.toLowerCase().includes(q);
           return `
             <div class="plato-row ${sel?'selected':''} ${oculto?'hidden-row':''}"
@@ -395,11 +397,13 @@ function renderBiblioteca() {
                 <div class="plato-desc">${p.d}</div>
               </div>
               <div class="plato-price" onclick="event.stopPropagation()">
-                <span>$</span>
-                <input type="number" class="price-inp" value="${precio}" min="0" step="0.5"
-                  ${sel?'':'disabled'}
-                  id="price-${sec.cat.replace(/\W/g,'')}-${i}"
-                  onchange="actualizarPrecio('${sec.cat}','${p.n.replace(/'/g,"\\'")}',this.value)">
+                ${esCorriente
+                  ? `<span style="color:#00D4A1;font-size:11px">Precio fijo: $ ${PRECIO_ALMUERZO_CORRIENTE.toLocaleString('es-CO')}</span>`
+                  : `<span>$</span>
+                     <input type="number" class="price-inp" value="${precio}" min="0" step="0.5"
+                       ${sel?'':'disabled'}
+                       id="price-${sec.cat.replace(/\W/g,'')}-${i}"
+                       onchange="actualizarPrecio('${sec.cat}','${p.n.replace(/'/g,"\\'")}',this.value)">`}
               </div>
               <button class="item-action" title="Editar ítem" onclick="event.stopPropagation();abrirItem('${sec.cat}',${i})">✏️</button>
             </div>`;

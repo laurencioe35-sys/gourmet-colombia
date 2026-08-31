@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import func
 from typing import List, Optional
 import unicodedata
 from ..database import get_db
@@ -10,6 +11,7 @@ from ..schemas import (
 )
 
 router = APIRouter()
+PRECIO_ALMUERZO_CORRIENTE = 18000
 
 
 def _normalizar_categoria(nombre: str) -> str:
@@ -132,7 +134,6 @@ def activar_menu_dia(items: List[dict] = Body(...), db: Session = Depends(get_db
 
     activados = 0
     vistos = set()
-    precio_corriente = next((float(item.get("precio", 0)) for item in items if _normalizar_categoria(item.get("categoria")) == "almuerzos corrientes"), None)
     for item in items:
         categoria_normalizada = _normalizar_categoria(item.get("categoria"))
         nombre = (item.get("nombre") or "").strip()
@@ -148,11 +149,11 @@ def activar_menu_dia(items: List[dict] = Body(...), db: Session = Depends(get_db
 
         prod = db.query(Producto).filter(
             Producto.categoria_id == cat.id,
-            Producto.nombre       == nombre
+            func.lower(Producto.nombre) == nombre.casefold()
         ).first()
 
         if prod:
-            prod.precio      = precio_corriente if categoria_normalizada == "almuerzos corrientes" and precio_corriente is not None else float(item.get("precio", prod.precio))
+            prod.precio      = PRECIO_ALMUERZO_CORRIENTE if categoria_normalizada == "almuerzos corrientes" else float(item.get("precio", prod.precio))
             prod.disponible  = True
             prod.descripcion = item.get("descripcion", prod.descripcion) or prod.descripcion
             prod.emoji       = item.get("emoji", prod.emoji) or prod.emoji
@@ -162,7 +163,7 @@ def activar_menu_dia(items: List[dict] = Body(...), db: Session = Depends(get_db
                 categoria_id = cat.id,
                 nombre       = nombre,
                 descripcion  = item.get("descripcion", ""),
-                precio       = precio_corriente if categoria_normalizada == "almuerzos corrientes" and precio_corriente is not None else float(item.get("precio", 0)),
+                precio       = PRECIO_ALMUERZO_CORRIENTE if categoria_normalizada == "almuerzos corrientes" else float(item.get("precio", 0)),
                 emoji        = item.get("emoji", "🍽️"),
                 tiempo_prep  = int(item.get("tiempo_prep", 15)),
                 disponible   = True,
