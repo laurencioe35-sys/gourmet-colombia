@@ -93,6 +93,8 @@
         .voz-agente-contenido { padding: 14px; overflow-y: auto; max-height: 510px; }
         .voz-estado { color: var(--accent2); font-size: 12px; min-height: 18px; margin-bottom: 10px; }
         .voz-carrusel { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 2px 10px; }
+        .voz-carrusel.vista-pc { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow-x: visible; scroll-snap-type: none; }
+        .voz-carrusel.vista-pc .voz-producto { flex-basis: auto; }
         .voz-carrusel-titulo { font-size: 12px; color: var(--text-muted); margin: 2px 0 8px; }
         .voz-navegacion { display: flex; justify-content: space-between; gap: 8px; margin-top: 4px; }
         .voz-navegacion button { flex: 1; min-height: 34px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface2); color: var(--text); font-size: 12px; }
@@ -125,6 +127,7 @@
         .voz-opcion { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 10px; text-align: left; font-size: 12px; }
         .voz-opcion.seleccionada { border-color: var(--accent3); color: var(--accent3); }
         .voz-acciones { display: flex; gap: 8px; margin-top: 12px; }
+        .voz-vista { flex: 1; min-height: 40px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface2); color: var(--text); font-size: 12px; }
         .voz-microfono { width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--accent2); color: #061a17; font-size: 21px; box-shadow: 0 5px 18px rgba(0, 212, 161, .25); }
         .voz-microfono.escuchando { background: var(--danger); color: #fff; animation: pulse 1s infinite; }
         .voz-abrir { position: fixed; right: 22px; bottom: 22px; z-index: 119; width: 54px; height: 54px; border: 0; border-radius: 50%; background: var(--accent2); color: #061a17; font-size: 24px; box-shadow: 0 8px 26px rgba(0, 212, 161, .3); }
@@ -676,6 +679,7 @@
         <div class="voz-acciones">
             <button class="voz-microfono" id="voz-microfono" onclick="alternarEscucha()" aria-label="Hablar con el asistente">🎙️</button>
             <button class="btn btn-ghost btn-sm" onclick="leerOfertaVoz()">🔊 Leer oferta</button>
+            <button class="voz-vista" id="voz-vista" onclick="alternarVistaVoz()">▦ Vista PC</button>
         </div>
     </div>
 </section>
@@ -963,6 +967,9 @@ let agenteVoz = {
     reconocimiento: null
 };
 
+const claveVistaVoz = `gourmetpos_voz_vista_${window.innerWidth <= 768 ? 'mobile' : 'desktop'}`;
+let vistaVoz = localStorage.getItem(claveVistaVoz) || (window.innerWidth <= 768 ? 'carrusel' : 'pc');
+
 function abrirAgenteVoz() {
     document.getElementById('voz-agente').classList.add('abierto');
     document.getElementById('voz-abrir').style.display = 'none';
@@ -1032,13 +1039,16 @@ function renderAgenteVoz() {
         `;
         return;
     }
-    document.getElementById('voz-carrusel').innerHTML = agenteVoz.categoria.productos.map(p => `
+    const carrusel = document.getElementById('voz-carrusel');
+    carrusel.classList.toggle('vista-pc', vistaVoz === 'pc');
+    carrusel.innerHTML = agenteVoz.categoria.productos.map(p => `
         <button class="voz-producto" onclick="seleccionarProductoVoz(${p.id})" aria-label="Agregar ${p.nombre}">
             <span class="voz-producto-emoji">${p.emoji}</span>
             <span class="voz-producto-nombre">${p.nombre}</span>
             <span class="voz-producto-precio">${fmt(p.precio)}</span>
         </button>
     `).join('');
+    actualizarBotonVistaVoz();
     const indiceCategoria = categorias.indexOf(agenteVoz.categoria);
     document.getElementById('voz-carrusel').insertAdjacentHTML('afterend', `
         <div class="voz-navegacion">
@@ -1047,6 +1057,19 @@ function renderAgenteVoz() {
         </div>
     `);
     document.getElementById('voz-personalizacion').innerHTML = '';
+}
+
+function actualizarBotonVistaVoz() {
+    const boton = document.getElementById('voz-vista');
+    if (boton) boton.textContent = vistaVoz === 'carrusel' ? '▦ Vista PC' : '↔ Carrusel';
+}
+
+function alternarVistaVoz() {
+    vistaVoz = vistaVoz === 'carrusel' ? 'pc' : 'carrusel';
+    localStorage.setItem(claveVistaVoz, vistaVoz);
+    const carrusel = document.getElementById('voz-carrusel');
+    carrusel.classList.toggle('vista-pc', vistaVoz === 'pc');
+    actualizarBotonVistaVoz();
 }
 
 function navegarCategoriaVoz(direccion) {
