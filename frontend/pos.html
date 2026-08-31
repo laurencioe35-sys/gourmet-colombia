@@ -959,11 +959,17 @@ let estadoPOS = {
 let agenteVoz = {
     categoria: null,
     pendiente: null,
+    corrienteProducto: null,
     paso: null,
     cantidad: 1,
     iniciado: false,
     sopa: true,
     arroz: true,
+    ensalada: true,
+    sopaNombre: 'sopa del día',
+    quitarSopa: 0,
+    quitarArroz: 0,
+    quitarEnsalada: 0,
     reconocimiento: null
 };
 
@@ -1112,34 +1118,97 @@ function seleccionarProductoVoz(prodId) {
     const producto = agenteVoz.categoria.productos.find(p => p.id === prodId);
     if (!producto) return;
     const mismoProducto = agenteVoz.pendiente?.id === prodId;
-    agenteVoz.pendiente = producto;
     const esCorriente = agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente');
     const esSopa = agenteVoz.categoria.nombre.toLowerCase().includes('sopa');
-    if (esSopa) return agregarSopaVoz(producto);
+    if (esSopa) return seleccionarSopaVoz(producto);
+    agenteVoz.pendiente = producto;
+    if (esCorriente) agenteVoz.corrienteProducto = producto;
     if (!esCorriente) return confirmarProductoVoz();
     if (!mismoProducto) {
         agenteVoz.sopa = true;
         agenteVoz.arroz = true;
+        agenteVoz.ensalada = true;
+        agenteVoz.quitarSopa = 0;
+        agenteVoz.quitarArroz = 0;
+        agenteVoz.quitarEnsalada = 0;
     }
     document.getElementById('voz-personalizacion').innerHTML = `
-        <div class="voz-estado">Son ${agenteVoz.cantidad} almuerzo(s). ¿Todos desean sopa?</div>
-        <div class="voz-estado">¿Todos desean sopa?</div>
-        <div class="voz-opciones">
-            <button class="voz-opcion" onclick="definirComplementoVoz('sopa', true)">Sí, todos con sopa</button>
-            <button class="voz-opcion" onclick="definirComplementoVoz('sopa', false)">No, todos sin sopa</button>
-        </div>
-        <small>Sin sopa o sin arroz se cobra el valor completo. Precio: ${fmtCOP(producto.precio)} por almuerzo.</small>
+        <div class="voz-estado">Son ${agenteVoz.cantidad} almuerzo(s) de ${producto.nombre}.</div>
+        <div class="voz-estado">Primero elige la sopa en tiempo real.</div>
+        <button class="btn btn-primary btn-full" onclick="irASopasVoz()">Elegir ${agenteVoz.cantidad} sopa(s)</button>
+        <small>La sopa, el arroz y la ensalada son complementos. El corriente conserva su precio fijo de ${fmtCOP(producto.precio)} por almuerzo.</small>
     `;
-    const mensaje = `${producto.nombre}. ¿Cuántos almuerzos deseas? Luego te preguntaré si todos llevan sopa y después si todos llevan arroz. El valor es ${fmtCOP(producto.precio)} por almuerzo.`;
+    const mensaje = `${producto.nombre}. Son ${agenteVoz.cantidad} almuerzo(s). Ahora elige la sopa disponible en tiempo real.`;
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
 }
 
-async function agregarSopaVoz(producto) {
-    await agregarAlCarrito(producto.id, producto.nombre, producto.precio, producto.emoji);
-    const mensaje = `${producto.nombre} agregado. Puedes seleccionar otra sopa o avanzar con la flecha Siguiente.`;
+function irASopasVoz() {
+    const sopa = categoriasAgente().find(c => c.nombre.toLowerCase().includes('sopa'));
+    if (!sopa) return mostrarPasoArrozVoz();
+    agenteVoz.categoria = sopa;
+    agenteVoz.pendiente = null;
+    renderAgenteVoz();
+    const mensaje = `Hay ${agenteVoz.cantidad} sopa(s) incluidas. Elige una sopa y luego indica cuántas deseas quitar.`;
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
+}
+
+function seleccionarSopaVoz(producto) {
+    agenteVoz.sopaNombre = producto.nombre;
+    document.getElementById('voz-estado').textContent = `Elegiste ${producto.nombre}. Indica cuántas sopas deseas quitar de las ${agenteVoz.cantidad}.`;
+    document.getElementById('voz-personalizacion').innerHTML = `
+        <div class="voz-estado">${agenteVoz.cantidad} sopa(s) disponibles: ${producto.nombre}</div>
+        <label for="voz-quitar-sopa">¿Cuántas deseas quitar?</label>
+        <input id="voz-quitar-sopa" type="number" min="0" max="${agenteVoz.cantidad}" value="0" style="width:100%;padding:10px;margin:8px 0">
+        <button class="btn btn-primary btn-full" onclick="confirmarSopaVoz()">Continuar con arroz</button>
+    `;
+    leerTexto(`${producto.nombre}. Tienes ${agenteVoz.cantidad} sopas incluidas. ¿Cuántas deseas quitar?`);
+}
+
+function confirmarSopaVoz() {
+    agenteVoz.quitarSopa = Math.min(agenteVoz.cantidad, Math.max(0, Number(document.getElementById('voz-quitar-sopa').value) || 0));
+    agenteVoz.sopa = agenteVoz.quitarSopa < agenteVoz.cantidad;
+    mostrarPasoArrozVoz();
+}
+
+function mostrarPasoArrozVoz() {
+    document.getElementById('voz-estado').textContent = `Tienes ${agenteVoz.cantidad} arroz(es) incluidos. ¿Cuántos deseas quitar?`;
+    document.getElementById('voz-personalizacion').innerHTML = `
+        <div class="voz-estado">Arroz para ${agenteVoz.cantidad} almuerzo(s)</div>
+        <label for="voz-quitar-arroz">¿Cuántos almuerzos van sin arroz?</label>
+        <input id="voz-quitar-arroz" type="number" min="0" max="${agenteVoz.cantidad}" value="0" style="width:100%;padding:10px;margin:8px 0">
+        <button class="btn btn-primary btn-full" onclick="confirmarArrozVoz()">Continuar con ensalada</button>
+    `;
+    leerTexto(`Tienes ${agenteVoz.cantidad} arroces incluidos. ¿Cuántos almuerzos van sin arroz?`);
+}
+
+function confirmarArrozVoz() {
+    agenteVoz.quitarArroz = Math.min(agenteVoz.cantidad, Math.max(0, Number(document.getElementById('voz-quitar-arroz').value) || 0));
+    agenteVoz.arroz = agenteVoz.quitarArroz < agenteVoz.cantidad;
+    mostrarPasoEnsaladaVoz();
+}
+
+function mostrarPasoEnsaladaVoz() {
+    const categoriaEnsalada = categoriasAgente().find(c => /ensalada/i.test(c.nombre));
+    const opciones = categoriaEnsalada?.productos || [];
+    const seleccion = opciones.length
+        ? `<label for="voz-ensalada">Ensalada disponible</label><select id="voz-ensalada" style="width:100%;padding:10px;margin:8px 0">${opciones.map(p => `<option value="${p.nombre}">${p.nombre}</option>`).join('')}</select>`
+        : '<div class="voz-estado">Ensalada del día disponible para cada almuerzo.</div>';
+    document.getElementById('voz-personalizacion').innerHTML = `
+        <div class="voz-estado">Tienes ${agenteVoz.cantidad} ensalada(s) incluidas.</div>
+        ${seleccion}
+        <label for="voz-quitar-ensalada">¿Cuántas ensaladas deseas quitar?</label>
+        <input id="voz-quitar-ensalada" type="number" min="0" max="${agenteVoz.cantidad}" value="0" style="width:100%;padding:10px;margin:8px 0">
+        <button class="btn btn-primary btn-full" onclick="confirmarEnsaladaVoz()">Agregar almuerzos</button>
+    `;
+    leerTexto(`Tienes ${agenteVoz.cantidad} ensaladas incluidas. ¿Cuántas deseas quitar?`);
+}
+
+function confirmarEnsaladaVoz() {
+    agenteVoz.quitarEnsalada = Math.min(agenteVoz.cantidad, Math.max(0, Number(document.getElementById('voz-quitar-ensalada').value) || 0));
+    agenteVoz.ensalada = agenteVoz.quitarEnsalada < agenteVoz.cantidad;
+    confirmarProductoVoz();
 }
 
 function alternarComplementoVoz(tipo) {
@@ -1172,34 +1241,24 @@ function definirComplementoVoz(tipo, valor) {
 }
 
 async function confirmarProductoVoz() {
-    const producto = agenteVoz.pendiente;
+    const producto = agenteVoz.corrienteProducto || agenteVoz.pendiente;
     if (!producto) return;
-    const esCorriente = agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente');
+    const esCorriente = Boolean(agenteVoz.corrienteProducto);
     const cantidad = Math.max(1, Number(document.getElementById('voz-cantidad')?.value || agenteVoz.cantidad || 1));
     for (let indice = 0; indice < cantidad; indice += 1) {
         await agregarAlCarrito(producto.id, producto.nombre, producto.precio, producto.emoji);
     }
     const item = estadoPOS.carrito.find(i => i.prod_id === producto.id);
     if (item && esCorriente) {
-        const notas = `${cantidad} almuerzo(s): ${agenteVoz.sopa ? 'todos con' : 'todos sin'} sopa; ${agenteVoz.arroz ? 'todos con' : 'todos sin'} arroz. Precio unitario completo: ${fmtCOP(producto.precio)}.`;
+        const ensaladaNombre = document.getElementById('voz-ensalada')?.value || 'ensalada del día';
+        const notas = `${cantidad} almuerzo(s), proteína: ${producto.nombre}; sopa: ${agenteVoz.sopaNombre}, ${cantidad - agenteVoz.quitarSopa} con sopa y ${agenteVoz.quitarSopa} sin sopa; arroz: ${cantidad - agenteVoz.quitarArroz} con arroz y ${agenteVoz.quitarArroz} sin arroz; ensalada: ${ensaladaNombre}, ${cantidad - agenteVoz.quitarEnsalada} con ensalada y ${agenteVoz.quitarEnsalada} sin ensalada. Precio unitario fijo: ${fmtCOP(producto.precio)}.`;
         await API.put(`/pedidos/${estadoPOS.pedidoId}/items/${item.id}`, { notas });
     }
-    if (esCorriente) {
-        const sopa = categoriasAgente().find(c => c.nombre.toLowerCase().includes('sopa'));
-        if (sopa) {
-            agenteVoz.categoria = sopa;
-            agenteVoz.pendiente = null;
-            renderAgenteVoz();
-            const mensajeSopa = `${cantidad} almuerzo(s) anotado(s). Ahora te ofrezco las sopas disponibles en tiempo real. Puedes elegir una o varias y luego pulsar Siguiente.`;
-            document.getElementById('voz-estado').textContent = mensajeSopa;
-            leerTexto(mensajeSopa);
-            return;
-        }
-    }
     const mensaje = esCorriente
-        ? `${cantidad} ${producto.nombre} agregado(s). ${agenteVoz.sopa ? 'Todos con' : 'Todos sin'} sopa y ${agenteVoz.arroz ? 'todos con' : 'todos sin'} arroz. Total: ${fmtCOP(producto.precio * cantidad)}.`
+        ? `${cantidad} ${producto.nombre} agregado(s). ${agenteVoz.sopa ? 'Todos con' : 'todos sin'} sopa, ${agenteVoz.arroz ? 'todos con' : 'todos sin'} arroz y ${agenteVoz.ensalada ? 'todos con' : 'todos sin'} ensalada. Total: ${fmtCOP(producto.precio * cantidad)}.`
         : `${producto.nombre} agregado por ${fmtCOP(producto.precio)}.`;
     agenteVoz.pendiente = null;
+    agenteVoz.corrienteProducto = null;
     document.getElementById('voz-personalizacion').innerHTML = '';
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
