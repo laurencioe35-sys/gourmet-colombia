@@ -919,6 +919,9 @@
 
 <script>
 
+const formatoPesosColombianos = (n) => `${Math.round(+n || 0).toLocaleString('es-CO')} pesos colombianos`;
+const fmtCOP = window.fmtCOP || formatoPesosColombianos;
+
 let estadoPOS = {
 
     mesaId: null,
