@@ -8,25 +8,43 @@ from ..schemas import MesaCreate, MesaUpdate, MesaOut, PedidoOut
 router = APIRouter()
 
 
+def _estado_mesa_desde_pedido(mesa: Mesa, db: Session):
+    pedido_activo = db.query(Pedido).filter(
+        Pedido.mesa_id == mesa.id,
+        Pedido.estado.in_([
+            EstadoPedido.pendiente,
+            EstadoPedido.en_preparacion,
+            EstadoPedido.listo,
+        ])
+    ).order_by(Pedido.created_at.desc()).first()
+
+    if pedido_activo is None:
+        mesa.estado = EstadoMesa.libre
+        return "libre", None, 0, 0
+
+    if pedido_activo.estado == EstadoPedido.listo:
+        mesa.estado = EstadoMesa.cuenta
+    else:
+        mesa.estado = EstadoMesa.ocupada
+
+    return mesa.estado.value, pedido_activo.id, pedido_activo.total or 0, len(pedido_activo.detalles or [])
+
+
 @router.get("/", response_model=List[dict])
 def listar_mesas(db: Session = Depends(get_db)):
     mesas = db.query(Mesa).filter(Mesa.activo == True).order_by(Mesa.numero).all()
     resultado = []
     for mesa in mesas:
-        pedido_activo = db.query(Pedido).filter(
-            Pedido.mesa_id == mesa.id,
-            Pedido.estado.in_([EstadoPedido.pendiente, EstadoPedido.en_preparacion, EstadoPedido.listo])
-        ).order_by(Pedido.created_at.desc()).first()
-
+        estado, pedido_id, total_pedido, items_count = _estado_mesa_desde_pedido(mesa, db)
         resultado.append({
             "id": mesa.id,
             "numero": mesa.numero,
             "capacidad": mesa.capacidad,
-            "estado": mesa.estado.value,
+            "estado": estado,
             "ubicacion": mesa.ubicacion,
-            "pedido_activo_id": pedido_activo.id if pedido_activo else None,
-            "total_pedido": pedido_activo.total if pedido_activo else 0,
-            "items_count": len(pedido_activo.detalles) if pedido_activo else 0,
+            "pedido_activo_id": pedido_id,
+            "total_pedido": total_pedido,
+            "items_count": items_count,
         })
     return resultado
 

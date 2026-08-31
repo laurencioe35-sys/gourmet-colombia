@@ -14,8 +14,20 @@ def dashboard_kpis(db: Session = Depends(get_db)):
     hoy = datetime.utcnow().date()
     inicio_hoy = datetime.combine(hoy, datetime.min.time())
 
-    mesas_ocupadas = db.query(Mesa).filter(Mesa.estado.in_(["ocupada", "cuenta"])).count()
-    mesas_libres = db.query(Mesa).filter(Mesa.estado == "libre", Mesa.activo == True).count()
+    mesas = db.query(Mesa).filter(Mesa.activo == True).all()
+    mesas_ocupadas = 0
+    mesas_libres = 0
+
+    for mesa in mesas:
+        pedido_activo = db.query(Pedido).filter(
+            Pedido.mesa_id == mesa.id,
+            Pedido.estado.in_([EstadoPedido.pendiente, EstadoPedido.en_preparacion, EstadoPedido.listo])
+        ).order_by(Pedido.created_at.desc()).first()
+
+        if pedido_activo is None:
+            mesas_libres += 1
+        else:
+            mesas_ocupadas += 1
 
     pedidos_hoy = db.query(Pedido).filter(
         Pedido.created_at >= inicio_hoy,
