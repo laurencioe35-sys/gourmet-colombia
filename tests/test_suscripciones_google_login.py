@@ -115,3 +115,18 @@ def test_get_env_uses_railway_aliases(monkeypatch):
 
     assert get_env("GOOGLE_CLIENT_ID", "", ("GOOGLE_CLIENT_ID_WEB",)) == "client-web.apps.googleusercontent.com"
     assert get_env("JWT_SECRET", "", ("SECRET_KEY", "APP_SECRET")) == "super-secret"
+
+
+def test_runtime_google_config_refreshes_from_env(monkeypatch):
+    import backend.routes.suscripciones as suscripciones
+
+    monkeypatch.delenv("GOOGLE_CLIENT_ID", raising=False)
+    monkeypatch.setenv("GOOGLE_CLIENT_ID_WEB", "client-web.apps.googleusercontent.com")
+    monkeypatch.delenv("JWT_SECRET", raising=False)
+    monkeypatch.delenv("SECRET_KEY", raising=False)
+    monkeypatch.setenv("APP_SECRET", "super-secret")
+
+    suscripciones._refresh_runtime_config()
+
+    assert suscripciones.GOOGLE_CLIENT_ID == "client-web.apps.googleusercontent.com"
+    assert suscripciones.JWT_SECRET == "super-secret"
