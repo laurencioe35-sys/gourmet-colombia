@@ -93,6 +93,13 @@
         .voz-agente-contenido { padding: 14px; overflow-y: auto; max-height: 510px; }
         .voz-estado { color: var(--accent2); font-size: 12px; min-height: 18px; margin-bottom: 10px; }
         .voz-carrusel { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 2px 10px; }
+        .voz-carrusel-titulo { font-size: 12px; color: var(--text-muted); margin: 2px 0 8px; }
+        .voz-cantidad { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--surface2); border: 1px solid var(--accent2); border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+        .voz-cantidad strong { display: block; font-size: 14px; }
+        .voz-cantidad small { color: var(--text-muted); }
+        .voz-cantidad-controles { display: flex; align-items: center; gap: 10px; }
+        .voz-cantidad-controles button { width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 50%; background: transparent; color: var(--text); font-size: 18px; }
+        .voz-cantidad-controles output { min-width: 24px; text-align: center; font-weight: 800; color: var(--accent3); }
         .voz-producto {
             flex: 0 0 148px;
             min-height: 132px;
@@ -660,6 +667,7 @@
     <div class="voz-agente-contenido">
         <div class="voz-estado" id="voz-estado">Primero te ofrezco almuerzos corrientes.</div>
         <div class="voz-categorias" id="voz-categorias"></div>
+        <div class="voz-carrusel-titulo">Carrusel de opciones disponibles ahora</div>
         <div class="voz-carrusel" id="voz-carrusel"></div>
         <div id="voz-personalizacion"></div>
         <div class="voz-acciones">
@@ -946,6 +954,7 @@ let agenteVoz = {
     pendiente: null,
     paso: null,
     cantidad: 1,
+    iniciado: false,
     sopa: true,
     arroz: true,
     reconocimiento: null
@@ -955,7 +964,12 @@ function abrirAgenteVoz() {
     document.getElementById('voz-agente').classList.add('abierto');
     document.getElementById('voz-abrir').style.display = 'none';
     renderAgenteVoz();
-    leerOfertaVoz();
+    if (!agenteVoz.iniciado) {
+        document.getElementById('voz-estado').textContent = 'Primero dime cuántos almuerzos van a pedir.';
+        leerTexto('Primero dime cuántos almuerzos van a pedir.');
+    } else {
+        leerOfertaVoz();
+    }
 }
 
 function cerrarAgenteVoz() {
@@ -974,12 +988,28 @@ function categoriasAgente() {
 function renderAgenteVoz() {
     const categorias = categoriasAgente();
     if (!categorias.length) return;
-    if (!agenteVoz.categoria || !categorias.includes(agenteVoz.categoria)) agenteVoz.categoria = categorias[0];
+    const corriente = categorias.find(c => c.nombre.toLowerCase().includes('almuerzo corriente'));
+    if (!agenteVoz.categoria || !categorias.includes(agenteVoz.categoria)) agenteVoz.categoria = corriente || categorias[0];
     document.getElementById('voz-categorias').innerHTML = categorias.map(c => `
         <button class="voz-categoria ${c.id === agenteVoz.categoria.id ? 'activa' : ''}" onclick="seleccionarCategoriaVoz(${c.id})">
             ${c.emoji} ${c.nombre}
         </button>
     `).join('');
+    if (!agenteVoz.iniciado) {
+        document.getElementById('voz-carrusel').innerHTML = '';
+        document.getElementById('voz-personalizacion').innerHTML = `
+            <div class="voz-cantidad">
+                <div><strong>¿Cuántos almuerzos?</strong><small>La cantidad se aplicará a todos.</small></div>
+                <div class="voz-cantidad-controles">
+                    <button onclick="cambiarCantidadVoz(-1)" aria-label="Disminuir cantidad">−</button>
+                    <output id="voz-cantidad-valor">${agenteVoz.cantidad}</output>
+                    <button onclick="cambiarCantidadVoz(1)" aria-label="Aumentar cantidad">+</button>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="iniciarCantidadVoz()">Continuar con ${agenteVoz.cantidad} almuerzo(s)</button>
+        `;
+        return;
+    }
     document.getElementById('voz-carrusel').innerHTML = agenteVoz.categoria.productos.map(p => `
         <button class="voz-producto" onclick="seleccionarProductoVoz(${p.id})" aria-label="Agregar ${p.nombre}">
             <span class="voz-producto-emoji">${p.emoji}</span>
@@ -990,7 +1020,27 @@ function renderAgenteVoz() {
     document.getElementById('voz-personalizacion').innerHTML = '';
 }
 
+function cambiarCantidadVoz(delta) {
+    agenteVoz.cantidad = Math.max(1, Math.min(99, agenteVoz.cantidad + delta));
+    document.getElementById('voz-cantidad-valor').textContent = agenteVoz.cantidad;
+    document.querySelector('#voz-personalizacion .btn-primary').textContent = `Continuar con ${agenteVoz.cantidad} almuerzo(s)`;
+}
+
+function iniciarCantidadVoz() {
+    agenteVoz.iniciado = true;
+    agenteVoz.paso = 'producto';
+    renderAgenteVoz();
+    const categoria = agenteVoz.categoria;
+    const mensaje = `Perfecto, son ${agenteVoz.cantidad} almuerzo(s). Te ofrezco primero ${categoria.nombre}. Elige la proteína disponible en el carrusel.`;
+    document.getElementById('voz-estado').textContent = mensaje;
+    leerTexto(mensaje);
+}
+
 function seleccionarCategoriaVoz(catId) {
+    if (!agenteVoz.iniciado) {
+        document.getElementById('voz-estado').textContent = 'Primero indica la cantidad de almuerzos para continuar.';
+        return leerTexto('Primero indica la cantidad de almuerzos para continuar.');
+    }
     agenteVoz.categoria = categoriasAgente().find(c => c.id === catId);
     agenteVoz.pendiente = null;
     renderAgenteVoz();
@@ -1010,8 +1060,7 @@ function seleccionarProductoVoz(prodId) {
         agenteVoz.arroz = true;
     }
     document.getElementById('voz-personalizacion').innerHTML = `
-        <div class="voz-estado">¿Cuántos almuerzos corrientes de ${producto.nombre}?</div>
-        <input id="voz-cantidad" type="number" min="1" value="${agenteVoz.cantidad}" onchange="agenteVoz.cantidad=Math.max(1,Number(this.value)||1)" style="width:100%;padding:10px;margin-bottom:10px">
+        <div class="voz-estado">Son ${agenteVoz.cantidad} almuerzo(s). ¿Todos desean sopa?</div>
         <div class="voz-estado">¿Todos desean sopa?</div>
         <div class="voz-opciones">
             <button class="voz-opcion" onclick="definirComplementoVoz('sopa', true)">Sí, todos con sopa</button>
@@ -1122,9 +1171,12 @@ function detenerEscucha() {
 
 function procesarComandoVoz(comando) {
     const numero = comando.match(/\d+/)?.[0];
+    if (!agenteVoz.iniciado && numero) {
+        agenteVoz.cantidad = Math.max(1, Math.min(99, Number(numero)));
+        return iniciarCantidadVoz();
+    }
     if (agenteVoz.pendiente && numero && agenteVoz.paso !== 'arroz') {
         agenteVoz.cantidad = Math.max(1, Number(numero));
-        document.getElementById('voz-cantidad').value = agenteVoz.cantidad;
         leerTexto(`Anotado, ${agenteVoz.cantidad} almuerzos. ¿Todos desean sopa?`);
         return;
     }
