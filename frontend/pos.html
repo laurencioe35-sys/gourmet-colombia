@@ -1089,10 +1089,21 @@ function navegarCategoriaVoz(direccion) {
     seleccionarCategoriaVoz(siguiente.id);
 }
 
+function obtenerCantidadActualVoz() {
+    const valorVisual = Number(document.getElementById('voz-cantidad-valor')?.textContent || agenteVoz.cantidad || 1);
+    const valorInput = Number(document.getElementById('voz-cantidad')?.value || 0);
+    const cantidad = Number.isFinite(valorInput) && valorInput > 0 ? valorInput : valorVisual;
+    agenteVoz.cantidad = Math.max(1, Math.min(99, cantidad));
+    return agenteVoz.cantidad;
+}
+
 function cambiarCantidadVoz(delta) {
     agenteVoz.cantidad = Math.max(1, Math.min(99, agenteVoz.cantidad + delta));
     document.getElementById('voz-cantidad-valor').textContent = agenteVoz.cantidad;
-    document.querySelector('#voz-personalizacion .btn-primary').textContent = `Continuar con ${agenteVoz.cantidad} almuerzo(s)`;
+    const inputCantidad = document.getElementById('voz-cantidad');
+    if (inputCantidad) inputCantidad.value = agenteVoz.cantidad;
+    const botonPrimario = document.querySelector('#voz-personalizacion .btn-primary');
+    if (botonPrimario) botonPrimario.textContent = `Continuar con ${agenteVoz.cantidad} almuerzo(s)`;
 }
 
 function iniciarCantidadVoz() {
@@ -1283,7 +1294,7 @@ async function confirmarProductoVoz() {
     const producto = agenteVoz.corrienteProducto || agenteVoz.pendiente;
     if (!producto) return;
     const esCorriente = Boolean(agenteVoz.corrienteProducto);
-    const cantidad = Math.max(1, Number(document.getElementById('voz-cantidad')?.value || agenteVoz.cantidad || 1));
+    const cantidad = obtenerCantidadActualVoz();
     for (let indice = 0; indice < cantidad; indice += 1) {
         await agregarAlCarrito(producto.id, producto.nombre, producto.precio, producto.emoji);
     }
@@ -1356,7 +1367,17 @@ function procesarComandoVoz(comando) {
     const numero = comando.match(/\d+/)?.[0];
     if (!agenteVoz.iniciado && numero) {
         agenteVoz.cantidad = Math.max(1, Math.min(99, Number(numero)));
-        return iniciarCantidadVoz();
+        const textoSinNumero = comando.replace(numero, '').trim();
+        iniciarCantidadVoz();
+        const categoriaProteina = categoriasAgente().find(c => c.nombre.toLowerCase().includes('prote'));
+        const productoCoincidente = categoriaProteina?.productos.find(p => {
+            const nombre = p.nombre.toLowerCase();
+            return nombre.includes(textoSinNumero) || textoSinNumero.includes(nombre);
+        });
+        if (productoCoincidente) {
+            setTimeout(() => seleccionarProductoVoz(productoCoincidente.id), 0);
+        }
+        return;
     }
     if (agenteVoz.pendiente && numero && agenteVoz.paso !== 'arroz') {
         agenteVoz.cantidad = Math.max(1, Number(numero));
