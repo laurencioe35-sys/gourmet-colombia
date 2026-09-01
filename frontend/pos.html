@@ -1231,6 +1231,7 @@ function seleccionarProductoVoz(prodId) {
     if (!producto) return;
     const mismoProducto = agenteVoz.pendiente?.id === prodId;
     const esCorriente = (agenteVoz.categoria?.nombre || '').toLowerCase().includes('almuerzo corriente');
+    const esEspecial = (agenteVoz.categoria?.nombre || '').toLowerCase().includes('especial');
     const esSopa = (agenteVoz.categoria?.nombre || '').toLowerCase().includes('sopa');
     const esProteina = (agenteVoz.categoria?.nombre || '').toLowerCase().includes('prote');
     const esPrincipio = (agenteVoz.categoria?.nombre || '').toLowerCase().includes('princip');
@@ -1262,8 +1263,8 @@ function seleccionarProductoVoz(prodId) {
         return;
     }
     agenteVoz.pendiente = producto;
-    if (esCorriente) agenteVoz.corrienteProducto = producto;
-    if (!esCorriente) return confirmarProductoVoz();
+    if (esCorriente || esEspecial) agenteVoz.corrienteProducto = producto;
+    if (!esCorriente && !esEspecial) return confirmarProductoVoz();
     if (!mismoProducto) {
         agenteVoz.sopa = true;
         agenteVoz.arroz = true;
@@ -1275,13 +1276,14 @@ function seleccionarProductoVoz(prodId) {
         agenteVoz.quitarArroz = 0;
         agenteVoz.quitarEnsalada = 0;
     }
+    const tituloEspecial = esEspecial ? 'plato especial' : 'almuerzo corriente';
     document.getElementById('voz-personalizacion').innerHTML = `
-        <div class="voz-estado">Son ${agenteVoz.cantidad} almuerzo(s) de ${producto.nombre}.</div>
+        <div class="voz-estado">Son ${agenteVoz.cantidad} ${tituloEspecial}(s) de ${producto.nombre}.</div>
         <div class="voz-estado">Primero elige la sopa en tiempo real.</div>
         <button class="btn btn-primary btn-full" onclick="irASopasVoz()">Elegir ${agenteVoz.cantidad} sopa(s)</button>
-        <small>La sopa, el arroz y la ensalada son complementos. El corriente conserva su precio fijo de ${fmtCOP(producto.precio)} por almuerzo.</small>
+        <small>La sopa, el arroz y la ensalada son complementos. ${esEspecial ? 'Este plato conserva su precio y se completa con la secuencia de sopa, arroz y ensalada.' : 'El corriente conserva su precio fijo de ' + fmtCOP(producto.precio) + ' por almuerzo.'}</small>
     `;
-    const mensaje = `${producto.nombre}. Son ${agenteVoz.cantidad} almuerzo(s). Ahora elige la sopa disponible en tiempo real.`;
+    const mensaje = `${producto.nombre}. Son ${agenteVoz.cantidad} ${tituloEspecial}(s). Ahora elige la sopa disponible en tiempo real.`;
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
 }
@@ -1329,13 +1331,29 @@ function mostrarPasoArrozVoz() {
 function confirmarArrozVoz() {
     agenteVoz.quitarArroz = Math.min(agenteVoz.cantidad, Math.max(0, Number(document.getElementById('voz-quitar-arroz').value) || 0));
     agenteVoz.arroz = agenteVoz.quitarArroz < agenteVoz.cantidad;
-    mostrarPasoPrincipiosVoz();
+    mostrarPasoEnsaladaVoz();
+}
+
+function mostrarPasoSopaVoz() {
+    const categoria = categoriasAgente().find(c => c.nombre.toLowerCase().includes('sopa'));
+    if (!categoria) return mostrarPasoArrozVoz();
+    agenteVoz.categoria = categoria;
+    document.getElementById('voz-carrusel').classList.toggle('vista-pc', vistaVoz === 'pc');
+    document.getElementById('voz-carrusel').innerHTML = categoria.productos.map(p => `
+        <button class="voz-producto" onclick="seleccionarProductoVoz(${p.id})">
+            <span class="voz-producto-emoji">${p.emoji}</span>
+            <span class="voz-producto-nombre">${p.nombre}</span>
+            <span class="voz-producto-precio">Sopa incluida</span>
+        </button>
+    `).join('');
+    document.getElementById('voz-estado').textContent = `Tienes ${agenteVoz.cantidad} sopa(s) incluidas. Elige la sopa para completar la cantidad total.`;
+    leerTexto(`Tienes ${agenteVoz.cantidad} sopas incluidas. Elige la sopa para completar la cantidad total.`);
 }
 
 function mostrarPasoPrincipiosVoz() {
     const categoria = categoriasAgente().find(c => c.nombre.toLowerCase().includes('princip'));
     const opciones = categoria?.productos || [];
-    if (!opciones.length) return mostrarPasoEnsaladaVoz();
+    if (!opciones.length) return mostrarPasoSopaVoz();
     agenteVoz.categoria = categoria;
     document.getElementById('voz-carrusel').classList.toggle('vista-pc', vistaVoz === 'pc');
     document.getElementById('voz-carrusel').innerHTML = opciones.map(p => `
@@ -1359,8 +1377,8 @@ function seleccionarPrincipioVoz(nombre) {
         leerTexto(mensaje);
         return;
     }
-    mostrarPasoEnsaladaVoz();
-    const mensaje = `${nombre} seleccionado para completar los ${agenteVoz.cantidad} almuerzos. Ahora elige la ensalada.`;
+    mostrarPasoSopaVoz();
+    const mensaje = `${nombre} seleccionado para completar los ${agenteVoz.cantidad} almuerzos. Ahora elige la sopa.`;
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
 }
