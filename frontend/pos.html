@@ -1027,7 +1027,8 @@ function obtenerPrecioBaseCorriente() {
     const categorias = categoriasAgente();
     const corriente = categorias.find(c => c.nombre.toLowerCase().includes('almuerzo corriente'));
     const productoBase = corriente?.productos?.find(p => Number(p.precio) > 0) || corriente?.productos?.[0] || null;
-    return Number(productoBase?.precio || 0);
+    const precio = Number(productoBase?.precio || 0);
+    return precio > 0 ? precio : 18000;
 }
 
 function abrirAgenteVoz() {
@@ -1871,6 +1872,8 @@ function renderProductos(catId) {
         c => c.id === catId
     );
 
+    const isCorriente = (cat?.nombre || '').toLowerCase().includes('almuerzo corriente');
+
     const grid =
         document.getElementById('productos-grid');
 
@@ -1905,7 +1908,7 @@ function renderProductos(catId) {
                 ${p.nombre}
             </div>
 
-            <div class="prod-precio">${fmt(p.precio)}</div>
+            <div class="prod-precio">${fmt(isCorriente && Number(p.precio) <= 0 ? 18000 : p.precio)}</div>
 
             ${
                 p.destacado

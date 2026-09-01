@@ -14,6 +14,16 @@ router = APIRouter()
 PRECIO_ALMUERZO_CORRIENTE = 18000
 
 
+def _precio_base_corriente(precio: object | None, nombre: str | None = None) -> float:
+    precio_num = float(precio or 0)
+    nombre_limpio = (nombre or "").strip().lower()
+    if precio_num > 0:
+        return precio_num
+    if "almuerzo" in nombre_limpio or "corriente" in nombre_limpio:
+        return float(PRECIO_ALMUERZO_CORRIENTE)
+    return float(PRECIO_ALMUERZO_CORRIENTE if precio_num == 0 else precio_num)
+
+
 def _normalizar_categoria(nombre: str) -> str:
     texto = unicodedata.normalize("NFKD", (nombre or "")).encode("ascii", "ignore").decode().lower()
     texto = " ".join(texto.replace("menus", "menu").split())
@@ -152,8 +162,11 @@ def activar_menu_dia(items: List[dict] = Body(...), db: Session = Depends(get_db
             func.lower(Producto.nombre) == nombre.casefold()
         ).first()
 
+        precio_final = float(item.get("precio", prod.precio if prod else 0) or 0)
+        if categoria_normalizada == "almuerzos corrientes":
+            precio_final = _precio_base_corriente(precio_final, nombre)
         if prod:
-            prod.precio      = PRECIO_ALMUERZO_CORRIENTE if categoria_normalizada == "almuerzos corrientes" else float(item.get("precio", prod.precio))
+            prod.precio      = precio_final
             prod.disponible  = True
             prod.descripcion = item.get("descripcion", prod.descripcion) or prod.descripcion
             prod.emoji       = item.get("emoji", prod.emoji) or prod.emoji
@@ -163,7 +176,7 @@ def activar_menu_dia(items: List[dict] = Body(...), db: Session = Depends(get_db
                 categoria_id = cat.id,
                 nombre       = nombre,
                 descripcion  = item.get("descripcion", ""),
-                precio       = PRECIO_ALMUERZO_CORRIENTE if categoria_normalizada == "almuerzos corrientes" else float(item.get("precio", 0)),
+                precio       = precio_final,
                 emoji        = item.get("emoji", "🍽️"),
                 tiempo_prep  = int(item.get("tiempo_prep", 15)),
                 disponible   = True,
@@ -185,23 +198,26 @@ def menu_completo(db: Session = Depends(get_db)):
             Producto.categoria_id == cat.id,
             Producto.disponible == True
         ).all()
+        productos_normalizados = []
+        for p in productos:
+            precio = float(p.precio or 0)
+            if "almuerzos corrientes" in (cat.nombre or "").lower():
+                precio = _precio_base_corriente(precio, p.nombre)
+            productos_normalizados.append({
+                "id": p.id,
+                "nombre": p.nombre,
+                "descripcion": p.descripcion,
+                "precio": precio,
+                "emoji": p.emoji,
+                "imagen_url": p.imagen_url,
+                "destacado": p.destacado,
+                "tiempo_prep": p.tiempo_prep,
+            })
         resultado.append({
             "id": cat.id,
             "nombre": cat.nombre,
             "emoji": cat.emoji,
             "color": cat.color,
-            "productos": [
-                {
-                    "id": p.id,
-                    "nombre": p.nombre,
-                    "descripcion": p.descripcion,
-                    "precio": p.precio,
-                    "emoji": p.emoji,
-                    "imagen_url": p.imagen_url,
-                    "destacado": p.destacado,
-                    "tiempo_prep": p.tiempo_prep,
-                }
-                for p in productos
-            ]
+            "productos": productos_normalizados,
         })
     return resultado
