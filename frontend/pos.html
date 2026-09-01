@@ -1337,7 +1337,14 @@ function mostrarPasoPrincipiosVoz() {
     const opciones = categoria?.productos || [];
     if (!opciones.length) return mostrarPasoEnsaladaVoz();
     agenteVoz.categoria = categoria;
-    renderAgenteVoz();
+    document.getElementById('voz-carrusel').classList.toggle('vista-pc', vistaVoz === 'pc');
+    document.getElementById('voz-carrusel').innerHTML = opciones.map(p => `
+        <button class="voz-producto" onclick="seleccionarProductoVoz(${p.id})">
+            <span class="voz-producto-emoji">${p.emoji}</span>
+            <span class="voz-producto-nombre">${p.nombre}</span>
+            <span class="voz-producto-precio">Principio incluido</span>
+        </button>
+    `).join('');
     document.getElementById('voz-estado').textContent = `Tienes ${agenteVoz.cantidad} principio(s) incluido(s). Elige el principio para completar la cantidad total.`;
     leerTexto(`Tienes ${agenteVoz.cantidad} principios incluidos. Elige el principio para completar la cantidad total.`);
 }
@@ -1385,23 +1392,37 @@ function mostrarConfirmacionFinalVoz() {
         <div class="voz-estado">Ya tienes ${cantidad} almuerzo(s) corrientes listos con su proteína y principio.</div>
         <div class="voz-estado">Precio estimado: ${fmtCOP(total)}.</div>
         <div class="voz-estado">¿Desea incluir otros almuerzos diferentes?</div>
-        <button class="btn btn-primary btn-full" onclick="confirmarProductoVoz()">No, solo estos almuerzos corrientes</button>
-        <button class="btn btn-ghost btn-full" onclick="continuarConOtrosAlmuerzosVoz()">Sí, continuar</button>
+        <button class="btn btn-primary btn-full" onclick="finalizarLoteCorriente(false)">No, solo estos almuerzos corrientes</button>
+        <button class="btn btn-ghost btn-full" onclick="finalizarLoteCorriente(true)">Sí, continuar</button>
     `;
     const mensaje = `Los almuerzos corrientes quedan en ${fmtCOP(total)}. ¿Desea incluir otros almuerzos diferentes?`;
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
 }
 
-function continuarConOtrosAlmuerzosVoz() {
-    confirmarProductoVoz();
-    const siguiente = categoriasAgente().find(c => c.nombre.toLowerCase().includes('almuerzo corriente')) || categoriasAgente()[0];
-    if (siguiente) {
-        agenteVoz.categoria = siguiente;
+async function finalizarLoteCorriente(continuar = false) {
+    const res = await confirmarProductoVoz();
+    if (res === false) return;
+
+    if (continuar) {
+        const siguiente = categoriasAgente().find(c => c.nombre.toLowerCase().includes('almuerzo corriente')) || categoriasAgente()[0];
+        if (siguiente) {
+            agenteVoz.categoria = siguiente;
+        }
+        agenteVoz.iniciado = true;
+        renderAgenteVoz();
+        document.getElementById('voz-estado').textContent = 'Puedes seguir agregando más almuerzos o cerrar el pedido.';
+        leerTexto('Puedes seguir agregando más almuerzos o cerrar el pedido.');
+        return;
     }
-    renderAgenteVoz();
-    document.getElementById('voz-estado').textContent = 'Puedes seguir agregando más almuerzos o cerrar el pedido.';
-    leerTexto('Puedes seguir agregando más almuerzos o cerrar el pedido.');
+
+    document.getElementById('voz-personalizacion').innerHTML = '';
+    document.getElementById('voz-estado').textContent = 'Pedido listo. Puedes cerrar la venta o seguir agregando.';
+    leerTexto('Pedido listo. Puedes cerrar la venta o seguir agregando.');
+}
+
+function continuarConOtrosAlmuerzosVoz() {
+    finalizarLoteCorriente(true);
 }
 
 function confirmarEnsaladaVoz() {
@@ -1441,35 +1462,40 @@ function definirComplementoVoz(tipo, valor) {
 
 async function confirmarProductoVoz() {
     const producto = agenteVoz.corrienteProducto || agenteVoz.pendiente;
-    if (!producto) return;
+    if (!producto) return false;
     const esCorriente = Boolean(agenteVoz.corrienteProducto);
     const cantidad = obtenerCantidadActualVoz();
+    const precioBase = Number(producto.precio || obtenerPrecioBaseCorriente() || 0);
     const resumenProteinas = agenteVoz.proteinasSeleccionadas.length
         ? agenteVoz.proteinasSeleccionadas.map(item => `${item.nombre} x${item.cantidad}`).join(', ')
-        : producto.nombre;
+        : (agenteVoz.proteinasSeleccionadas[0]?.nombre || 'sin proteína');
     const resumenPrincipios = agenteVoz.principiosSeleccionados.length
         ? agenteVoz.principiosSeleccionados.map(item => `${item.nombre} x${item.cantidad}`).join(', ')
-        : agenteVoz.principioNombre;
+        : (agenteVoz.principioNombre || 'sin principio');
     for (let indice = 0; indice < cantidad; indice += 1) {
-        await agregarAlCarrito(producto.id, producto.nombre, producto.precio, producto.emoji);
+        await agregarAlCarrito(producto.id, producto.nombre, precioBase, producto.emoji);
     }
     const item = estadoPOS.carrito.find(i => i.prod_id === producto.id);
     if (item && esCorriente) {
         const ensaladaNombre = agenteVoz.ensaladaNombre || document.getElementById('voz-ensalada')?.value || 'ensalada del día';
-        const notas = `${cantidad} almuerzo(s), proteína: ${resumenProteinas}; principio: ${resumenPrincipios}; sopa: ${agenteVoz.sopaNombre}, ${cantidad - agenteVoz.quitarSopa} con sopa y ${agenteVoz.quitarSopa} sin sopa; arroz: ${cantidad - agenteVoz.quitarArroz} con arroz y ${agenteVoz.quitarArroz} sin arroz; ensalada: ${ensaladaNombre}, ${cantidad - agenteVoz.quitarEnsalada} con ensalada y ${agenteVoz.quitarEnsalada} sin ensalada. Precio unitario fijo: ${fmtCOP(producto.precio)}.`;
+        const notas = `${cantidad} almuerzo(s), proteína: ${resumenProteinas}; principio: ${resumenPrincipios}; sopa: ${agenteVoz.sopaNombre}, ${cantidad - agenteVoz.quitarSopa} con sopa y ${agenteVoz.quitarSopa} sin sopa; arroz: ${cantidad - agenteVoz.quitarArroz} con arroz y ${agenteVoz.quitarArroz} sin arroz; ensalada: ${ensaladaNombre}, ${cantidad - agenteVoz.quitarEnsalada} con ensalada y ${agenteVoz.quitarEnsalada} sin ensalada. Precio unitario fijo: ${fmtCOP(precioBase)}.`;
         item.notas = notas;
-        await API.put(`/pedidos/${estadoPOS.pedidoId}/items/${item.id}`, { notas });
+        if (item.id) {
+            await API.put(`/pedidos/${estadoPOS.pedidoId}/items/${item.id}`, { notas });
+        }
     }
     const mensaje = esCorriente
-        ? `${cantidad} ${producto.nombre} agregado(s). ${agenteVoz.sopa ? 'Todos con' : 'todos sin'} sopa, ${agenteVoz.arroz ? 'todos con' : 'todos sin'} arroz y ${agenteVoz.ensalada ? 'todos con' : 'todos sin'} ensalada. Total: ${fmtCOP(producto.precio * cantidad)}.`
-        : `${producto.nombre} agregado por ${fmtCOP(producto.precio)}.`;
+        ? `${cantidad} ${producto.nombre} agregado(s). ${agenteVoz.sopa ? 'Todos con' : 'todos sin'} sopa, ${agenteVoz.arroz ? 'todos con' : 'todos sin'} arroz y ${agenteVoz.ensalada ? 'todos con' : 'todos sin'} ensalada. Total: ${fmtCOP(precioBase * cantidad)}.`
+        : `${producto.nombre} agregado por ${fmtCOP(precioBase)}.`;
     agenteVoz.pendiente = null;
     agenteVoz.corrienteProducto = null;
     agenteVoz.proteinasSeleccionadas = [];
     agenteVoz.principiosSeleccionados = [];
     document.getElementById('voz-personalizacion').innerHTML = '';
     document.getElementById('voz-estado').textContent = mensaje;
+    renderCarrito();
     leerTexto(mensaje);
+    return true;
 }
 
 function leerTexto(texto) {
