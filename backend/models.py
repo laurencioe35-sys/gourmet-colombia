@@ -77,9 +77,11 @@ class Mesa(Base):
     capacidad = Column(Integer, default=4)
     estado = Column(SAEnum(EstadoMesa), default=EstadoMesa.libre)
     ubicacion = Column(String(50), default="Salon")
+    qr_token = Column(String(120), unique=True, nullable=True, index=True)
     activo = Column(Boolean, default=True)
 
     pedidos = relationship("Pedido", back_populates="mesa")
+    sesiones = relationship("MesaClienteSession", back_populates="mesa")
 
 
 class Cliente(Base):
@@ -97,6 +99,23 @@ class Cliente(Base):
     pedidos = relationship("Pedido", back_populates="cliente")
     conversaciones = relationship("ConversacionWhatsApp", back_populates="cliente")
     saludo_voz = relationship("ClienteSaludoVoz", back_populates="cliente", uselist=False, cascade="all, delete-orphan")
+
+
+class MesaClienteSession(Base):
+    __tablename__ = "mesas_clientes_sesiones"
+
+    id = Column(Integer, primary_key=True, index=True)
+    mesa_id = Column(Integer, ForeignKey("mesas.id"), nullable=False, index=True)
+    session_id = Column(String(120), unique=True, nullable=False, index=True)
+    nombre = Column(String(150), nullable=False)
+    whatsapp = Column(String(30), nullable=False)
+    token = Column(String(120), nullable=False)
+    estado = Column(String(30), default="activo")
+    creado_en = Column(DateTime, default=datetime.utcnow)
+    expira_en = Column(DateTime, nullable=True)
+    pedido_id = Column(Integer, ForeignKey("pedidos.id"), nullable=True)
+
+    mesa = relationship("Mesa", back_populates="sesiones")
 
 
 class Pedido(Base):

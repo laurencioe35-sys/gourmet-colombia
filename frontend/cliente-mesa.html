@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedido por WhatsApp - GourmetPOS</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2e;
+      --panel-soft: #1a2441;
+      --accent: #ff6b35;
+      --accent-2: #00d4a1;
+      --text: #edf3ff;
+      --muted: #96a4c7;
+      --border: rgba(255,255,255,0.08);
+      --success: #18b57d;
+      --warning: #ffc857;
+      --danger: #ff5d73;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: Arial, sans-serif; background: linear-gradient(180deg, #0b1020 0%, #111b2f 100%); color: var(--text);
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 16px 60px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .brand { font-weight: 800; letter-spacing: 0.04em; }
+    .chip { border: 1px solid var(--border); border-radius: 999px; padding: 8px 12px; color: var(--muted); font-size: 13px; }
+    .grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; }
+    .panel { background: rgba(18,26,46,0.84); border: 1px solid var(--border); border-radius: 20px; padding: 22px; box-shadow: 0 18px 40px rgba(0,0,0,0.2); }
+    .panel h2 { margin-top: 0; font-size: 1.5rem; }
+    .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+    .field label { font-size: 0.88rem; color: var(--muted); }
+    .field input, .field textarea, .field select { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 14px 12px; color: var(--text); font-size: 16px; }
+    .btn { width: 100%; border: none; border-radius: 12px; padding: 14px 18px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: transform 0.15s ease; }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), #ff8a4c); color: white; }
+    .btn-success { background: linear-gradient(135deg, var(--success), #2ec6a1); color: white; }
+    .muted { color: var(--muted); }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 14px; margin-top: 16px; }
+    .product { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 14px; }
+    .product .emoji { font-size: 2rem; }
+    .product h4 { margin: 10px 0 6px; }
+    .product .price { color: var(--accent-2); font-weight: 700; }
+    .product button { margin-top: 12px; }
+    .cart-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .cart-meta { display: flex; align-items: center; gap: 10px; }
+    .qty { display: inline-flex; align-items: center; gap: 8px; }
+    .qty button { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: transparent; color: var(--text); cursor: pointer; }
+    .status { margin-top: 18px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--muted); }
+    .hidden { display: none; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">🍽️ GourmetPOS • Pedido del cliente</div>
+      <div class="chip">Mesa segura • WhatsApp verificado</div>
+    </div>
+
+    <div class="grid">
+      <section class="panel">
+        <h2>1) Confirmar mesa</h2>
+        <div class="field">
+          <label>Número de mesa</label>
+          <input id="mesaId" type="number" placeholder="Ej: 4" />
+        </div>
+        <div class="field">
+          <label>Token QR</label>
+          <input id="tokenQr" type="text" placeholder="Pega el token del QR" />
+        </div>
+        <button class="btn btn-primary" id="btnValidarMesa">Validar mesa</button>
+
+        <div id="validatedBlock" class="status hidden"></div>
+      </section>
+
+      <section class="panel">
+        <h2>2) Datos del cliente</h2>
+        <div class="field">
+          <label>Nombre</label>
+          <input id="clienteNombre" type="text" placeholder="Tu nombre" />
+        </div>
+        <div class="field">
+          <label>WhatsApp</label>
+          <input id="clienteWhatsapp" type="tel" placeholder="57300..." />
+        </div>
+        <button class="btn btn-success" id="btnCrearSesion">Continuar con el pedido</button>
+        <div id="sessionStatus" class="status hidden"></div>
+      </section>
+    </div>
+
+    <section class="panel" style="margin-top:24px;">
+      <h2>3) Menú del día</h2>
+      <p class="muted">Solo se despliegan platos del carrusel para pedido del cliente. Sin acceso al panel administrativo.</p>
+      <div id="menuList" class="menu-grid"></div>
+    </section>
+
+    <section class="panel" style="margin-top:24px;">
+      <h2>4) Mi pedido</h2>
+      <div id="cartList"></div>
+      <div class="status" id="totalStatus">Total: $ 0</div>
+      <button class="btn btn-primary" id="btnConfirmarPedido" style="margin-top:16px;">Confirmar pedido</button>
+    </section>
+  </div>
+
+  <script>
+    const apiBase = '/api';
+    const state = {
+      mesaId: null,
+      sessionId: null,
+      pedidoId: null,
+      cart: []
+    };
+
+    function show(el, text='') {
+      const node = document.getElementById(el);
+      if (!node) return;
+      node.classList.remove('hidden');
+      if (text) node.textContent = text;
+    }
+
+    function hide(el) { const node = document.getElementById(el); if (node) node.classList.add('hidden'); }
+
+    async function loadMenu() {
+      const res = await fetch(`${apiBase}/menu/completo`);
+      const data = await res.json();
+      const menuList = document.getElementById('menuList');
+      menuList.innerHTML = '';
+      data.forEach(cat => {
+        if (!Array.isArray(cat.productos) || !cat.productos.length) return;
+        cat.productos.forEach(prod => {
+          const card = document.createElement('div');
+          card.className = 'product';
+          card.innerHTML = `
+            <div class="emoji">${prod.emoji || '🍽️'}</div>
+            <h4>${prod.nombre}</h4>
+            <div class="muted">${prod.descripcion || ''}</div>
+            <div class="price">$ ${Number(prod.precio || 0).toLocaleString('es-CO')}</div>
+            <button class="btn btn-primary" onclick="addToCart(${JSON.stringify(prod)})">Agregar</button>
+          `;
+          menuList.appendChild(card);
+        });
+      });
+    }
+
+    function renderCart() {
+      const list = document.getElementById('cartList');
+      if (!state.cart.length) {
+        list.innerHTML = '<div class="muted">Todavía no agregas productos.</div>';
+        document.getElementById('totalStatus').textContent = 'Total: $ 0';
+        return;
+      }
+
+      let total = 0;
+      list.innerHTML = state.cart.map(item => {
+        total += item.precio * item.cantidad;
+        return `
+          <div class="cart-item">
+            <div class="cart-meta">
+              <div>${item.emoji || '🍽️'} ${item.nombre}</div>
+            </div>
+            <div class="qty">
+              <button onclick="updateQty(${item.id}, -1)">−</button>
+              <span>${item.cantidad}</span>
+              <button onclick="updateQty(${item.id}, 1)">+</button>
+            </div>
+            <strong>$ ${(item.precio * item.cantidad).toLocaleString('es-CO')}</strong>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('totalStatus').textContent = `Total: $ ${total.toLocaleString('es-CO')}`;
+    }
+
+    function addToCart(prod) {
+      const existing = state.cart.find(item => item.id === prod.id);
+      if (existing) {
+        existing.cantidad += 1;
+      } else {
+        state.cart.push({ id: prod.id, nombre: prod.nombre, precio: Number(prod.precio || 0), cantidad: 1, emoji: prod.emoji || '🍽️'});
+      }
+      renderCart();
+    }
+
+    function updateQty(id, delta) {
+      const item = state.cart.find(it => it.id === id);
+      if (!item) return;
+      item.cantidad += delta;
+      if (item.cantidad <= 0) state.cart = state.cart.filter(it => it.id !== id);
+      renderCart();
+    }
+
+    document.getElementById('btnValidarMesa').addEventListener('click', async () => {
+      const mesaId = Number(document.getElementById('mesaId').value);
+      const token = document.getElementById('tokenQr').value.trim();
+      if (!mesaId || !token) return alert('Debe completar mesa y token');
+      const res = await fetch(`${apiBase}/cliente/mesa/validar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mesa_id: mesaId, token })
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.detail || 'Mesa inválida');
+      state.mesaId = mesaId;
+      show('validatedBlock', `Mesa validada: ${data.numero} (${data.ubicacion})`);
+    });
+
+    document.getElementById('btnCrearSesion').addEventListener('click', async () => {
+      if (!state.mesaId) return alert('Primero valida la mesa');
+      const nombre = document.getElementById('clienteNombre').value.trim();
+      const whatsapp = document.getElementById('clienteWhatsapp').value.trim();
+      const token = document.getElementById('tokenQr').value.trim();
+      if (!nombre || !whatsapp) return alert('Completa nombre y WhatsApp');
+      const res = await fetch(`${apiBase}/cliente/mesa/sesion`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mesa_id: state.mesaId, token, nombre, whatsapp })
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.detail || 'No fue posible iniciar sesión');
+      state.sessionId = data.session_id;
+      show('sessionStatus', `Sesión activa para ${data.nombre} • ${data.whatsapp}`);
+    });
+
+    document.getElementById('btnConfirmarPedido').addEventListener('click', async () => {
+      if (!state.sessionId || !state.mesaId) return alert('Primero inicia sesión y valida la mesa');
+      if (!state.cart.length) return alert('Agrega al menos un producto');
+      const res = await fetch(`${apiBase}/cliente/${state.sessionId}/pedido`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mesa_id: state.mesaId, notas: 'Pedido del cliente' })
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.detail || 'No fue posible crear el pedido');
+      state.pedidoId = data.pedido_id;
+      alert(`Pedido creado correctamente. Ticket: ${data.numero_ticket}`);
+    });
+
+    loadMenu();
+  </script>
+</body>
+</html>

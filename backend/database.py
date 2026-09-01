@@ -45,6 +45,7 @@ def ensure_database_compatibility():
     except Exception:
         return
 
+    dialect = engine.dialect
     for table in Base.metadata.sorted_tables:
         table_name = table.name
         if not inspector.has_table(table_name):
@@ -52,24 +53,21 @@ def ensure_database_compatibility():
 
         existing_columns = {col["name"] for col in inspector.get_columns(table_name)}
         for column in table.columns:
-            if column.name in existing_columns:
+            if column.name in existing_columns or column.primary_key:
                 continue
 
-            column_type = column.type.compile(dialect=sqlite.dialect())
+            column_type = column.type.compile(dialect=dialect)
             nullable = "NULL" if column.nullable else "NOT NULL"
             default = ""
 
-            if column.default is not None and not callable(column.default.arg):
-                default_value = column.default.arg
-                if isinstance(default_value, str):
+            if column.default is not None:
+                default_value = column.default.arg if hasattr(column.default, 'arg') else column.default
+                if callable(default_value):
+                    default = ""
+                elif isinstance(default_value, str):
                     default = f"DEFAULT '{default_value}'"
                 else:
                     default = f"DEFAULT {default_value}"
-            elif column.default is not None and callable(column.default.arg):
-                default = ""
-
-            if column.primary_key:
-                continue
 
             with engine.begin() as conn:
                 conn.execute(
@@ -77,6 +75,10 @@ def ensure_database_compatibility():
                         f'ALTER TABLE "{table_name}" ADD COLUMN "{column.name}" {column_type} {nullable} {default}'.strip()
                     )
                 )
+
+
+# Compatibilidad de esquema para bases ya creadas en versiones previas.
+ensure_database_compatibility()
 
 
 def get_db():

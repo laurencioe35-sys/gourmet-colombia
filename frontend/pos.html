@@ -54,24 +54,25 @@
 
         .voz-agente {
             position: fixed;
-            right: 22px;
+            left: 50%;
+            right: auto;
             bottom: 22px;
-            width: min(390px, calc(100vw - 32px));
+            width: min(420px, calc(100vw - 32px));
             max-height: min(620px, calc(100vh - 44px));
             overflow: hidden;
             z-index: 120;
             background: var(--surface);
             border: 1px solid var(--accent2);
-            border-radius: 16px;
+            border-radius: 18px;
             box-shadow: 0 18px 50px rgba(0, 0, 0, .48);
-            transform: translateY(calc(100% + 28px));
+            transform: translate(-50%, calc(100% + 28px));
             opacity: 0;
             pointer-events: none;
             transition: transform .25s ease, opacity .25s ease;
         }
 
         .voz-agente.abierto {
-            transform: translateY(0);
+            transform: translate(-50%, 0);
             opacity: 1;
             pointer-events: auto;
         }
@@ -92,10 +93,24 @@
 
         .voz-agente-contenido { padding: 14px; overflow-y: auto; max-height: 510px; }
         .voz-estado { color: var(--accent2); font-size: 12px; min-height: 18px; margin-bottom: 10px; }
-        .voz-carrusel { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 2px 10px; }
-        .voz-carrusel.vista-pc { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow-x: visible; scroll-snap-type: none; }
+        .voz-carrusel {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 2px 2px 10px;
+            justify-content: center;
+            align-items: stretch;
+        }
+        .voz-carrusel.vista-pc {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            overflow-x: visible;
+            scroll-snap-type: none;
+            justify-content: stretch;
+        }
         .voz-carrusel.vista-pc .voz-producto { flex-basis: auto; }
-        .voz-carrusel-titulo { font-size: 12px; color: var(--text-muted); margin: 2px 0 8px; }
+        .voz-carrusel-titulo { font-size: 12px; color: var(--text-muted); margin: 2px 0 8px; text-align: center; }
         .voz-navegacion { display: flex; justify-content: space-between; gap: 8px; margin-top: 4px; }
         .voz-navegacion button { flex: 1; min-height: 34px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface2); color: var(--text); font-size: 12px; }
         .voz-navegacion button:disabled { opacity: .35; cursor: not-allowed; }
@@ -133,10 +148,19 @@
         .voz-abrir { position: fixed; right: 22px; bottom: 22px; z-index: 119; width: 54px; height: 54px; border: 0; border-radius: 50%; background: var(--accent2); color: #061a17; font-size: 24px; box-shadow: 0 8px 26px rgba(0, 212, 161, .3); }
 
         @media (max-width: 768px) {
-            .voz-agente { right: 8px; bottom: 8px; width: calc(100vw - 16px); max-height: min(590px, calc(100vh - 16px)); border-radius: 14px; }
-            .voz-agente-contenido { max-height: calc(100vh - 104px); }
+            .voz-agente {
+                left: 50%;
+                right: auto;
+                bottom: 12px;
+                width: calc(100vw - 18px);
+                max-height: min(590px, calc(100vh - 18px));
+                border-radius: 14px;
+            }
+            .voz-agente.abierto { transform: translate(-50%, 0); }
+            .voz-agente-contenido { max-height: calc(100vh - 100px); }
             .voz-abrir { right: 14px; bottom: 14px; }
-            .voz-producto { flex-basis: 142px; }
+            .voz-carrusel { justify-content: flex-start; }
+            .voz-producto { flex-basis: min(70vw, 220px); }
         }
 
         /* ==========================================================
@@ -1714,14 +1738,35 @@ function mostrarPOS() {
         `🛒 Mesa ${estadoPOS.mesaNum} · ${negocioActual()}`;
 
     document.getElementById('cart-mesa-badge').innerHTML = `
-        <span class="badge badge-ocupada">
-            Mesa ${estadoPOS.mesaNum}
-        </span>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span class="badge badge-ocupada">
+                Mesa ${estadoPOS.mesaNum}
+            </span>
+            <button class="btn btn-ghost btn-sm" onclick="liberarMesaActual()">
+                Liberar mesa
+            </button>
+        </div>
     `;
 
     cargarMenu();
 
     renderCarrito();
+}
+
+async function liberarMesaActual() {
+    if (!estadoPOS.mesaId) return;
+
+    try {
+        const res = await API.post(`/mesas/${estadoPOS.mesaId}/liberar`, { forzar: true });
+        if (res.ok) {
+            toast('Mesa liberada. Ya puede atender otra orden.', 'success');
+            estadoPOS.carrito = [];
+            estadoPOS.pedidoId = null;
+            mostrarMesas();
+        }
+    } catch (e) {
+        toast(e.message || 'No se pudo liberar la mesa', 'error');
+    }
 }
 
 

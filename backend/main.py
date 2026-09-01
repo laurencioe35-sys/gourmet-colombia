@@ -23,7 +23,7 @@ from .database import engine, Base, SessionLocal, ensure_database_compatibility
 from .models import MensajeProgramado, ConfigRestaurante
 from .models import *  # noqa: F401,F403
 from .seed_data import seed_database
-from .routes import mesas, menu, pedidos, caja, clientes, reportes, whatsapp_webhook, config, suscripciones, admin_acceso
+from .routes import mesas, menu, pedidos, caja, clientes, reportes, whatsapp_webhook, config, suscripciones, admin_acceso, cliente_mesa
 from .services.whatsapp_service import WhatsAppService
 
 
@@ -83,6 +83,8 @@ async def _ejecutar_scheduler():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Garantiza que la base exista y que las columnas nuevas se agreguen
+    # tanto en SQLite local como en PostgreSQL de Railway.
     Base.metadata.create_all(bind=engine)
     ensure_database_compatibility()
     db = SessionLocal()
@@ -164,6 +166,7 @@ app.include_router(whatsapp_webhook.router,    prefix="/api/whatsapp",   tags=["
 app.include_router(config.router,              prefix="/api/config",     tags=["Config"])
 app.include_router(suscripciones.router,       prefix="/api/suscripciones", tags=["Suscripciones"])
 app.include_router(admin_acceso.router,        prefix="/api/admin", tags=["Administración"])
+app.include_router(cliente_mesa.router)
 
 
 # ── HEALTH CHECK ──────────────────────────────────────────────────────────────

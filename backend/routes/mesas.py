@@ -1,9 +1,20 @@
+import hashlib
+from datetime import date
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from ..database import get_db
 from ..models import Mesa, Pedido, EstadoMesa, EstadoPedido
 from ..schemas import MesaCreate, MesaUpdate, MesaOut, PedidoOut
+
+
+def generar_token_diario_mesa(mesa_id: int, dia: date | None = None) -> str:
+    """Genera un token único por mesa y por día. Se renueva cada jornada."""
+    dia_actual = dia or date.today()
+    seed = f"mesa:{mesa_id}:day:{dia_actual.isoformat()}"
+    digest = hashlib.sha256(seed.encode("utf-8")).hexdigest()[:20]
+    return f"mesa-{mesa_id}-{dia_actual.strftime('%Y%m%d')}-{digest}"
 
 router = APIRouter()
 
@@ -36,6 +47,9 @@ def listar_mesas(db: Session = Depends(get_db)):
     resultado = []
     for mesa in mesas:
         estado, pedido_id, total_pedido, items_count = _estado_mesa_desde_pedido(mesa, db)
+        if mesa.estado != EstadoMesa(estado):
+            mesa.estado = EstadoMesa(estado)
+        db.commit()
         resultado.append({
             "id": mesa.id,
             "numero": mesa.numero,
@@ -114,3 +128,62 @@ def configurar_mesas(cantidad: int, db: Session = Depends(get_db)):
 
     db.commit()
     return {"ok": True, "mesas_activas": cantidad}
+
+
+@router.post("/{mesa_id}/token-diario")
+def renovar_token_diario_mesa(mesa_id: int, db: Session = Depends(get_db)):
+    """Genera y persiste un token nuevo para la mesa para el día actual."""
+    mesa = db.query(Mesa).filter(Mesa.id == mesa_id, Mesa.activo == True).first()
+    if not mesa:
+        raise HTTPException(status_code=404, detail="Mesa no encontrada")
+
+    token = generar_token_diario_mesa(mesa.id)
+    mesa.qr_token = token
+    db.commit()
+    return {
+        "ok": True,
+        "mesa_id": mesa.id,
+        "numero": mesa.numero,
+        "token": token,
+        "fecha": date.today().isoformat(),
+        "uso": "Se usa como QR de acceso del cliente para ese día. Cualquier token viejo queda inválido."
+    }
+
+
+@router.post("/{mesa_id}/liberar")
+def liberar_mesa(mesa_id: int, data: dict | None = None, db: Session = Depends(get_db)):
+    """Libera la mesa cuando el cliente se retira. Si hay pedido activo, solo se libera si se fuerza."""
+    mesa = db.query(Mesa).filter(Mesa.id == mesa_id, Mesa.activo == True).first()
+    if not mesa:
+        raise HTTPException(status_code=404, detail="Mesa no encontrada")
+
+    fuerza = bool((data or {}).get("forzar", False))
+    pedido_abierto = db.query(Pedido).filter(
+        Pedido.mesa_id == mesa.id,
+        Pedido.estado.in_([
+            EstadoPedido.pendiente,
+            EstadoPedido.en_preparacion,
+            EstadoPedido.listo,
+        ])
+    ).order_by(Pedido.created_at.desc()).first()
+
+    if pedido_abierto and not fuerza:
+        raise HTTPException(
+            status_code=409,
+            detail="Hay un pedido activo en la mesa. Debe forzar la liberación o cerrarlo antes."
+        )
+
+    if pedido_abierto and fuerza:
+        pedido_abierto.estado = EstadoPedido.cancelado
+        pedido_abierto.updated_at = date.today()
+
+    mesa.estado = EstadoMesa.libre
+    db.commit()
+    return {
+        "ok": True,
+        "mesa_id": mesa.id,
+        "numero": mesa.numero,
+        "estado": mesa.estado.value,
+        "forzado": fuerza,
+        "mensaje": "La mesa quedó disponible para nuevo cliente."
+    }
