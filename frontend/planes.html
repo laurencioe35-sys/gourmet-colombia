@@ -160,14 +160,26 @@
   </div>
  
   <script>
-    window.GOOGLE_CLIENT_ID = '956223061656-keifivrhjkk97nfdhogg1mvgcr0vi5qi.apps.googleusercontent.com';
+    window.GOOGLE_CLIENT_ID = '';
   </script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="assets/js/api.js"></script>
   <script>
+    async function loadGoogleClientConfig() {
+      try {
+        const response = await fetch('/api/suscripciones/google-config');
+        const data = await response.json();
+        window.GOOGLE_CLIENT_ID = data.client_id || '';
+        return window.GOOGLE_CLIENT_ID;
+      } catch (error) {
+        console.error('[GourmetPOS] No se pudo cargar client_id desde backend:', error);
+        return '';
+      }
+    }
+
     const plans = { esencial: ['Esencial', 49000], profesional: ['Profesional', 20000], empresa: ['Empresa', 149000] };
     let selected = 'profesional';
-    const GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID || '';
+    let GOOGLE_CLIENT_ID = '';
  
     function redirectIfApprovedSession() {
       if (localStorage.getItem('gourmetpos_cliente_token')) window.location.href = 'index.html';
@@ -253,7 +265,10 @@
       }
     }
  
-    function initGoogleIdentity() {
+    async function initGoogleIdentity() {
+      if (!GOOGLE_CLIENT_ID) {
+        GOOGLE_CLIENT_ID = await loadGoogleClientConfig();
+      }
       if (googleInitialized) {
         renderGoogleButton();
         return true;

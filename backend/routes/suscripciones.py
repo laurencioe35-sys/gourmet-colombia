@@ -13,19 +13,30 @@ from ..models import ConfigRestaurante, SolicitudPlan, UsuarioGoogle
 from ..schemas import SolicitudPlanCreate
 
 router = APIRouter()
-GOOGLE_CLIENT_ID = get_env(
-    "GOOGLE_CLIENT_ID",
-    "",
-    (
-        "GOOGLE_CLIENT_ID_WEB",
-        "GOOGLE_CLIENT_ID_ANDROID",
-        "GOOGLE_CLIENT_ID_IOS",
-        "GOOGLE_CLIENT_ID_SERVER",
-    ),
-)
-JWT_SECRET = get_env("JWT_SECRET", get_env("SECRET_KEY", ""), ("APP_SECRET", "JWT_SIGNING_SECRET"))
-JWT_ALGORITHM = get_env("JWT_ALGORITHM", "HS256")
-JWT_EXPIRE_DAYS = int(get_env("JWT_EXPIRE_DAYS", "30"))
+
+
+def _refresh_runtime_config():
+    global GOOGLE_CLIENT_ID, JWT_SECRET, JWT_ALGORITHM, JWT_EXPIRE_DAYS
+    GOOGLE_CLIENT_ID = get_env(
+        "GOOGLE_CLIENT_ID",
+        "",
+        (
+            "GOOGLE_CLIENT_ID_WEB",
+            "GOOGLE_CLIENT_ID_ANDROID",
+            "GOOGLE_CLIENT_ID_IOS",
+            "GOOGLE_CLIENT_ID_SERVER",
+        ),
+    )
+    JWT_SECRET = get_env("JWT_SECRET", get_env("SECRET_KEY", ""), ("APP_SECRET", "JWT_SIGNING_SECRET"))
+    JWT_ALGORITHM = get_env("JWT_ALGORITHM", "HS256")
+    JWT_EXPIRE_DAYS = int(get_env("JWT_EXPIRE_DAYS", "30"))
+
+
+GOOGLE_CLIENT_ID = ""
+JWT_SECRET = ""
+JWT_ALGORITHM = "HS256"
+JWT_EXPIRE_DAYS = 30
+_refresh_runtime_config()
 
 PLANES = {
     "esencial": {"nombre": "Esencial", "valor": 49000},
@@ -35,6 +46,7 @@ PLANES = {
 
 
 def crear_token_usuario(usuario: UsuarioGoogle, tipo="cliente"):
+    _refresh_runtime_config()
     if not JWT_SECRET:
         raise HTTPException(status_code=500, detail="JWT_SECRET no está configurado.")
     ahora = datetime.utcnow()
@@ -50,6 +62,7 @@ def crear_token_usuario(usuario: UsuarioGoogle, tipo="cliente"):
 
 
 def verificar_google_credential(credential: str):
+    _refresh_runtime_config()
     if not GOOGLE_CLIENT_ID:
         raise HTTPException(status_code=500, detail="GOOGLE_CLIENT_ID no está configurado.")
     try:
@@ -117,6 +130,12 @@ def _config(db, clave, defecto=""):
 @router.get("/planes")
 def listar_planes():
     return PLANES
+
+
+@router.get("/google-config")
+def get_google_config():
+    _refresh_runtime_config()
+    return {"client_id": GOOGLE_CLIENT_ID, "enabled": bool(GOOGLE_CLIENT_ID)}
 
 
 @router.post("/estado")
