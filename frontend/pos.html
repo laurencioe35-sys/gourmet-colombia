@@ -1057,6 +1057,7 @@ function renderAgenteVoz() {
         </button>
     `).join('');
     if (!agenteVoz.iniciado) {
+        const precioBase = Number((corriente?.productos?.[0]?.precio) || 0);
         document.getElementById('voz-carrusel').innerHTML = '';
         document.getElementById('voz-personalizacion').innerHTML = `
             <div class="voz-cantidad">
@@ -1067,8 +1068,12 @@ function renderAgenteVoz() {
                     <button onclick="cambiarCantidadVoz(1)" aria-label="Aumentar cantidad">+</button>
                 </div>
             </div>
+            <div id="voz-total-estimado" class="voz-estado" style="margin-bottom:10px;">
+                Precio estimado: ${fmtCOP(precioBase)} c/u · Total: ${fmtCOP(precioBase * agenteVoz.cantidad)}
+            </div>
             <button class="btn btn-primary btn-full" onclick="iniciarCantidadVoz()">Continuar con ${agenteVoz.cantidad} almuerzo(s)</button>
         `;
+        actualizarPrecioVozActual();
         return;
     }
     const carrusel = document.getElementById('voz-carrusel');
@@ -1121,6 +1126,18 @@ function obtenerCantidadActualVoz() {
     return agenteVoz.cantidad;
 }
 
+function actualizarPrecioVozActual() {
+    const cantidad = obtenerCantidadActualVoz();
+    const corriente = categoriasAgente().find(c => c.nombre.toLowerCase().includes('almuerzo corriente'));
+    const productoBase = agenteVoz.corrienteProducto || corriente?.productos?.[0] || null;
+    const precioBase = Number(productoBase?.precio || corriente?.productos?.[0]?.precio || 0);
+    const total = precioBase * cantidad;
+    const bloque = document.getElementById('voz-total-estimado');
+    if (bloque) {
+        bloque.textContent = `Precio estimado: ${fmtCOP(precioBase)} c/u · Total: ${fmtCOP(total)}`;
+    }
+}
+
 function cambiarCantidadVoz(delta) {
     agenteVoz.cantidad = Math.max(1, Math.min(99, agenteVoz.cantidad + delta));
     document.getElementById('voz-cantidad-valor').textContent = agenteVoz.cantidad;
@@ -1128,6 +1145,7 @@ function cambiarCantidadVoz(delta) {
     if (inputCantidad) inputCantidad.value = agenteVoz.cantidad;
     const botonPrimario = document.querySelector('#voz-personalizacion .btn-primary');
     if (botonPrimario) botonPrimario.textContent = `Continuar con ${agenteVoz.cantidad} almuerzo(s)`;
+    actualizarPrecioVozActual();
 }
 
 function iniciarCantidadVoz() {
@@ -1141,8 +1159,13 @@ function iniciarCantidadVoz() {
     if (corriente?.productos?.length) agenteVoz.corrienteProducto = corriente.productos[0];
     renderAgenteVoz();
     const precioBase = Number(agenteVoz.corrienteProducto?.precio || 0);
-    const mensaje = `Perfecto, son ${agenteVoz.cantidad} almuerzo(s). Los almuerzos corrientes tienen un valor base de ${fmtCOP(precioBase)}. Elige la proteína para completar la cantidad total.`;
+    const totalBase = precioBase * agenteVoz.cantidad;
+    const mensaje = `Perfecto, son ${agenteVoz.cantidad} almuerzo(s). Los almuerzos corrientes tienen un valor base de ${fmtCOP(precioBase)}. Elige la proteína para completar la cantidad total. Estimado: ${fmtCOP(totalBase)}.`;
     document.getElementById('voz-estado').textContent = mensaje;
+    const bloque = document.getElementById('voz-total-estimado');
+    if (bloque) {
+        bloque.textContent = `Precio estimado: ${fmtCOP(precioBase)} c/u · Total: ${fmtCOP(totalBase)}`;
+    }
     leerTexto(mensaje);
 }
 
