@@ -972,11 +972,32 @@ let agenteVoz = {
     quitarSopa: 0,
     quitarArroz: 0,
     quitarEnsalada: 0,
+    proteinasSeleccionadas: [],
+    principiosSeleccionados: [],
     reconocimiento: null
 };
 
 const claveVistaVoz = `gourmetpos_voz_vista_${window.innerWidth <= 768 ? 'mobile' : 'desktop'}`;
 let vistaVoz = localStorage.getItem(claveVistaVoz) || (window.innerWidth <= 768 ? 'carrusel' : 'pc');
+
+function negocioActual() {
+    const nombre = (window.GOURMETPOS_NEGOCIO && window.GOURMETPOS_NEGOCIO.nombre) || 'nuestro restaurante';
+    return (nombre || 'nuestro restaurante').trim() || 'nuestro restaurante';
+}
+
+async function cargarNegocioActual() {
+    try {
+        const config = await API.get('/config/');
+        const datos = {};
+        config.forEach(c => { datos[c.clave] = c.valor; });
+        if (datos.nombre) {
+            window.GOURMETPOS_NEGOCIO = { nombre: datos.nombre };
+        }
+    } catch (e) {
+        console.warn('No se pudo cargar la configuración del negocio:', e);
+    }
+    return negocioActual();
+}
 
 function abrirAgenteVoz() {
     document.getElementById('voz-agente').classList.add('abierto');
@@ -985,8 +1006,9 @@ function abrirAgenteVoz() {
     agenteVoz.categoria = categorias.find(c => c.nombre.toLowerCase().includes('almuerzo corriente')) || categorias[0] || null;
     renderAgenteVoz();
     const saludoHora = saludoHoraColombia();
+    const nombreNegocio = negocioActual();
     if (!agenteVoz.iniciado) {
-        const mensaje = `${saludoHora} Primero dime cuántos almuerzos van a pedir.`;
+        const mensaje = `${saludoHora} Bienvenido a ${nombreNegocio}. Primero dime cuántos almuerzos van a pedir.`;
         document.getElementById('voz-estado').textContent = mensaje;
         leerTexto(mensaje);
     } else {
@@ -994,7 +1016,7 @@ function abrirAgenteVoz() {
         const oferta = categoria
             ? `${categoria.nombre}. ${categoria.productos.slice(0, 5).map(p => `${p.nombre}, ${fmtCOP(p.precio)}`).join('. ')}.`
             : '';
-        leerTexto(`${saludoHora} Continuemos con tu pedido. ${oferta}`);
+        leerTexto(`${saludoHora} Bienvenido a ${nombreNegocio}. Continuemos con tu pedido. ${oferta}`);
     }
 }
 
@@ -1109,13 +1131,28 @@ function cambiarCantidadVoz(delta) {
 function iniciarCantidadVoz() {
     agenteVoz.iniciado = true;
     agenteVoz.paso = 'producto';
+    agenteVoz.proteinasSeleccionadas = [];
+    agenteVoz.principiosSeleccionados = [];
     const proteinas = categoriasAgente().find(c => c.nombre.toLowerCase().includes('prote'));
     if (proteinas) agenteVoz.categoria = proteinas;
     renderAgenteVoz();
     const categoria = agenteVoz.categoria;
-    const mensaje = `Perfecto, son ${agenteVoz.cantidad} almuerzo(s). Te ofrezco las proteínas disponibles en tiempo real. Elige la proteína para todos o avanza con la flecha.`;
+    const mensaje = `Perfecto, son ${agenteVoz.cantidad} almuerzo(s). Te ofrezco las proteínas disponibles en tiempo real. Elige la proteína para completar la cantidad total.`;
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
+}
+
+function registrarSeleccionVoz(tipo, nombre) {
+    const clave = tipo === 'proteina' ? 'proteinasSeleccionadas' : 'principiosSeleccionados';
+    const grupo = agenteVoz[clave] || [];
+    const existente = grupo.find(item => item.nombre === nombre);
+    if (existente) {
+        existente.cantidad += 1;
+    } else {
+        grupo.push({ nombre, cantidad: 1 });
+    }
+    agenteVoz[clave] = grupo;
+    return grupo.reduce((total, item) => total + item.cantidad, 0);
 }
 
 function seleccionarCategoriaVoz(catId) {
@@ -1139,7 +1176,15 @@ function seleccionarProductoVoz(prodId) {
     const esProteina = agenteVoz.categoria.nombre.toLowerCase().includes('prote');
     if (esSopa) return seleccionarSopaVoz(producto);
     if (esProteina) {
+        const totalSeleccionado = registrarSeleccionVoz('proteina', producto.nombre);
+        const restante = Math.max(0, agenteVoz.cantidad - totalSeleccionado);
         agenteVoz.corrienteProducto = producto;
+        if (restante > 0) {
+            const mensaje = `Elegiste ${producto.nombre}. Faltan ${restante} almuerzo(s) por definir. Elige otra proteína o repite la misma para completar la cantidad.`;
+            document.getElementById('voz-estado').textContent = mensaje;
+            leerTexto(mensaje);
+            return;
+        }
         return irASopasVoz();
     }
     agenteVoz.pendiente = producto;
@@ -1231,9 +1276,17 @@ function mostrarPasoPrincipiosVoz() {
 }
 
 function seleccionarPrincipioVoz(nombre) {
+    const totalSeleccionado = registrarSeleccionVoz('principio', nombre);
+    const restante = Math.max(0, agenteVoz.cantidad - totalSeleccionado);
     agenteVoz.principioNombre = nombre;
+    if (restante > 0) {
+        const mensaje = `Elegiste ${nombre}. Faltan ${restante} almuerzo(s) por definir el principio. Elige otra opción o repite la misma hasta completar.`;
+        document.getElementById('voz-estado').textContent = mensaje;
+        leerTexto(mensaje);
+        return;
+    }
     mostrarPasoEnsaladaVoz();
-    const mensaje = `${nombre} seleccionado para los ${agenteVoz.cantidad} almuerzos. Ahora elige la ensalada.`;
+    const mensaje = `${nombre} seleccionado para completar los ${agenteVoz.cantidad} almuerzos. Ahora elige la ensalada.`;
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
 }
@@ -1295,13 +1348,19 @@ async function confirmarProductoVoz() {
     if (!producto) return;
     const esCorriente = Boolean(agenteVoz.corrienteProducto);
     const cantidad = obtenerCantidadActualVoz();
+    const resumenProteinas = agenteVoz.proteinasSeleccionadas.length
+        ? agenteVoz.proteinasSeleccionadas.map(item => `${item.nombre} x${item.cantidad}`).join(', ')
+        : producto.nombre;
+    const resumenPrincipios = agenteVoz.principiosSeleccionados.length
+        ? agenteVoz.principiosSeleccionados.map(item => `${item.nombre} x${item.cantidad}`).join(', ')
+        : agenteVoz.principioNombre;
     for (let indice = 0; indice < cantidad; indice += 1) {
         await agregarAlCarrito(producto.id, producto.nombre, producto.precio, producto.emoji);
     }
     const item = estadoPOS.carrito.find(i => i.prod_id === producto.id);
     if (item && esCorriente) {
         const ensaladaNombre = agenteVoz.ensaladaNombre || document.getElementById('voz-ensalada')?.value || 'ensalada del día';
-        const notas = `${cantidad} almuerzo(s), proteína: ${producto.nombre}; principio: ${agenteVoz.principioNombre}; sopa: ${agenteVoz.sopaNombre}, ${cantidad - agenteVoz.quitarSopa} con sopa y ${agenteVoz.quitarSopa} sin sopa; arroz: ${cantidad - agenteVoz.quitarArroz} con arroz y ${agenteVoz.quitarArroz} sin arroz; ensalada: ${ensaladaNombre}, ${cantidad - agenteVoz.quitarEnsalada} con ensalada y ${agenteVoz.quitarEnsalada} sin ensalada. Precio unitario fijo: ${fmtCOP(producto.precio)}.`;
+        const notas = `${cantidad} almuerzo(s), proteína: ${resumenProteinas}; principio: ${resumenPrincipios}; sopa: ${agenteVoz.sopaNombre}, ${cantidad - agenteVoz.quitarSopa} con sopa y ${agenteVoz.quitarSopa} sin sopa; arroz: ${cantidad - agenteVoz.quitarArroz} con arroz y ${agenteVoz.quitarArroz} sin arroz; ensalada: ${ensaladaNombre}, ${cantidad - agenteVoz.quitarEnsalada} con ensalada y ${agenteVoz.quitarEnsalada} sin ensalada. Precio unitario fijo: ${fmtCOP(producto.precio)}.`;
         item.notas = notas;
         await API.put(`/pedidos/${estadoPOS.pedidoId}/items/${item.id}`, { notas });
     }
@@ -1310,6 +1369,8 @@ async function confirmarProductoVoz() {
         : `${producto.nombre} agregado por ${fmtCOP(producto.precio)}.`;
     agenteVoz.pendiente = null;
     agenteVoz.corrienteProducto = null;
+    agenteVoz.proteinasSeleccionadas = [];
+    agenteVoz.principiosSeleccionados = [];
     document.getElementById('voz-personalizacion').innerHTML = '';
     document.getElementById('voz-estado').textContent = mensaje;
     leerTexto(mensaje);
@@ -1576,7 +1637,7 @@ function mostrarMesas() {
     document.getElementById('btn-volver').style.display = 'none';
 
     document.getElementById('header-title').textContent =
-        '🛒 Mesas del Restaurante';
+        `🛒 Mesas de ${negocioActual()}`;
 
     cargarMesas();
 }
@@ -1595,7 +1656,7 @@ function mostrarPOS() {
     document.getElementById('btn-volver').style.display = 'inline-flex';
 
     document.getElementById('header-title').textContent =
-        `🛒 Mesa ${estadoPOS.mesaNum}`;
+        `🛒 Mesa ${estadoPOS.mesaNum} · ${negocioActual()}`;
 
     document.getElementById('cart-mesa-badge').innerHTML = `
         <span class="badge badge-ocupada">
@@ -2062,7 +2123,10 @@ async function limpiarCarrito() {
 // ==========================================================
 
 function abrirPago() {
-
+    if (!estadoPOS.carrito.length) {
+        toast('Agrega al menos un producto antes de cobrar', 'warning');
+        return;
+    }
     mostrarRevisionPedido();
     return;
 }
@@ -2876,15 +2940,20 @@ async function nuevoPedidoDelivery() {
 
 document.addEventListener(
     'DOMContentLoaded',
-    () => {
+    async () => {
+        const haySesion = !!(localStorage.getItem('gourmetpos_cliente_token') || localStorage.getItem('gourmetpos_registro_token'));
+        if (!haySesion) {
+            window.location.href = 'planes.html';
+            return;
+        }
 
+        await cargarNegocioActual();
         cargarMesas();
 
         setInterval(
             cargarMesas,
             30000
         );
-
     }
 );
 
