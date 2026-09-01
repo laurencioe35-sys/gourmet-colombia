@@ -1861,6 +1861,30 @@ async function liberarMesaActual() {
     if (!estadoPOS.mesaId) return;
 
     try {
+        const pedidoId = estadoPOS.pedidoId;
+
+        if (pedidoId) {
+            const pedido = await API.get(`/pedidos/${pedidoId}`);
+            const estadosPendientesPago = ['pendiente', 'en_preparacion', 'listo'];
+            const hayPedidoPendiente = pedido && pedido.estado && estadosPendientesPago.includes(pedido.estado);
+
+            if (hayPedidoPendiente && Number(pedido.total || 0) > 0) {
+                estadoPOS.carrito = (pedido.detalles || []).map(d => ({
+                    id: d.id,
+                    prod_id: d.producto_id,
+                    nombre: d.producto?.nombre || 'Producto',
+                    emoji: d.producto?.emoji || '🍽️',
+                    precio: d.precio_unitario,
+                    cantidad: d.cantidad,
+                    subtotal: d.subtotal
+                }));
+
+                toast('Hay un pedido pendiente de pago. Completa el pago para liberar la mesa.', 'warning');
+                continuarAPago();
+                return;
+            }
+        }
+
         const res = await API.post(`/mesas/${estadoPOS.mesaId}/liberar`, { forzar: true });
         if (res.ok) {
             toast('Mesa liberada. Ya puede atender otra orden.', 'success');
