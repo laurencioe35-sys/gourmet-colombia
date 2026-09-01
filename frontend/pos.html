@@ -1023,6 +1023,13 @@ async function cargarNegocioActual() {
     return negocioActual();
 }
 
+function obtenerPrecioBaseCorriente() {
+    const categorias = categoriasAgente();
+    const corriente = categorias.find(c => c.nombre.toLowerCase().includes('almuerzo corriente'));
+    const productoBase = corriente?.productos?.find(p => Number(p.precio) > 0) || corriente?.productos?.[0] || null;
+    return Number(productoBase?.precio || 0);
+}
+
 function abrirAgenteVoz() {
     document.getElementById('voz-agente').classList.add('abierto');
     document.getElementById('voz-abrir').style.display = 'none';
@@ -1032,8 +1039,7 @@ function abrirAgenteVoz() {
     const saludoHora = saludoHoraColombia();
     const nombreNegocio = negocioActual();
     if (!agenteVoz.iniciado) {
-        const corriente = categorias.find(c => c.nombre.toLowerCase().includes('almuerzo corriente'));
-        const precioBase = corriente?.productos?.[0]?.precio || 0;
+        const precioBase = obtenerPrecioBaseCorriente();
         const mensaje = `${saludoHora} Bienvenido a ${nombreNegocio}. Te ofrezco almuerzos corrientes con precio base de ${fmtCOP(precioBase)}. Primero dime cuántos almuerzos van a pedir.`;
         document.getElementById('voz-estado').textContent = mensaje;
         leerTexto(mensaje);
@@ -1153,8 +1159,8 @@ function obtenerCantidadActualVoz() {
 function actualizarPrecioVozActual() {
     const cantidad = obtenerCantidadActualVoz();
     const corriente = categoriasAgente().find(c => c.nombre.toLowerCase().includes('almuerzo corriente'));
-    const productoBase = agenteVoz.corrienteProducto || corriente?.productos?.[0] || null;
-    const precioBase = Number(productoBase?.precio || corriente?.productos?.[0]?.precio || 0);
+    const productoBase = agenteVoz.corrienteProducto || corriente?.productos?.find(p => Number(p.precio) > 0) || corriente?.productos?.[0] || null;
+    const precioBase = Number(productoBase?.precio || 0);
     const total = precioBase * cantidad;
     const bloque = document.getElementById('voz-total-estimado');
     if (bloque) {
@@ -1174,15 +1180,16 @@ function cambiarCantidadVoz(delta) {
 
 function iniciarCantidadVoz() {
     agenteVoz.iniciado = true;
-    agenteVoz.paso = 'producto';
+    agenteVoz.paso = 'proteina';
     agenteVoz.proteinasSeleccionadas = [];
     agenteVoz.principiosSeleccionados = [];
     const proteinas = categoriasAgente().find(c => c.nombre.toLowerCase().includes('prote'));
     const corriente = categoriasAgente().find(c => c.nombre.toLowerCase().includes('almuerzo corriente'));
+    const productoBase = corriente?.productos?.find(p => Number(p.precio) > 0) || corriente?.productos?.[0] || null;
     if (proteinas) agenteVoz.categoria = proteinas;
-    if (corriente?.productos?.length) agenteVoz.corrienteProducto = corriente.productos[0];
+    if (productoBase) agenteVoz.corrienteProducto = productoBase;
     renderAgenteVoz();
-    const precioBase = Number(agenteVoz.corrienteProducto?.precio || 0);
+    const precioBase = Number(agenteVoz.corrienteProducto?.precio || obtenerPrecioBaseCorriente() || 0);
     const totalBase = precioBase * agenteVoz.cantidad;
     const mensaje = `Perfecto, son ${agenteVoz.cantidad} almuerzo(s). Los almuerzos corrientes tienen un valor base de ${fmtCOP(precioBase)}. Elige la proteína para completar la cantidad total. Estimado: ${fmtCOP(totalBase)}.`;
     document.getElementById('voz-estado').textContent = mensaje;
@@ -1219,24 +1226,39 @@ function seleccionarCategoriaVoz(catId) {
 }
 
 function seleccionarProductoVoz(prodId) {
-    const producto = agenteVoz.categoria.productos.find(p => p.id === prodId);
+    const producto = agenteVoz.categoria?.productos.find(p => p.id === prodId);
     if (!producto) return;
     const mismoProducto = agenteVoz.pendiente?.id === prodId;
-    const esCorriente = agenteVoz.categoria.nombre.toLowerCase().includes('almuerzo corriente');
-    const esSopa = agenteVoz.categoria.nombre.toLowerCase().includes('sopa');
-    const esProteina = agenteVoz.categoria.nombre.toLowerCase().includes('prote');
+    const esCorriente = (agenteVoz.categoria?.nombre || '').toLowerCase().includes('almuerzo corriente');
+    const esSopa = (agenteVoz.categoria?.nombre || '').toLowerCase().includes('sopa');
+    const esProteina = (agenteVoz.categoria?.nombre || '').toLowerCase().includes('prote');
+    const esPrincipio = (agenteVoz.categoria?.nombre || '').toLowerCase().includes('princip');
     if (esSopa) return seleccionarSopaVoz(producto);
     if (esProteina) {
         const totalSeleccionado = registrarSeleccionVoz('proteina', producto.nombre);
         const restante = Math.max(0, agenteVoz.cantidad - totalSeleccionado);
-        agenteVoz.corrienteProducto = producto;
+        agenteVoz.corrienteProducto = agenteVoz.corrienteProducto || producto;
         if (restante > 0) {
-            const mensaje = `Elegiste ${producto.nombre}. Faltan ${restante} almuerzo(s) por definir. Elige otra proteína o repite la misma para completar la cantidad.`;
+            const mensaje = `Elegiste ${producto.nombre}. Faltan ${restante} proteína(s) por seleccionar para completar ${agenteVoz.cantidad} almuerzo(s).`;
             document.getElementById('voz-estado').textContent = mensaje;
             leerTexto(mensaje);
             return;
         }
-        return irASopasVoz();
+        mostrarPasoPrincipiosVoz();
+        return;
+    }
+    if (esPrincipio) {
+        const totalSeleccionado = registrarSeleccionVoz('principio', producto.nombre);
+        const restante = Math.max(0, agenteVoz.cantidad - totalSeleccionado);
+        agenteVoz.principioNombre = producto.nombre;
+        if (restante > 0) {
+            const mensaje = `Elegiste ${producto.nombre}. Faltan ${restante} principio(s) por seleccionar para completar ${agenteVoz.cantidad} almuerzo(s).`;
+            document.getElementById('voz-estado').textContent = mensaje;
+            leerTexto(mensaje);
+            return;
+        }
+        mostrarPasoEnsaladaVoz();
+        return;
     }
     agenteVoz.pendiente = producto;
     if (esCorriente) agenteVoz.corrienteProducto = producto;
@@ -1314,16 +1336,9 @@ function mostrarPasoPrincipiosVoz() {
     const opciones = categoria?.productos || [];
     if (!opciones.length) return mostrarPasoEnsaladaVoz();
     agenteVoz.categoria = categoria;
-    document.getElementById('voz-carrusel').classList.toggle('vista-pc', vistaVoz === 'pc');
-    document.getElementById('voz-carrusel').innerHTML = opciones.map(p => `
-        <button class="voz-producto" onclick="seleccionarPrincipioVoz('${p.nombre.replace(/'/g, "\\'")}')">
-            <span class="voz-producto-emoji">${p.emoji}</span>
-            <span class="voz-producto-nombre">${p.nombre}</span>
-            <span class="voz-producto-precio">Principio incluido</span>
-        </button>
-    `).join('');
-    document.getElementById('voz-estado').textContent = `Tienes ${agenteVoz.cantidad} principio(s) incluido(s). Elige el principio para los almuerzos.`;
-    leerTexto(`Tienes ${agenteVoz.cantidad} principios incluidos. Elige el principio para los almuerzos.`);
+    renderAgenteVoz();
+    document.getElementById('voz-estado').textContent = `Tienes ${agenteVoz.cantidad} principio(s) incluido(s). Elige el principio para completar la cantidad total.`;
+    leerTexto(`Tienes ${agenteVoz.cantidad} principios incluidos. Elige el principio para completar la cantidad total.`);
 }
 
 function seleccionarPrincipioVoz(nombre) {
@@ -1331,7 +1346,7 @@ function seleccionarPrincipioVoz(nombre) {
     const restante = Math.max(0, agenteVoz.cantidad - totalSeleccionado);
     agenteVoz.principioNombre = nombre;
     if (restante > 0) {
-        const mensaje = `Elegiste ${nombre}. Faltan ${restante} almuerzo(s) por definir el principio. Elige otra opción o repite la misma hasta completar.`;
+        const mensaje = `Elegiste ${nombre}. Faltan ${restante} principio(s) por seleccionar para completar ${agenteVoz.cantidad} almuerzo(s).`;
         document.getElementById('voz-estado').textContent = mensaje;
         leerTexto(mensaje);
         return;
@@ -1360,9 +1375,10 @@ function mostrarPasoEnsaladaVoz() {
 }
 
 function mostrarConfirmacionFinalVoz() {
-    const producto = agenteVoz.corrienteProducto || agenteVoz.pendiente;
+    const producto = agenteVoz.corrienteProducto || agenteVoz.pendiente || null;
     const cantidad = obtenerCantidadActualVoz();
-    const total = Number(producto?.precio || 0) * cantidad;
+    const precioBase = Number(producto?.precio || obtenerPrecioBaseCorriente() || 0);
+    const total = precioBase * cantidad;
 
     document.getElementById('voz-personalizacion').innerHTML = `
         <div class="voz-estado">Ya tienes ${cantidad} almuerzo(s) corrientes listos con su proteína y principio.</div>
