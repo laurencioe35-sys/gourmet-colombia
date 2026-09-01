@@ -1259,7 +1259,7 @@ function seleccionarProductoVoz(prodId) {
             leerTexto(mensaje);
             return;
         }
-        mostrarPasoEnsaladaVoz();
+        mostrarPasoSopaVoz();
         return;
     }
     agenteVoz.pendiente = producto;
@@ -1318,25 +1318,62 @@ function confirmarSopaVoz() {
 }
 
 function mostrarPasoArrozVoz() {
-    document.getElementById('voz-estado').textContent = `Tienes ${agenteVoz.cantidad} arroz(es) incluidos. ¿Cuántos deseas quitar?`;
+    const opciones = [
+        { label: 'Con arroz', valor: true },
+        { label: 'Sin arroz', valor: false }
+    ];
+    document.getElementById('voz-carrusel').classList.toggle('vista-pc', vistaVoz === 'pc');
+    document.getElementById('voz-carrusel').innerHTML = opciones.map(op => `
+        <button class="voz-producto" onclick="agenteVoz.arroz=${op.valor}; confirmarArrozVoz();">
+            <span class="voz-producto-emoji">${op.valor ? '🍚' : '🚫'}</span>
+            <span class="voz-producto-nombre">${op.label}</span>
+            <span class="voz-producto-precio">${op.valor ? 'Incluido' : 'Quitar'} </span>
+        </button>
+    `).join('');
+    document.getElementById('voz-estado').textContent = `Tienes ${agenteVoz.cantidad} arroz(es) incluidos. Elige si lo deseas con arroz o sin arroz.`;
     document.getElementById('voz-personalizacion').innerHTML = `
         <div class="voz-estado">Arroz para ${agenteVoz.cantidad} almuerzo(s)</div>
         <label for="voz-quitar-arroz">¿Cuántos almuerzos van sin arroz?</label>
         <input id="voz-quitar-arroz" type="number" min="0" max="${agenteVoz.cantidad}" value="0" style="width:100%;padding:10px;margin:8px 0">
-        <button class="btn btn-primary btn-full" onclick="confirmarArrozVoz()">Continuar con principios</button>
+        <button class="btn btn-primary btn-full" onclick="confirmarArrozVoz()">Continuar con ensalada</button>
     `;
-    leerTexto(`Tienes ${agenteVoz.cantidad} arroces incluidos. ¿Cuántos almuerzos van sin arroz?`);
+    leerTexto(`Tienes ${agenteVoz.cantidad} arroces incluidos. Elige si vas con arroz o sin arroz.`);
 }
 
 function confirmarArrozVoz() {
-    agenteVoz.quitarArroz = Math.min(agenteVoz.cantidad, Math.max(0, Number(document.getElementById('voz-quitar-arroz').value) || 0));
+    const inputArroz = document.getElementById('voz-quitar-arroz');
+    if (inputArroz) {
+        agenteVoz.quitarArroz = Math.min(agenteVoz.cantidad, Math.max(0, Number(inputArroz.value) || 0));
+    }
     agenteVoz.arroz = agenteVoz.quitarArroz < agenteVoz.cantidad;
     mostrarPasoEnsaladaVoz();
 }
 
 function mostrarPasoSopaVoz() {
     const categoria = categoriasAgente().find(c => c.nombre.toLowerCase().includes('sopa'));
-    if (!categoria) return mostrarPasoArrozVoz();
+    if (!categoria) {
+        const opciones = [
+            { label: 'Con sopa', valor: true },
+            { label: 'Sin sopa', valor: false }
+        ];
+        document.getElementById('voz-carrusel').classList.toggle('vista-pc', vistaVoz === 'pc');
+        document.getElementById('voz-carrusel').innerHTML = opciones.map(op => `
+            <button class="voz-producto" onclick="agenteVoz.sopa=${op.valor}; confirmarSopaVoz();">
+                <span class="voz-producto-emoji">${op.valor ? '🍲' : '🚫'}</span>
+                <span class="voz-producto-nombre">${op.label}</span>
+                <span class="voz-producto-precio">${op.valor ? 'Incluida' : 'Quitar'}</span>
+            </button>
+        `).join('');
+        document.getElementById('voz-estado').textContent = `Tienes ${agenteVoz.cantidad} sopa(s) incluidas. Elige si va con sopa o sin sopa.`;
+        document.getElementById('voz-personalizacion').innerHTML = `
+            <div class="voz-estado">Sopa para ${agenteVoz.cantidad} almuerzo(s)</div>
+            <label for="voz-quitar-sopa">¿Cuántas sopas deseas quitar?</label>
+            <input id="voz-quitar-sopa" type="number" min="0" max="${agenteVoz.cantidad}" value="0" style="width:100%;padding:10px;margin:8px 0">
+            <button class="btn btn-primary btn-full" onclick="confirmarSopaVoz()">Continuar con arroz</button>
+        `;
+        leerTexto(`Tienes ${agenteVoz.cantidad} sopas incluidas. Elige si va con sopa o sin sopa.`);
+        return;
+    }
     agenteVoz.categoria = categoria;
     document.getElementById('voz-carrusel').classList.toggle('vista-pc', vistaVoz === 'pc');
     document.getElementById('voz-carrusel').innerHTML = categoria.productos.map(p => `
@@ -1347,6 +1384,12 @@ function mostrarPasoSopaVoz() {
         </button>
     `).join('');
     document.getElementById('voz-estado').textContent = `Tienes ${agenteVoz.cantidad} sopa(s) incluidas. Elige la sopa para completar la cantidad total.`;
+    document.getElementById('voz-personalizacion').innerHTML = `
+        <div class="voz-estado">Sopa para ${agenteVoz.cantidad} almuerzo(s)</div>
+        <label for="voz-quitar-sopa">¿Cuántas sopas deseas quitar?</label>
+        <input id="voz-quitar-sopa" type="number" min="0" max="${agenteVoz.cantidad}" value="0" style="width:100%;padding:10px;margin:8px 0">
+        <button class="btn btn-primary btn-full" onclick="confirmarSopaVoz()">Continuar con arroz</button>
+    `;
     leerTexto(`Tienes ${agenteVoz.cantidad} sopas incluidas. Elige la sopa para completar la cantidad total.`);
 }
 
