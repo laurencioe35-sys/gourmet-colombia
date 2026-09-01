@@ -1559,10 +1559,22 @@ async function confirmarProductoVoz() {
     return true;
 }
 
+function normalizarTextoVoz(texto) {
+    return String(texto || '')
+        .replace(/\bS\/\b/gi, 'sin ')
+        .replace(/\bC\/\b/gi, 'con ')
+        .replace(/\bS\b/gi, '')
+        .replace(/\s+/g, ' ')
+        .replace(/\s+([,.!?;:])/g, '$1')
+        .trim();
+}
+
 function leerTexto(texto) {
     if (!('speechSynthesis' in window)) return;
+    const textoParaVoz = normalizarTextoVoz(texto);
+    if (!textoParaVoz) return;
     window.speechSynthesis.cancel();
-    const voz = new SpeechSynthesisUtterance(texto);
+    const voz = new SpeechSynthesisUtterance(textoParaVoz);
     voz.lang = 'es-CO';
     voz.rate = 1.15;
     const voces = window.speechSynthesis.getVoices();
